@@ -2,18 +2,1393 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MTIP Collective</title>
-<meta http-equiv="refresh" content="0; url=/pods">
-<link rel="canonical" href="https://collective.mtip.ai/pods">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTIP Collective Pods — Private offices. Delivered in 90 days.</title>
+<meta name="description" content="MTIP Collective Pods are sound-insulated, plug-and-play office rooms — delivered fully assembled to your door in 90 days. Replace a $1,500–$2,500/mo executive office with The Suite for $6,997. The Studio, The Duo, The Quad, The Suite.">
+<meta name="theme-color" content="#0A0908">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pods.mtip.ai">
+<meta property="og:title" content="MTIP Collective Pods — Private offices. Delivered in 90 days.">
+<meta property="og:description" content="A traditional 1-person executive office costs $1,500–$2,500/mo. The Suite by MTIP Collective costs $6,997. Once. Pays for itself in under five months.">
+<meta property="og:image" content="https://pods.mtip.ai/assets/images/og-image.jpg">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MTIP Collective Pods — Stop renting an office. Own one.">
+<meta name="twitter:description" content="Sound-insulated, plug-and-play office pods. Delivered fully assembled in 90 days. From $2,997.">
+<meta name="twitter:image" content="https://pods.mtip.ai/assets/images/og-image.jpg">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://pods.mtip.ai">
+
+<!-- Favicons -->
+<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "MTIP Collective Pods",
+  "description": "Sound-insulated, plug-and-play office pods delivered fully assembled in 90 days.",
+  "brand": { "@type": "Brand", "name": "MTIP Collective" },
+  "offers": {
+    "@type": "AggregateOffer",
+    "lowPrice": "2997",
+    "highPrice": "6997",
+    "priceCurrency": "USD",
+    "offerCount": "4"
+  }
+}
+</script>
+
 <style>
-body{margin:0;background:#0A0908;color:#F5F1EA;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center}
-a{color:#C9A961}
+:root {
+  --bg: #0A0908;
+  --bg-elev: #131210;
+  --bg-card: #181613;
+  --text: #F5F1EA;
+  --text-muted: #A39E94;
+  --text-dim: #6B6760;
+  --accent: #C9A961;
+  --accent-hi: #D9B871;
+  --accent-dim: #8C7440;
+  --border: #2A2722;
+  --border-hi: #3A352D;
+  --danger: #E07856;
+  --success: #6FAA7A;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, video { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3, h4 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.5rem, 6vw, 5rem); }
+h2 { font-size: clamp(2rem, 4.5vw, 3.5rem); }
+h3 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); font-family: 'Manrope', sans-serif; font-weight: 600; letter-spacing: -0.01em; }
+
+.container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 640px) { .container { padding: 0 20px; } }
+
+.section { padding: 120px 0; }
+@media (max-width: 768px) { .section { padding: 80px 0; } }
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.lead { font-size: 1.125rem; color: var(--text-muted); max-width: 720px; }
+
+/* NAV */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(10, 9, 8, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 32px;
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.logo span { color: var(--accent); }
+.nav-tabs { display: flex; gap: 32px; }
+.nav-tabs a {
+  font-size: 0.875rem; font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.2s;
+  letter-spacing: 0.02em;
+}
+.nav-tabs a:hover { color: var(--text); }
+.nav-cta {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 999px;
+  transition: background 0.2s;
+  letter-spacing: 0.01em;
+}
+.nav-cta:hover { background: var(--accent-hi); }
+@media (max-width: 900px) { .nav-tabs { display: none; } }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 16px 32px;
+  font-size: 0.95rem; font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+}
+.btn-primary { background: var(--accent); color: var(--bg); }
+.btn-primary:hover { background: var(--accent-hi); transform: translateY(-1px); }
+.btn-secondary { background: transparent; color: var(--text); border-color: var(--border-hi); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-ghost { background: transparent; color: var(--text-muted); }
+.btn-ghost:hover { color: var(--accent); }
+.btn-lg { padding: 20px 40px; font-size: 1rem; }
+
+/* HERO */
+.hero {
+  position: relative;
+  padding: 80px 0 120px;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at top right, rgba(201, 169, 97, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+}
+@media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.hero h1 { margin: 24px 0; }
+.hero h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+.hero-sub { font-size: 1.25rem; color: var(--text-muted); margin: 24px 0 40px; max-width: 520px; }
+.hero-sub strong { color: var(--text); font-weight: 600; }
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.hero-video {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-hi);
+  aspect-ratio: 9 / 16;
+  max-height: 640px;
+  margin-left: auto;
+  background: var(--bg-card);
+}
+.hero-video video { width: 100%; height: 100%; object-fit: cover; }
+.hero-video::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,9,8,0.4) 0%, transparent 50%);
+  pointer-events: none;
+}
+.video-toggle {
+  position: absolute; bottom: 20px; right: 20px;
+  width: 44px; height: 44px;
+  background: rgba(10,9,8,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-hi);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.2s;
+}
+.video-toggle:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+/* TRUST STRIP */
+.trust-strip {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+  background: var(--bg-elev);
+}
+.trust-strip-inner {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 32px;
+  font-size: 0.85rem; color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+.trust-strip-inner span { display: inline-flex; align-items: center; gap: 8px; }
+.trust-strip-inner .dot { width: 4px; height: 4px; background: var(--accent); border-radius: 50%; opacity: 0.6; }
+
+/* HERO PRODUCT (THE SUITE) */
+.hero-product {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-elev) 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.hero-product-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+}
+@media (max-width: 1024px) { .hero-product-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.flagship-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  background: rgba(201, 169, 97, 0.12);
+  border: 1px solid rgba(201, 169, 97, 0.3);
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero-product h2 { margin-bottom: 24px; }
+.hero-product .lead { font-size: 1.15rem; margin-bottom: 32px; }
+.hero-product .lead strong { color: var(--accent); font-weight: 600; }
+
+.roi-table {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 32px 0;
+}
+.roi-table table { width: 100%; border-collapse: collapse; }
+.roi-table th, .roi-table td {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border);
+}
+.roi-table th {
+  background: var(--bg-elev);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.roi-table tr:last-child td { border-bottom: none; }
+.roi-table .payback { color: var(--accent); font-weight: 700; }
+
+.roi-calc {
+  margin: 32px 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+.roi-calc-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 0.02em; }
+.roi-calc-input-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.roi-calc input {
+  background: var(--bg);
+  border: 1px solid var(--border-hi);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 8px;
+  width: 140px;
+  outline: none;
+  transition: border 0.2s;
+}
+.roi-calc input:focus { border-color: var(--accent); }
+.roi-calc-result {
+  margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 24px;
+  font-size: 0.95rem;
+}
+.roi-calc-result strong { color: var(--accent); font-size: 1.5rem; font-family: 'Cormorant Garamond', serif; font-weight: 600; }
+
+.suite-spec {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin: 32px 0;
+}
+.suite-spec-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.suite-spec-item i {
+  width: 20px; height: 20px;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.suite-spec-item div { font-size: 0.9rem; line-height: 1.4; }
+.suite-spec-item div strong { display: block; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+.suite-spec-item div span { color: var(--text-muted); font-size: 0.85rem; }
+@media (max-width: 640px) { .suite-spec { grid-template-columns: 1fr; } }
+
+.suite-price-block {
+  margin-top: 32px;
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(201,169,97,0.08) 0%, transparent 60%);
+  border: 1px solid var(--border-hi);
+  border-radius: 16px;
+}
+.suite-price-row { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+.suite-price-row .price-cash { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 600; color: var(--accent); }
+.suite-price-row .price-once { color: var(--text-muted); font-size: 0.95rem; }
+.suite-price-block .install-note { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; }
+.suite-price-block .install-note strong { color: var(--text); font-weight: 600; }
+
+/* TIER GRID */
+.tier-toggle-wrap { display: flex; justify-content: center; margin-bottom: 56px; }
+.tier-toggle {
+  display: inline-flex;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px;
+  position: relative;
+}
+.tier-toggle button {
+  background: none; border: none; color: var(--text-muted);
+  font-family: inherit; font-size: 0.85rem; font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s;
+  letter-spacing: 0.02em;
+}
+.tier-toggle button.active { background: var(--accent); color: var(--bg); }
+
+.tier-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+}
+@media (max-width: 1024px) { .tier-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .tier-grid { grid-template-columns: 1fr; } }
+
+.tier-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  position: relative;
+  transition: all 0.3s;
+  display: flex; flex-direction: column;
+}
+.tier-card:hover { border-color: var(--border-hi); transform: translateY(-4px); }
+.tier-card.featured {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, rgba(201,169,97,0.06) 0%, var(--bg-card) 60%);
+}
+.tier-rank {
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.tier-card h3 { margin-bottom: 8px; font-size: 1.75rem; }
+.tier-tag { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; min-height: 42px; }
+.tier-illus {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 24px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.tier-illus svg { width: 70%; height: 70%; }
+.tier-specs {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+.tier-specs li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.tier-specs li i {
+  width: 16px; height: 16px;
+  color: var(--accent); flex-shrink: 0; margin-top: 2px;
+}
+.tier-specs li strong { color: var(--text); font-weight: 600; }
+.tier-price { padding-top: 20px; border-top: 1px solid var(--border); }
+.tier-price-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.25rem; font-weight: 600; color: var(--text);
+  line-height: 1;
+}
+.tier-price-suffix { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+.tier-card .btn { width: 100%; justify-content: center; margin-top: 16px; }
+
+/* COMPARISON */
+.compare-table {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  overflow-x: auto;
+  margin: 32px 0;
+}
+.compare-table table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.compare-table th, .compare-table td {
+  padding: 20px;
+  text-align: left;
+  font-size: 0.92rem;
+  border-bottom: 1px solid var(--border);
+}
+.compare-table thead { background: var(--bg-elev); }
+.compare-table th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.compare-table th.us { color: var(--accent); }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table td.us { color: var(--accent); font-weight: 600; }
+.compare-table td.savings { color: var(--accent); font-weight: 700; }
+.compare-table .check { color: var(--success); }
+.compare-table .x { color: var(--danger); }
+.compare-note { font-size: 0.85rem; color: var(--text-dim); font-style: italic; margin-top: 16px; }
+
+.tradeoff-card {
+  background: linear-gradient(135deg, rgba(201,169,97,0.05), transparent);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  margin-top: 40px;
+}
+.tradeoff-card h4 { color: var(--accent); margin-bottom: 12px; }
+.tradeoff-card p { color: var(--text-muted); }
+.tradeoff-card strong { color: var(--text); }
+
+/* FEATURES */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 56px;
+}
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  transition: border 0.3s;
+}
+.feature-card:hover { border-color: var(--border-hi); }
+.feature-icon {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(201, 169, 97, 0.1);
+  border: 1px solid rgba(201, 169, 97, 0.25);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+.feature-icon i { width: 22px; height: 22px; color: var(--accent); }
+.feature-card h4 { margin-bottom: 8px; }
+.feature-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
+
+/* MATERIALS */
+.materials-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+  padding: 32px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.material-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.85rem; color: var(--text-muted); }
+.material-item i { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+
+/* EDGE STYLES */
+.edge-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  margin-top: 56px;
+}
+@media (max-width: 768px) { .edge-grid { grid-template-columns: 1fr; } }
+.edge-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px;
+  text-align: center;
+}
+.edge-card svg { width: 80px; height: 80px; margin: 0 auto 20px; color: var(--accent); }
+.edge-card h4 { margin-bottom: 8px; }
+.edge-card p { color: var(--text-muted); font-size: 0.92rem; }
+
+/* PROCESS */
+.process-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  margin-top: 56px;
+  position: relative;
+}
+@media (max-width: 768px) { .process-grid { grid-template-columns: 1fr; } }
+.process-step {
+  position: relative;
+  padding: 32px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.process-step .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 16px;
+  display: block;
+}
+.process-step h4 { margin-bottom: 8px; }
+.process-step p { color: var(--text-muted); font-size: 0.92rem; }
+
+/* INSTALLMENT CALLOUT */
+.install-callout {
+  background: linear-gradient(135deg, rgba(201, 169, 97, 0.1), transparent 60%);
+  border: 1px solid rgba(201, 169, 97, 0.3);
+  border-radius: 16px;
+  padding: 32px;
+  margin-top: 56px;
+  display: flex; align-items: flex-start; gap: 24px;
+}
+.install-callout .icon-large {
+  width: 56px; height: 56px;
+  background: rgba(201, 169, 97, 0.15);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.install-callout .icon-large i { width: 26px; height: 26px; color: var(--accent); }
+.install-callout h4 { color: var(--accent); margin-bottom: 8px; }
+.install-callout p { color: var(--text-muted); }
+.install-callout strong { color: var(--text); font-weight: 600; }
+@media (max-width: 640px) { .install-callout { flex-direction: column; } }
+
+/* ORDER TABLE */
+.order-table {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  overflow-x: auto;
+  margin-top: 32px;
+}
+.order-table table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.order-table th, .order-table td {
+  padding: 18px 24px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+.order-table thead { background: var(--bg-elev); }
+.order-table th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.order-table td.price { color: var(--accent); font-weight: 700; font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; }
+.order-table tr:last-child td { border-bottom: none; }
+.order-table tr.featured { background: rgba(201, 169, 97, 0.05); }
+
+/* RESOURCES */
+.resource-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+  margin-top: 48px;
+}
+@media (max-width: 640px) { .resource-grid { grid-template-columns: 1fr; } }
+.resource-card {
+  display: flex; align-items: center; gap: 16px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: all 0.2s;
+}
+.resource-card:hover { border-color: var(--accent); transform: translateX(4px); }
+.resource-card .icon-box {
+  width: 48px; height: 48px;
+  background: rgba(201,169,97,0.1);
+  border: 1px solid rgba(201,169,97,0.25);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.resource-card i { color: var(--accent); width: 22px; height: 22px; }
+.resource-card .text strong { display: block; font-size: 1rem; color: var(--text); margin-bottom: 4px; }
+.resource-card .text span { color: var(--text-muted); font-size: 0.85rem; }
+
+/* FAQ */
+.faq-list { margin-top: 48px; }
+.faq-item {
+  border-top: 1px solid var(--border);
+}
+.faq-item:last-child { border-bottom: 1px solid var(--border); }
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.125rem;
+  font-weight: 500;
+  padding: 24px 0;
+  text-align: left;
+  cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+}
+.faq-question:hover { color: var(--accent); }
+.faq-question i { width: 22px; height: 22px; color: var(--accent); transition: transform 0.3s; flex-shrink: 0; }
+.faq-item.open .faq-question i { transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0; overflow: hidden;
+  color: var(--text-muted);
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.faq-item.open .faq-answer { max-height: 600px; padding: 0 0 24px; }
+.faq-answer strong { color: var(--text); }
+
+/* FINAL CTA */
+.final-cta {
+  text-align: center;
+  padding: 120px 0;
+  background:
+    radial-gradient(ellipse at top, rgba(201,169,97,0.1) 0%, transparent 60%),
+    var(--bg-elev);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.final-cta h2 { margin-bottom: 16px; }
+.final-cta p { color: var(--text-muted); font-size: 1.15rem; margin-bottom: 40px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.final-cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* FOOTER */
+footer {
+  padding: 64px 0 32px;
+  background: var(--bg);
+  text-align: center;
+}
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; margin-bottom: 16px; }
+.footer-logo span { color: var(--accent); }
+.footer-tagline { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 32px; }
+.footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; font-size: 0.85rem; }
+.footer-links a { color: var(--text-muted); transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-divider { height: 1px; background: var(--border); max-width: 600px; margin: 0 auto 32px; }
+.footer-credit {
+  font-size: 0.8rem; color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+.footer-credit a { color: var(--accent); font-weight: 500; }
+
+/* UTILITY */
+.text-center { text-align: center; }
+.mb-md { margin-bottom: 32px; }
+.section-header { text-align: center; max-width: 720px; margin: 0 auto 24px; }
+.section-header h2 { margin-bottom: 16px; }
+.section-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+/* Scroll-aware nav highlight */
+.nav-tabs a.current { color: var(--accent); }
 </style>
 </head>
 <body>
-<div>
-<h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:500">MTIP Collective</h1>
-<p>Redirecting to <a href="/pods">/pods</a>…</p>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">MTIP <span>Collective</span></a>
+    <div class="nav-tabs">
+      <a href="#suite">The Suite</a>
+      <a href="#lineup">Lineup</a>
+      <a href="#compare">Compare</a>
+      <a href="#features">Features</a>
+      <a href="#order">Order</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#order" class="nav-cta">Reserve a Pod</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">A new MTIP Collective offering</div>
+        <h1>Stop renting an office.<br><em>Own one.</em></h1>
+        <p class="hero-sub">A traditional 1-person executive office costs <strong>$1,500–$2,500 per month</strong>.<br>The Suite by MTIP Collective costs <strong>$6,997. Once.</strong><br>Pays for itself in under five months. Stays yours forever.</p>
+        <div class="hero-ctas">
+          <a href="#suite" class="btn btn-primary btn-lg">Meet The Suite <i data-lucide="arrow-right"></i></a>
+          <a href="#lineup" class="btn btn-secondary btn-lg">See All Four Pods</a>
+        </div>
+      </div>
+      <div class="hero-video">
+        <video id="heroVideo" autoplay muted loop playsinline>
+          <source src="assets/video/walkthrough.mp4" type="video/mp4">
+        </video>
+        <button class="video-toggle" id="videoToggle" aria-label="Toggle sound">
+          <i data-lucide="volume-x" id="videoIcon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="container">
+    <div class="trust-strip-inner">
+      <span><i data-lucide="volume-x" style="width:14px;height:14px"></i> ~30 dB sound insulation</span>
+      <span class="dot"></span>
+      <span><i data-lucide="truck" style="width:14px;height:14px"></i> 90-day delivery</span>
+      <span class="dot"></span>
+      <span><i data-lucide="package-check" style="width:14px;height:14px"></i> Fully assembled</span>
+      <span class="dot"></span>
+      <span><i data-lucide="shield-check" style="width:14px;height:14px"></i> 1-year warranty</span>
+      <span class="dot"></span>
+      <span><i data-lucide="credit-card" style="width:14px;height:14px"></i> $0 down · 12-mo plans</span>
+      <span class="dot"></span>
+      <span><i data-lucide="map-pin" style="width:14px;height:14px"></i> Florida showroom</span>
+    </div>
+  </div>
 </div>
+
+<!-- THE SUITE — HERO PRODUCT -->
+<section class="hero-product section" id="suite">
+  <div class="container">
+    <div class="hero-product-grid">
+      <div>
+        <div class="flagship-badge"><i data-lucide="star" style="width:14px;height:14px"></i> The Flagship</div>
+        <h2>The Suite. Your private executive office. Delivered.</h2>
+        <p class="lead">This is the one we're building MTIP Collective around. The Suite is a 49-square-foot, sound-insulated, fully assembled executive office that ships to your door in 90 days. <strong>It seats one in luxury.</strong> Or six in a meeting. Or your podcast crew. Or your investor pitch.</p>
+
+        <p class="lead" style="margin-top:24px">Compare it to a real 1-person office in any decent commercial building: <strong>$1,500 to $2,500 a month</strong>, plus deposits, plus build-out, plus a 5-year lease, plus a corporate guarantor.</p>
+
+        <p class="lead" style="margin-top:24px">The Suite is <strong>a one-time $6,997.</strong></p>
+
+        <div class="roi-table">
+          <table>
+            <thead>
+              <tr><th>If you're paying…</th><th>A year of that</th><th>The Suite pays back in</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>$1,500/mo office</td><td>$18,000</td><td class="payback">4.7 months</td></tr>
+              <tr><td>$2,000/mo office</td><td>$24,000</td><td class="payback">3.5 months</td></tr>
+              <tr><td>$2,500/mo office</td><td>$30,000</td><td class="payback">2.8 months</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="roi-calc">
+          <div class="roi-calc-label">Your office costs $/month right now:</div>
+          <div class="roi-calc-input-row">
+            <span style="color:var(--text-muted)">$</span>
+            <input type="number" id="roiInput" value="1800" min="0" step="100">
+            <span style="color:var(--text-muted)">/month</span>
+          </div>
+          <div class="roi-calc-result">
+            <div>Annual cost: <strong id="roiAnnual">$21,600</strong></div>
+            <div>Suite payback: <strong id="roiPayback">3.9 mo</strong></div>
+            <div>5-year savings: <strong id="roiSavings">$101,003</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="suite-spec">
+          <div class="suite-spec-item"><i data-lucide="users"></i><div><strong>1 to 6 people</strong><span>Solo executive or full meeting</span></div></div>
+          <div class="suite-spec-item"><i data-lucide="ruler"></i><div><strong>~49 sq ft</strong><span>4.5 m² footprint</span></div></div>
+          <div class="suite-spec-item"><i data-lucide="volume-x"></i><div><strong>30 ± 3 dB</strong><span>ISO 23351-1 certified</span></div></div>
+          <div class="suite-spec-item"><i data-lucide="wind"></i><div><strong>16 silent fans</strong><span>1.5-min air refresh</span></div></div>
+          <div class="suite-spec-item"><i data-lucide="zap"></i><div><strong>90W</strong><span>110–220V universal</span></div></div>
+          <div class="suite-spec-item"><i data-lucide="lightbulb"></i><div><strong>Dual LED strips</strong><span>Dimmable, anti-glare</span></div></div>
+          <div class="suite-spec-item"><i data-lucide="usb"></i><div><strong>USB + USB-C + Qi</strong><span>Wireless charging built in</span></div></div>
+          <div class="suite-spec-item"><i data-lucide="move"></i><div><strong>Silent casters</strong><span>Optional · move it anywhere</span></div></div>
+        </div>
+
+        <div class="suite-price-block">
+          <div class="suite-price-row">
+            <span class="price-cash">$6,997</span>
+            <span class="price-once">paid once</span>
+          </div>
+          <p class="install-note">Or <strong>$699/mo</strong> for 12 months · <strong>$0 down</strong> · 0 credit gymnastics</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a href="#order" class="btn btn-primary">Reserve The Suite <i data-lucide="arrow-right"></i></a>
+            <a href="#showroom" class="btn btn-secondary">See It In The Showroom</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LINEUP -->
+<section class="section" id="lineup">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">The lineup</div>
+      <h2>Four sizes. One standard of quality.</h2>
+      <p>Every MTIP Collective Pod uses the same core build — aluminum frame, multi-layer acoustic walls, 6mm tempered safety glass, motion-sensor lighting, top-mount fresh air, integrated power. Only the size and seating change.</p>
+    </div>
+
+    <div class="tier-toggle-wrap">
+      <div class="tier-toggle" id="tierToggle">
+        <button class="active" data-mode="cash">Pay Once</button>
+        <button data-mode="install">12-Month Installments</button>
+      </div>
+    </div>
+
+    <div class="tier-grid">
+
+      <!-- THE STUDIO -->
+      <div class="tier-card">
+        <div class="tier-rank">Good · Solo</div>
+        <h3>The Studio</h3>
+        <p class="tier-tag">A private studio in 10 sq ft. For recording, AI command, focus.</p>
+        <div class="tier-illus">
+          <svg viewBox="0 0 200 150" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent)">
+            <rect x="80" y="30" width="40" height="100" rx="3"/>
+            <line x1="100" y1="30" x2="100" y2="130" stroke-dasharray="3 3"/>
+            <circle cx="115" cy="80" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+        <ul class="tier-specs">
+          <li><i data-lucide="users"></i><span><strong>1 person</strong></span></li>
+          <li><i data-lucide="ruler"></i><span><strong>~10 sq ft</strong> (0.96 m²)</span></li>
+          <li><i data-lucide="volume-x"></i><span><strong>28 ± 3 dB</strong></span></li>
+          <li><i data-lucide="wind"></i><span>2 fans · 70 m³/h</span></li>
+          <li><i data-lucide="zap"></i><span>24W · USB + USB-C</span></li>
+          <li><i data-lucide="lightbulb"></i><span>LED strip, dimmable</span></li>
+        </ul>
+        <div class="tier-price">
+          <div class="tier-price-amount" data-cash="$2,997" data-install="$299">$2,997</div>
+          <div class="tier-price-suffix" data-cash="paid once · delivered turnkey" data-install="/mo · 12 mo · $0 down">paid once · delivered turnkey</div>
+        </div>
+        <a href="#order" class="btn btn-secondary">Reserve The Studio</a>
+      </div>
+
+      <!-- THE DUO -->
+      <div class="tier-card">
+        <div class="tier-rank">Better · 1-Person Office</div>
+        <h3>The Duo</h3>
+        <p class="tier-tag">The smart 1-person office. Or take real 2-person calls. Either works.</p>
+        <div class="tier-illus">
+          <svg viewBox="0 0 200 150" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent)">
+            <rect x="60" y="30" width="80" height="100" rx="3"/>
+            <line x1="100" y1="30" x2="100" y2="130" stroke-dasharray="3 3"/>
+            <circle cx="78" cy="80" r="3" fill="currentColor"/>
+            <circle cx="122" cy="80" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <ul class="tier-specs">
+          <li><i data-lucide="users"></i><span><strong>1–2 people</strong></span></li>
+          <li><i data-lucide="ruler"></i><span><strong>~23 sq ft</strong> (2.1 m²)</span></li>
+          <li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li>
+          <li><i data-lucide="wind"></i><span>4 fans · 140 m³/h</span></li>
+          <li><i data-lucide="zap"></i><span>30W · USB + USB-C</span></li>
+          <li><i data-lucide="square-stack"></i><span>Adjustable desk included</span></li>
+        </ul>
+        <div class="tier-price">
+          <div class="tier-price-amount" data-cash="$4,497" data-install="$449">$4,497</div>
+          <div class="tier-price-suffix" data-cash="paid once · delivered turnkey" data-install="/mo · 12 mo · $0 down">paid once · delivered turnkey</div>
+        </div>
+        <a href="#order" class="btn btn-secondary">Reserve The Duo</a>
+      </div>
+
+      <!-- THE QUAD -->
+      <div class="tier-card">
+        <div class="tier-rank">Best · Meeting Room</div>
+        <h3>The Quad</h3>
+        <p class="tier-tag">A real meeting room. Without the build-out. Workshops, sales rooms, pitches.</p>
+        <div class="tier-illus">
+          <svg viewBox="0 0 200 150" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent)">
+            <rect x="50" y="35" width="100" height="90" rx="3"/>
+            <line x1="100" y1="35" x2="100" y2="125" stroke-dasharray="3 3"/>
+            <circle cx="70" cy="65" r="3" fill="currentColor"/>
+            <circle cx="130" cy="65" r="3" fill="currentColor"/>
+            <circle cx="70" cy="100" r="3" fill="currentColor"/>
+            <circle cx="130" cy="100" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <ul class="tier-specs">
+          <li><i data-lucide="users"></i><span><strong>4 people</strong></span></li>
+          <li><i data-lucide="ruler"></i><span><strong>~31 sq ft</strong> (2.9 m²)</span></li>
+          <li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li>
+          <li><i data-lucide="wind"></i><span>8 fans · 280 m³/h</span></li>
+          <li><i data-lucide="zap"></i><span>54W · USB-C + Qi</span></li>
+          <li><i data-lucide="lightbulb"></i><span>Dual LED strips</span></li>
+        </ul>
+        <div class="tier-price">
+          <div class="tier-price-amount" data-cash="$5,497" data-install="$549">$5,497</div>
+          <div class="tier-price-suffix" data-cash="paid once · delivered turnkey" data-install="/mo · 12 mo · $0 down">paid once · delivered turnkey</div>
+        </div>
+        <a href="#order" class="btn btn-secondary">Reserve The Quad</a>
+      </div>
+
+      <!-- THE SUITE -->
+      <div class="tier-card featured">
+        <div class="tier-rank" style="color:var(--accent-hi)">★ Super-Best · Flagship</div>
+        <h3>The Suite</h3>
+        <p class="tier-tag">Replace your $1,500–$2,500/mo executive office. Pays back in under 5 months.</p>
+        <div class="tier-illus">
+          <svg viewBox="0 0 200 150" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent)">
+            <rect x="35" y="25" width="130" height="110" rx="3"/>
+            <line x1="100" y1="25" x2="100" y2="135" stroke-dasharray="3 3"/>
+            <circle cx="60" cy="55" r="3" fill="currentColor"/>
+            <circle cx="100" cy="55" r="3" fill="currentColor"/>
+            <circle cx="140" cy="55" r="3" fill="currentColor"/>
+            <circle cx="60" cy="105" r="3" fill="currentColor"/>
+            <circle cx="100" cy="105" r="3" fill="currentColor"/>
+            <circle cx="140" cy="105" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <ul class="tier-specs">
+          <li><i data-lucide="users"></i><span><strong>1–6 people</strong></span></li>
+          <li><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> (4.5 m²)</span></li>
+          <li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li>
+          <li><i data-lucide="wind"></i><span>16 fans · 560 m³/h</span></li>
+          <li><i data-lucide="zap"></i><span>90W · USB-C + Qi</span></li>
+          <li><i data-lucide="lightbulb"></i><span>Dual LED strips</span></li>
+        </ul>
+        <div class="tier-price">
+          <div class="tier-price-amount" data-cash="$6,997" data-install="$699">$6,997</div>
+          <div class="tier-price-suffix" data-cash="paid once · delivered turnkey" data-install="/mo · 12 mo · $0 down">paid once · delivered turnkey</div>
+        </div>
+        <a href="#order" class="btn btn-primary">Reserve The Suite</a>
+      </div>
+
+    </div>
+
+    <div style="margin-top:48px;text-align:center;">
+      <p style="color:var(--text-muted);max-width:640px;margin:0 auto 16px;font-size:0.95rem">Need <strong style="color:var(--text)">accessibility configuration</strong>? The Accessible Pod is engineered for users with reduced mobility — wide entry, auto-opening door, multi-modal access. <strong style="color:var(--text)">Pricing on request.</strong></p>
+      <a href="#order" class="btn btn-ghost">Talk to us about accessibility <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="section" id="compare" style="background:var(--bg-elev);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">How we compare</div>
+      <h2>The same pod. Half the price.</h2>
+      <p>Office pods aren't new. Premium pods cost premium money. We don't sell premium money. We sell premium product at the price of mid-market — because we ship factory-direct, with no SoHo showroom rent baked in.</p>
+    </div>
+
+    <h3 style="font-family:'Manrope',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:48px;margin-bottom:0">Solo / 1-Person</h3>
+    <div class="compare-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="us">The Studio (MTIP)</th>
+            <th>ROOM One</th>
+            <th>ZenBooth Solo</th>
+            <th>Framery One</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="us">$2,997</td><td>$6,495</td><td>$5,490</td><td>$14,690</td></tr>
+          <tr><td class="us">28 ± 3 dB</td><td>30 dB</td><td>27 dB</td><td>35 dB</td></tr>
+          <tr><td class="us"><span class="check">✓</span> Delivered turnkey</td><td><span class="x">✗</span> Site assembly</td><td><span class="x">✗</span> Site assembly</td><td><span class="x">✗</span> Site assembly</td></tr>
+          <tr><td class="us">90 days lead time</td><td>Varies</td><td>Varies</td><td>8–12 weeks</td></tr>
+          <tr><td class="us">Vs. MTIP — baseline</td><td class="savings">+117% more</td><td class="savings">+83% more</td><td class="savings">+390% more</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:'Manrope',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:48px;margin-bottom:0">Meeting Room / 4–6 Person</h3>
+    <div class="compare-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="us">The Quad / Suite (MTIP)</th>
+            <th>ROOM Meeting</th>
+            <th>ZenBooth Quad</th>
+            <th>Framery 2Q</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="us">$5,497–$6,997</td><td>~$14,000+</td><td>$13,995</td><td>~$25,000+ (quote-only)</td></tr>
+          <tr><td class="us">30 ± 3 dB</td><td>30+ dB</td><td>30 dB</td><td>35 dB</td></tr>
+          <tr><td class="us">Vs. MTIP — baseline</td><td class="savings">+100–154%</td><td class="savings">+100–155%</td><td class="savings">+260%+ more</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="compare-note">Pricing verified May 2026 from public manufacturer pages. Subject to change. We'll match or beat any verified live competitor quote on equivalent configuration.</p>
+
+    <div class="tradeoff-card">
+      <h4>The trade-off, honestly.</h4>
+      <p>Framery's pods do hit higher dB ratings. If the difference between 30 dB and 35 dB matters to your business — say you're in psychiatric care or biotech R&D — buy Framery. For 99% of operators, recording artists, executives, sales floors, and coworking buildouts, <strong>30 dB is the threshold of conversational privacy.</strong> Anything more is overkill — and overpriced.</p>
+    </div>
+
+    <!-- VS TRADITIONAL OFFICE -->
+    <div style="margin-top:80px">
+      <div class="section-header">
+        <div class="eyebrow">Vs. a real office lease</div>
+        <h2>Why is this even close?</h2>
+        <p>A traditional 1-person private office in a Class A building runs $1,500–$2,500/month in most US markets — and far more in Manhattan, SF, or LA.</p>
+      </div>
+
+      <div class="compare-table" style="margin-top:48px">
+        <table>
+          <thead>
+            <tr><th></th><th class="us">The Suite</th><th>Class A 1-Person Office</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Cost</strong></td><td class="us">$6,997 once</td><td>$18,000–$30,000 / year</td></tr>
+            <tr><td><strong>5-year cost</strong></td><td class="us">$6,997</td><td>$90,000–$150,000</td></tr>
+            <tr><td><strong>Lease commitment</strong></td><td class="us">None</td><td>3–5 years standard</td></tr>
+            <tr><td><strong>Personal guarantor</strong></td><td class="us">None</td><td>Often required</td></tr>
+            <tr><td><strong>Build-out delay</strong></td><td class="us">90 days</td><td>6–9 months</td></tr>
+            <tr><td><strong>Permits / contractors</strong></td><td class="us">None</td><td>Required</td></tr>
+            <tr><td><strong>Move it later</strong></td><td class="us"><span class="check">✓</span> Yes (silent casters)</td><td><span class="x">✗</span> Never</td></tr>
+            <tr><td><strong>Sell it later</strong></td><td class="us"><span class="check">✓</span> Yes</td><td><span class="x">✗</span> Never</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tradeoff-card">
+        <h4>The bottom line.</h4>
+        <p>The Suite costs <strong>less than 4 months</strong> of a typical executive lease. Then it's yours forever. It moves with you. It scales with you. It outlasts the building you put it in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Inside the pod</div>
+      <h2>Engineered down to the millimeter.</h2>
+      <p>Seven systems work together to make every MTIP Collective Pod feel like a much bigger, much quieter room than its footprint suggests.</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="lightbulb"></i></div>
+        <h4>LED Lighting</h4>
+        <p>4000K natural light. Dimmable. Anti-glare. Flicker-free. Ra92 color accuracy — what your eyes actually need for a 10-hour day.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="sliders-horizontal"></i></div>
+        <h4>Smart Control Panel</h4>
+        <p>Light, fan, and outlets at your fingertips. Universal socket, USB-A, USB-C — works with every plug type on Earth.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="audio-waveform"></i></div>
+        <h4>Multi-Layer Sound Insulation</h4>
+        <p>Steel + acoustic felt + foam + 12mm PET panel. <strong style="color:var(--text)">ISO 23351-1 certified.</strong> The wall is doing the work.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="shield-check"></i></div>
+        <h4>Safety Acoustic Glass</h4>
+        <p>6mm shatter-resistant tempered glass. Optional 10mm rear panel for added acoustic depth and a more substantial feel.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="key-round"></i></div>
+        <h4>Eco Wood Handles</h4>
+        <p>Solid wood with magnetic close. Smart lock or electronic lock optional. Touches you actually want to touch.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="package-2"></i></div>
+        <h4>Premium Furniture Mounts</h4>
+        <p>Pre-engineered mounting points for desk, bench, lounge, and accessory configurations. Configure it once. Reconfigure forever.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="radar"></i></div>
+        <h4>Motion Sensor</h4>
+        <p>Lights and fans auto-on when you enter, auto-off when you leave. Energy-aware by design — and one less thing to think about.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:80px;margin-bottom:24px">The materials, edge to edge.</h3>
+    <div class="materials-strip">
+      <div class="material-item"><i data-lucide="frame"></i><span><strong style="color:var(--text)">Frame</strong><br>≥1.5mm aluminum + cold-rolled steel tubes</span></div>
+      <div class="material-item"><i data-lucide="square-stack"></i><span><strong style="color:var(--text)">Walls</strong><br>1.0mm powder-coated steel panels</span></div>
+      <div class="material-item"><i data-lucide="volume-1"></i><span><strong style="color:var(--text)">Acoustic Core</strong><br>Felt + cotton + 12mm PET interior</span></div>
+      <div class="material-item"><i data-lucide="square"></i><span><strong style="color:var(--text)">Glass</strong><br>6mm tempered front / 10mm tempered rear (opt.)</span></div>
+      <div class="material-item"><i data-lucide="layers"></i><span><strong style="color:var(--text)">Floor</strong><br>8mm anti-static carpet, mold-proof</span></div>
+      <div class="material-item"><i data-lucide="puzzle"></i><span><strong style="color:var(--text)">Modular</strong><br>6 parts · 40-min Studio · 90-min Suite</span></div>
+    </div>
+
+    <h3 style="margin-top:80px;margin-bottom:0">Three edge styles, three moods.</h3>
+    <div class="edge-grid">
+      <div class="edge-card">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="10" width="60" height="60"/></svg>
+        <h4>Straight Edge</h4>
+        <p>Clean, minimal, maximizes floor plan. Default for offices and showrooms.</p>
+      </div>
+      <div class="edge-card">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2"><polygon points="40,10 70,40 40,70 10,40"/></svg>
+        <h4>Diamond Edge</h4>
+        <p>Bold, sculptural, fits tight corners. Statement piece for studios and lobbies.</p>
+      </div>
+      <div class="edge-card">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="10" width="60" height="60" rx="14"/></svg>
+        <h4>Curved Edge</h4>
+        <p>Soft, warm, family-friendly. Reduces sharpness in homes and clinics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRY BEFORE BUY -->
+<section class="section" id="showroom" style="background:var(--bg-elev);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container" style="text-align:center">
+    <div class="eyebrow">Try before you buy</div>
+    <h2>Sit in one. Then decide.</h2>
+    <p style="color:var(--text-muted);font-size:1.15rem;max-width:640px;margin:24px auto 40px">Pictures don't tell you what 30 dB feels like. Visit MTIP Collective in Florida and step inside. Take a real call. Listen to the difference. Then sign.</p>
+    <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:0.95rem"><i data-lucide="check" style="width:18px;height:18px;color:var(--accent)"></i> All four sizes available</div>
+      <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:0.95rem"><i data-lucide="check" style="width:18px;height:18px;color:var(--accent)"></i> See full coworking integration</div>
+      <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:0.95rem"><i data-lucide="check" style="width:18px;height:18px;color:var(--accent)"></i> Order on-site, deliver in 90 days</div>
+    </div>
+    <a href="#order" class="btn btn-primary btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section class="section" id="order">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Order</div>
+      <h2>Pick your pod. We handle the rest.</h2>
+    </div>
+
+    <div class="process-grid">
+      <div class="process-step"><span class="num">01</span><h4>Configure</h4><p>Pick size, edge, finish, optional add-ons. Custom colors and finishes available.</p></div>
+      <div class="process-step"><span class="num">02</span><h4>Deposit</h4><p>50% to lock production. Or $0 down with our 12-month installment plan.</p></div>
+      <div class="process-step"><span class="num">03</span><h4>Build &amp; Ship</h4><p>90 days from deposit to your door. Fully assembled. White-glove freight.</p></div>
+      <div class="process-step"><span class="num">04</span><h4>Plug In</h4><p>One outlet. That's it. Sit down and start working.</p></div>
+    </div>
+
+    <div class="install-callout">
+      <div class="icon-large"><i data-lucide="credit-card"></i></div>
+      <div>
+        <h4>No money down. 12 monthly payments.</h4>
+        <p>Want it now without the upfront hit? Choose our <strong>12-month installment plan</strong>. <strong>$0 down.</strong> Equal monthly payments. 20% financing fee built in. No credit gymnastics — operator-to-operator.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:64px;margin-bottom:0">Pricing snapshot.</h3>
+    <div class="order-table">
+      <table>
+        <thead>
+          <tr><th>Pod</th><th>Capacity</th><th>Footprint</th><th>Pay Once</th><th>$0 Down · 12-mo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>The Studio</strong></td><td>1</td><td>~10 sq ft</td><td class="price">$2,997</td><td class="price">$299/mo</td></tr>
+          <tr><td><strong>The Duo</strong></td><td>2</td><td>~23 sq ft</td><td class="price">$4,497</td><td class="price">$449/mo</td></tr>
+          <tr><td><strong>The Quad</strong></td><td>4</td><td>~31 sq ft</td><td class="price">$5,497</td><td class="price">$549/mo</td></tr>
+          <tr class="featured"><td><strong style="color:var(--accent)">The Suite ★</strong></td><td>1–6</td><td>~49 sq ft</td><td class="price">$6,997</td><td class="price">$699/mo</td></tr>
+          <tr><td>Accessible Pod</td><td>2 / 4</td><td>varies</td><td colspan="2" style="color:var(--text-muted)">On request</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="compare-note">Prices are landed delivery to continental US. International, custom finishes, and bulk orders quoted separately. Installment plan adds 20% to total price, divided into 12 equal payments, no down payment required.</p>
+
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap">
+      <a href="mailto:hello@mtip.ai?subject=MTIP%20Collective%20Pod%20Reservation" class="btn btn-primary btn-lg">Reserve Your Pod <i data-lucide="arrow-right"></i></a>
+      <a href="mailto:hello@mtip.ai?subject=MTIP%20Collective%20Pods%20Inquiry" class="btn btn-secondary btn-lg">Talk to Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="section" style="background:var(--bg-elev);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Brochure &amp; resources</div>
+      <h2>Everything you need to decide.</h2>
+    </div>
+
+    <div class="resource-grid">
+      <a href="assets/brochure/mtip-collective-pods-brochure.pdf" class="resource-card" download>
+        <div class="icon-box"><i data-lucide="file-text"></i></div>
+        <div class="text"><strong>MTIP Collective Pods Brochure</strong><span>Full PDF · all four pods · specs &amp; finishes</span></div>
+      </a>
+      <a href="assets/brochure/mtip-collective-pods-brochure.pdf" class="resource-card" download>
+        <div class="icon-box"><i data-lucide="ruler"></i></div>
+        <div class="text"><strong>Spec Sheets — All Models</strong><span>Dimensions, materials, electrical, certifications</span></div>
+      </a>
+      <a href="#showroom" class="resource-card">
+        <div class="icon-box"><i data-lucide="map-pin"></i></div>
+        <div class="text"><strong>Visit the Florida Showroom</strong><span>See all four sizes in person · book by appointment</span></div>
+      </a>
+      <a href="#suite" class="resource-card">
+        <div class="icon-box"><i data-lucide="play-circle"></i></div>
+        <div class="text"><strong>Walk-Through Video</strong><span>Inside an MTIP Collective Pod · 60 seconds</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container" style="max-width:880px">
+    <div class="section-header">
+      <div class="eyebrow">Questions answered</div>
+      <h2>The fine print, made simple.</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-question">How long is delivery? <i data-lucide="plus"></i></button><div class="faq-answer"><p>90 days from deposit to your door. Pods ship fully assembled with white-glove freight.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do I need permits? <i data-lucide="plus"></i></button><div class="faq-answer"><p>No. MTIP Collective Pods are commercial furniture, not construction. They sit on your existing floor. (Consult your local authority for unique cases.)</p></div></div>
+      <div class="faq-item"><button class="faq-question">Will it fit through a doorway? <i data-lucide="plus"></i></button><div class="faq-answer"><p>The pods ship in 6 modular components and assemble on-site. Single pod: 40 minutes. The Suite: 90 minutes. Standard freight elevators and 36-inch doors clear the panels.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What's the warranty? <i data-lucide="plus"></i></button><div class="faq-answer"><p><strong>1-year manufacturer warranty</strong> on all parts. Free replacement of damaged parts within the warranty period.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Custom colors and finishes? <i data-lucide="plus"></i></button><div class="faq-answer"><p>Yes. Custom paint, edge styles, glass tints, interior finishes. <strong>Minimum order quantity: 1.</strong></p></div></div>
+      <div class="faq-item"><button class="faq-question">Can it be moved later? <i data-lucide="plus"></i></button><div class="faq-answer"><p>Yes — add silent casters at order time and the pod becomes mobile. Roll it across the floor or out to a new building.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Does it need ventilation hookup? <i data-lucide="plus"></i></button><div class="faq-answer"><p>No. Each pod has a self-contained fresh-air system. Top-in, top-out airflow with a full air change every 1.5–2 minutes depending on size.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What about power? <i data-lucide="plus"></i></button><div class="faq-answer"><p>One 110–220V outlet. Total draw ranges from 24W (Studio) to 90W (Suite). All sockets, USB, and USB-C are built into the pod's control panel.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you offer financing? <i data-lucide="plus"></i></button><div class="faq-answer"><p>Yes. <strong>12-month installment plan, $0 down, 20% financing fee divided into 12 equal payments.</strong> Bigger orders (2+ pods): contact sales for extended terms.</p></div></div>
+      <div class="faq-item"><button class="faq-question">How does The Suite work as a 1-person office? <i data-lucide="plus"></i></button><div class="faq-answer"><p>Most of our buyers use The Suite as their executive workspace. <strong>49 square feet inside is significantly more than a typical commercial private office</strong>, and you get full sound isolation, your own ventilation, and lighting tuned to your work. When you need to host 4–6 people, the same room becomes a meeting room. <strong>One pod. Two jobs.</strong></p></div></div>
+      <div class="faq-item"><button class="faq-question">Bulk orders for offices, coworking, or distributors? <i data-lucide="plus"></i></button><div class="faq-answer"><p>That's exactly what we built this for. <strong>Contact us for bulk and distributor pricing.</strong></p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container">
+    <h2>Build your office in 90 days.<br>Not 9 months.</h2>
+    <p>You don't need a contractor. You don't need a permit. You don't need a 5-year lease. You need a pod.</p>
+    <div class="final-cta-buttons">
+      <a href="#order" class="btn btn-primary btn-lg">Reserve The Suite — $6,997 <i data-lucide="arrow-right"></i></a>
+      <a href="#lineup" class="btn btn-secondary btn-lg">See All Four</a>
+      <a href="#showroom" class="btn btn-ghost btn-lg">Visit Our Showroom</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">MTIP <span>Collective</span></div>
+    <div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div>
+    <div class="footer-links">
+      <a href="https://pods.mtip.ai/">Home</a>
+      <a href="#suite">The Suite</a>
+      <a href="#lineup">Lineup</a>
+      <a href="#order">Order</a>
+      <a href="mailto:hello@mtip.ai">Contact</a>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-credit">
+      © 2026 MTIP Collective. All rights reserved. ·
+      Powered by <a href="https://ai-loren.com">LOREN AI</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// LUCIDE ICONS
+lucide.createIcons();
+
+// VIDEO TOGGLE
+const video = document.getElementById('heroVideo');
+const videoToggle = document.getElementById('videoToggle');
+const videoIcon = document.getElementById('videoIcon');
+videoToggle?.addEventListener('click', () => {
+  video.muted = !video.muted;
+  videoIcon.setAttribute('data-lucide', video.muted ? 'volume-x' : 'volume-2');
+  lucide.createIcons();
+});
+
+// TIER PRICE TOGGLE
+const tierToggleBtns = document.querySelectorAll('#tierToggle button');
+tierToggleBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tierToggleBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const mode = btn.dataset.mode;
+    document.querySelectorAll('.tier-price-amount').forEach(el => {
+      el.textContent = el.dataset[mode];
+    });
+    document.querySelectorAll('.tier-price-suffix').forEach(el => {
+      el.textContent = el.dataset[mode];
+    });
+  });
+});
+
+// ROI CALCULATOR
+const roiInput = document.getElementById('roiInput');
+const roiAnnual = document.getElementById('roiAnnual');
+const roiPayback = document.getElementById('roiPayback');
+const roiSavings = document.getElementById('roiSavings');
+const SUITE_PRICE = 6997;
+
+function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+function calcROI() {
+  const m = Math.max(0, parseFloat(roiInput.value) || 0);
+  const annual = m * 12;
+  const payback = m > 0 ? SUITE_PRICE / m : 0;
+  const fiveYr = (annual * 5) - SUITE_PRICE;
+  roiAnnual.textContent = fmt(annual);
+  roiPayback.textContent = m > 0 ? payback.toFixed(1) + ' mo' : '—';
+  roiSavings.textContent = fmt(Math.max(0, fiveYr));
+}
+roiInput?.addEventListener('input', calcROI);
+calcROI();
+
+// FAQ ACCORDION
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.parentElement.classList.toggle('open');
+  });
+});
+
+// NAV CURRENT
+const navLinks = document.querySelectorAll('.nav-tabs a');
+const sections = ['#suite','#lineup','#compare','#features','#order','#faq']
+  .map(id => document.querySelector(id))
+  .filter(Boolean);
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = '#' + s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('current', a.getAttribute('href') === current);
+  });
+});
+</script>
+
 </body>
 </html>
