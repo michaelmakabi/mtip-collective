@@ -18,7 +18,114 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js">
+
+// CAROUSEL
+const cTrack = document.getElementById('carouselTrack');
+const cPrev = document.getElementById('carouselPrev');
+const cNext = document.getElementById('carouselNext');
+const cCounter = document.getElementById('carouselCounter');
+const cSlides = cTrack ? cTrack.querySelectorAll('.carousel-slide') : [];
+let cIdx = 0;
+function cUpdate(){if(!cCounter)return;cCounter.textContent=(cIdx+1)+' / '+cSlides.length;}
+function cGo(i){if(!cSlides.length)return;cIdx=Math.max(0,Math.min(cSlides.length-1,i));cSlides[cIdx].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});cUpdate();}
+cPrev&&cPrev.addEventListener('click',()=>cGo(cIdx-1));
+cNext&&cNext.addEventListener('click',()=>cGo(cIdx+1));
+if(cTrack){let cTimer;cTrack.addEventListener('scroll',()=>{clearTimeout(cTimer);cTimer=setTimeout(()=>{const center=cTrack.scrollLeft+cTrack.clientWidth/2;let best=0,bestD=Infinity;cSlides.forEach((s,i)=>{const d=Math.abs(s.offsetLeft+s.clientWidth/2-center);if(d<bestD){bestD=d;best=i;}});cIdx=best;cUpdate();},120);});}
+cUpdate();
+
+// NOISE DEMO — Web Audio API
+let nCtx,nNoise,nGain,nFilter,nLfo,nLfoGain,nOscArr=[],nState='off';
+const nDb=document.getElementById('noiseDb');
+const nFill=document.getElementById('noiseFill');
+const nStatus=document.getElementById('noiseStatus');
+const nLabel=document.getElementById('noiseStateLabel');
+const nDesc=document.getElementById('noiseStateDesc');
+const nBtnO=document.getElementById('noiseBtnOutside');
+const nBtnI=document.getElementById('noiseBtnInside');
+const nBtnS=document.getElementById('noiseBtnStop');
+function nMakeNoise(ctx){
+  const buffer=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);
+  const data=buffer.getChannelData(0);
+  let lastOut=0;
+  // pink noise
+  for(let i=0;i<data.length;i++){const white=Math.random()*2-1;data[i]=(lastOut+(0.02*white))/1.02;lastOut=data[i];data[i]*=3.5;}
+  const src=ctx.createBufferSource();src.buffer=buffer;src.loop=true;return src;
+}
+function nStart(mode){
+  if(!nCtx){nCtx=new(window.AudioContext||window.webkitAudioContext)();}
+  if(nCtx.state==='suspended')nCtx.resume();
+  nStop(true);
+  nNoise=nMakeNoise(nCtx);
+  nFilter=nCtx.createBiquadFilter();
+  nFilter.type='lowpass';
+  nGain=nCtx.createGain();
+  nNoise.connect(nFilter);nFilter.connect(nGain);nGain.connect(nCtx.destination);
+  // Subtle "voices" added with detuned oscillators sweeping
+  const freqs=[180,240,300,420];
+  freqs.forEach(f=>{
+    const o=nCtx.createOscillator();const og=nCtx.createGain();
+    o.type='sawtooth';o.frequency.value=f;og.gain.value=0.012;
+    const lf=nCtx.createOscillator();const lfg=nCtx.createGain();
+    lf.frequency.value=0.4+Math.random()*0.6;lfg.gain.value=8;
+    lf.connect(lfg);lfg.connect(o.frequency);
+    o.connect(og);og.connect(nFilter);
+    o.start();lf.start();
+    nOscArr.push({o:o,lf:lf});
+  });
+  nNoise.start();
+  if(mode==='outside'){
+    nFilter.frequency.value=8000;
+    nGain.gain.value=0.30;
+    nState='outside';
+    setMeter(68,'Open office — too loud to focus.','outside');
+    nBtnO.classList.add('active');nBtnI.classList.remove('active');
+    nLabel.textContent='Open office — outside the pod';nDesc.textContent='Phone calls. Keyboard typing. Conversations.';
+  }else{
+    // smooth transition outside → inside
+    nFilter.frequency.value=8000;nGain.gain.value=0.30;
+    const t=nCtx.currentTime;
+    nFilter.frequency.exponentialRampToValueAtTime(420,t+1.2);
+    nGain.gain.exponentialRampToValueAtTime(0.04,t+1.2);
+    nState='inside';
+    setMeter(38,'Inside the pod — conversation-private.','inside');
+    nBtnI.classList.add('active');nBtnO.classList.remove('active');
+    nLabel.textContent='Inside the MTIP Pod';nDesc.textContent='30 dB acoustic walls. Filtered. Quiet. Yours.';
+  }
+}
+function setMeter(db,msg,mode){
+  const start=parseInt(nDb.textContent)||db;
+  let frame=0;
+  const total=24;
+  const stepDb=(db-start)/total;
+  const interval=setInterval(()=>{
+    frame++;
+    const cur=Math.round(start+stepDb*frame);
+    nDb.textContent=cur;
+    nFill.style.width=Math.max(5,Math.min(100,(cur-20)*1.5))+'%';
+    if(frame>=total)clearInterval(interval);
+  },24);
+  nStatus.textContent=msg;
+  if(mode==='inside'){nDb.classList.add('quiet');nStatus.classList.add('quiet');}
+  else{nDb.classList.remove('quiet');nStatus.classList.remove('quiet');}
+}
+function nStop(silent){
+  if(nNoise){try{nNoise.stop();}catch(e){}nNoise.disconnect();}
+  nOscArr.forEach(({o,lf})=>{try{o.stop();lf.stop();}catch(e){}});
+  nOscArr=[];
+  if(!silent){
+    nState='off';nBtnO.classList.remove('active');nBtnI.classList.remove('active');
+    setMeter(0,'Demo paused.','outside');
+    nDb.classList.remove('quiet');nStatus.classList.remove('quiet');
+  }
+}
+nBtnO&&nBtnO.addEventListener('click',()=>nStart('outside'));
+nBtnI&&nBtnI.addEventListener('click',()=>{
+  if(nState==='off')nStart('outside');
+  setTimeout(()=>nStart('inside'),200);
+});
+nBtnS&&nBtnS.addEventListener('click',()=>nStop());
+</script>
 <style>
 :root{--white:#FFFFFF;--bg-soft:#FAFAFA;--bg-section:#F5F5F7;--text:#1A1D24;--text-mid:#4B4F58;--text-light:#9CA3AF;--border:#E5E7EB;--border-strong:#D1D5DB;--black:#0A0B0D;--black-soft:#16181C;--red:#E53B3B;--red-dark:#B82E2E;--red-light:#F56363;--red-glow:rgba(229,59,59,0.12);--silver:#DEE1E6;--silver-2:#C9CDD3;--grad-cta:linear-gradient(135deg,#E53B3B 0%,#B82E2E 100%);--grad-cta-hover:linear-gradient(135deg,#F56363 0%,#E53B3B 100%);--shadow-sm:0 1px 3px rgba(0,0,0,0.06);--shadow-md:0 4px 16px rgba(0,0,0,0.08);--shadow-lg:0 16px 48px rgba(0,0,0,0.12);--shadow-red:0 8px 24px rgba(229,59,59,0.25)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -298,6 +405,63 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .footer-divider{height:1px;background:rgba(255,255,255,0.08);max-width:600px;margin:0 auto 28px}
 .footer-credit{font-size:0.82rem;color:rgba(255,255,255,0.4)}
 .footer-credit a{color:var(--red-light);font-weight:500}
+
+.carousel-section{padding:140px 0;background:var(--white);overflow:hidden}
+@media(max-width:768px){.carousel-section{padding:80px 0}}
+.carousel-wrap{position:relative;margin-top:48px}
+.carousel-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:8px 32px 32px;-webkit-overflow-scrolling:touch}
+.carousel-track::-webkit-scrollbar{height:6px}
+.carousel-track::-webkit-scrollbar-track{background:var(--bg-section);border-radius:3px}
+.carousel-track::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px}
+.carousel-slide{flex:0 0 auto;width:560px;aspect-ratio:16/11;border-radius:20px;overflow:hidden;position:relative;scroll-snap-align:center;cursor:pointer;background:var(--bg-section);box-shadow:var(--shadow-sm)}
+@media(max-width:768px){.carousel-slide{width:88vw}}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s}
+.carousel-slide:hover img{transform:scale(1.04)}
+.carousel-caption{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 100%);color:white}
+.carousel-caption strong{display:block;font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.carousel-caption span{font-size:0.85rem;color:rgba(255,255,255,0.8)}
+.carousel-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:32px}
+.carousel-nav button{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--border-strong);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;color:var(--text)}
+.carousel-nav button:hover{border-color:var(--red);color:var(--red);transform:scale(1.05)}
+.carousel-nav i{width:20px;height:20px}
+.carousel-counter{font-weight:700;color:var(--text-mid);font-feature-settings:'tnum';min-width:60px;text-align:center}
+
+.noise-demo{padding:140px 0;background:linear-gradient(135deg,#1A1D24 0%,#0A0B0D 100%);color:white;position:relative;overflow:hidden}
+@media(max-width:768px){.noise-demo{padding:80px 0}}
+.noise-demo::before{content:'';position:absolute;top:0;right:-20%;width:60%;height:100%;background:radial-gradient(ellipse at center,rgba(229,59,59,0.18) 0%,transparent 70%);pointer-events:none}
+.noise-demo h2{color:white;margin-bottom:24px}
+.noise-demo p{color:rgba(255,255,255,0.7)}
+.noise-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:64px}
+@media(max-width:1024px){.noise-grid{grid-template-columns:1fr;gap:40px}}
+.noise-controls{display:flex;flex-direction:column;gap:24px}
+.noise-state{display:flex;align-items:center;gap:16px;padding:24px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px}
+.noise-state-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(229,59,59,0.15)}
+.noise-state-icon i{width:26px;height:26px;color:var(--red-light)}
+.noise-state-text strong{display:block;color:white;font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.noise-state-text span{color:rgba(255,255,255,0.6);font-size:0.9rem}
+.noise-button-group{display:flex;flex-direction:column;gap:12px}
+.noise-btn{padding:20px 28px;background:transparent;border:2px solid rgba(255,255,255,0.15);border-radius:12px;color:white;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:12px;text-align:left}
+.noise-btn:hover{border-color:var(--red);background:rgba(229,59,59,0.08)}
+.noise-btn.active{border-color:var(--red);background:var(--red);box-shadow:var(--shadow-red)}
+.noise-btn i{width:22px;height:22px}
+.noise-meter-wrap{position:relative;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:48px 32px;text-align:center}
+.noise-meter-label{font-size:0.78rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:24px}
+.noise-meter-display{font-size:clamp(4rem,12vw,8rem);font-weight:900;color:var(--red);letter-spacing:-0.05em;line-height:1;font-feature-settings:'tnum';margin-bottom:8px;transition:color 0.5s,transform 0.4s}
+.noise-meter-display.quiet{color:#22C55E}
+.noise-meter-unit{font-size:1.5rem;font-weight:600;color:rgba(255,255,255,0.5);margin-bottom:32px}
+.noise-meter-bar{width:100%;height:12px;background:rgba(255,255,255,0.08);border-radius:6px;overflow:hidden;margin-bottom:12px}
+.noise-meter-fill{height:100%;background:linear-gradient(to right,#22C55E 0%,#FFA500 50%,var(--red) 100%);border-radius:6px;transition:width 0.5s ease;width:75%}
+.noise-meter-scale{display:flex;justify-content:space-between;font-size:0.72rem;color:rgba(255,255,255,0.4);font-weight:600}
+.noise-meter-status{margin-top:24px;padding:14px 20px;background:rgba(229,59,59,0.1);border:1px solid rgba(229,59,59,0.3);border-radius:10px;color:var(--red-light);font-size:0.95rem;font-weight:600}
+.noise-meter-status.quiet{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.3);color:#4ADE80}
+
+.cta-block{background:linear-gradient(135deg,#1A1D24 0%,#0A0B0D 100%);color:white;border-radius:24px;padding:48px;margin:80px auto 0;max-width:1100px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.cta-block::before{content:'';position:absolute;top:0;right:-20%;width:60%;height:100%;background:radial-gradient(ellipse at center,rgba(229,59,59,0.2) 0%,transparent 70%);pointer-events:none}
+.cta-block>*{position:relative;z-index:1}
+.cta-block h3{color:white;font-size:1.85rem;margin-bottom:8px}
+.cta-block p{color:rgba(255,255,255,0.7)}
+.cta-block .actions{display:flex;flex-direction:column;gap:10px}
+@media(max-width:768px){.cta-block{grid-template-columns:1fr;padding:36px;text-align:center}.cta-block .actions{align-items:center}}
 </style>
 </head>
 <body>
@@ -332,7 +496,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="tier-card featured"><div class="tier-img"><img src="assets/images/pod-suite.jpg" alt="The Suite"></div><div class="tier-body"><div class="tier-rank">Super-Best · Replace Your Office</div><h3>The Suite</h3><p class="tier-tagline">Replace your $1,500–$2,500/mo executive office. Pays back in under 5 months.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–6 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> (4.5 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>90W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$6,997" data-install="$699">$6,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-red">Reserve The Suite</a></div></div>
 </div>
 
-<div style="text-align:center;margin-top:48px"><p style="color:var(--text-mid)">Need <strong style="color:var(--text)">accessibility configuration</strong>? The Accessible Pod is engineered for users with reduced mobility — wide entry, auto-opening door, multi-modal access. <strong style="color:var(--text)">Pricing on request.</strong></p><a href="mailto:hello@mtip.ai?subject=Accessible%20Pod%20Inquiry" class="btn btn-ghost" style="margin-top:12px">Talk to us about accessibility <i data-lucide="arrow-right"></i></a></div>
+<div style="text-align:center;margin-top:48px"><p style="color:var(--text-mid)">Need <strong style="color:var(--text)">accessibility configuration</strong>? The Accessible Pod is engineered for users with reduced mobility — wide entry, auto-opening door, multi-modal access. <strong style="color:var(--text)">Pricing on request.</strong></p><a href="mailto:mtip@hey.com?subject=Accessible%20Pod%20Inquiry" class="btn btn-ghost" style="margin-top:12px">Talk to us about accessibility <i data-lucide="arrow-right"></i></a></div>
 </div></section>
 
 <section class="section" id="compare"><div class="container">
@@ -405,7 +569,60 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 </div></section>
 
-<section class="fullbleed" id="showroom"><img src="assets/images/showroom-2.jpg" alt="MTIP Collective Pods in a real office"><div class="fullbleed-overlay"><div class="fullbleed-content"><div><div class="eyebrow" style="color:var(--red-light)">Try before you buy</div><h2>Sit in one.<br>Then decide.</h2><p>Pictures don't tell you what 30 dB feels like. Visit MTIP Collective in Florida and step inside. Take a real call. Listen to the difference. Then sign.</p><a href="mailto:hello@mtip.ai?subject=Showroom%20Visit" class="btn btn-red btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a></div></div></div></section>
+
+<section class="noise-demo" id="hear-it"><div class="container">
+<div class="section-header center"><div class="eyebrow" style="color:var(--red-light)">Hear it for yourself</div><h2>30 dB.<br>That's the difference.</h2><p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">A normal open office sits between 60 and 75 dB — calls, keyboards, meetings, footsteps. Inside an MTIP Collective Pod, that drops to roughly 40 dB. Hit play. Then step inside.</p></div>
+<div class="noise-grid">
+<div class="noise-controls">
+<div class="noise-state"><div class="noise-state-icon"><i data-lucide="ear" id="noiseStateIcon"></i></div><div class="noise-state-text"><strong id="noiseStateLabel">Open office — outside the pod</strong><span id="noiseStateDesc">Phone calls. Keyboard typing. Conversations.</span></div></div>
+<div class="noise-button-group">
+<button class="noise-btn active" id="noiseBtnOutside"><i data-lucide="play"></i><div><strong>Outside the pod</strong><div style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:2px">Hear what your office sounds like right now</div></div></button>
+<button class="noise-btn" id="noiseBtnInside"><i data-lucide="volume-1"></i><div><strong>Step inside the pod</strong><div style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:2px">Same sound, with our 30 dB acoustic walls</div></div></button>
+<button class="noise-btn" id="noiseBtnStop" style="opacity:0.6"><i data-lucide="square"></i><div><strong>Stop demo</strong></div></button>
+</div>
+<p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-top:8px"><i data-lucide="info" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> Browser audio simulation. Not a measurement of an actual pod — but the dB drop is what real ISO-23351-1 testing reports.</p>
+</div>
+<div class="noise-meter-wrap">
+<div class="noise-meter-label">Sound level</div>
+<div class="noise-meter-display" id="noiseDb">68</div>
+<div class="noise-meter-unit">dB</div>
+<div class="noise-meter-bar"><div class="noise-meter-fill" id="noiseFill"></div></div>
+<div class="noise-meter-scale"><span>30 dB · whisper</span><span>60 dB · conversation</span><span>90 dB · loud</span></div>
+<div class="noise-meter-status" id="noiseStatus">Open office — too loud to focus.</div>
+</div>
+</div>
+</div></section>
+
+
+<section class="carousel-section" id="gallery"><div class="container">
+<div class="section-header center"><div class="eyebrow">In every room</div><h2>One pod.<br>Every space.</h2><p class="lead" style="margin-left:auto;margin-right:auto">From private offices to airport terminals to coworking floors to home studios — see MTIP Collective Pods in the wild.</p></div>
+</div>
+<div class="carousel-wrap">
+<div class="carousel-track" id="carouselTrack">
+<div class="carousel-slide"><img src="assets/images/carousel-09-pod-in-office.jpg" alt="Pod in office"><div class="carousel-caption"><strong>Open office, private call</strong><span>Drop one between desks · 28 dB sound floor</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-10-pod-coworking.jpg" alt="Pod in coworking"><div class="carousel-caption"><strong>Coworking floor</strong><span>Members get private space without a private lease</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-11-pod-lounge.jpg" alt="Pod in lounge"><div class="carousel-caption"><strong>Lobby and lounge</strong><span>Hospitality-grade aesthetic. Hotel + airport-ready.</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-12-pod-industrial.jpg" alt="Pod in industrial"><div class="carousel-caption"><strong>Industrial / WeWork-style</strong><span>Modern build-outs · slot in next to exposed brick</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-15-pod-lobby.jpg" alt="Pod in lobby"><div class="carousel-caption"><strong>Corporate lobby</strong><span>Quiet meetings without booking a conference room</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-16-pod-meeting.jpg" alt="Meeting pod"><div class="carousel-caption"><strong>The Quad as drop-in meeting room</strong><span>4-person session · zero build-out · zero permits</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-13-pod-walking-by.jpg" alt="Pod airport"><div class="carousel-caption"><strong>Airport terminal</strong><span>The call before the gate · 90 seconds of quiet</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-14-pod-multi.jpg" alt="Multi pods"><div class="carousel-caption"><strong>Multiple pods on a floor</strong><span>Bulk pricing for 2+ pod orders</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-17-pod-working.jpg" alt="Pod working"><div class="carousel-caption"><strong>Inside The Suite, working</strong><span>Real desk, real chair, real focus.</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-18-pod-accessible-context.jpg" alt="Accessible pod"><div class="carousel-caption"><strong>Accessible Pod</strong><span>Wide entry · auto-open door · multi-modal access</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-01-studio-front.jpg" alt="Studio front"><div class="carousel-caption"><strong>The Studio · Solo</strong><span>~10 sq ft · for recording, AI command, focus</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-02-duo-side.jpg" alt="Duo side"><div class="carousel-caption"><strong>The Duo · 1–2 person</strong><span>~23 sq ft · the smart 1-person office</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-03-quad-with-people.jpg" alt="Quad with people"><div class="carousel-caption"><strong>The Quad · 4-person</strong><span>~31 sq ft · drop-in meeting room</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-04-suite-interior.jpg" alt="Suite interior"><div class="carousel-caption"><strong>The Suite · 1–6 person</strong><span>~49 sq ft · replace your $1,500–$2,500/mo office</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-05-quad-alt-angle.jpg" alt="Quad alt"><div class="carousel-caption"><strong>The Quad — alternate angle</strong><span>Sliding door · 30 dB ISO-certified</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-06-duo-detail.jpg" alt="Duo detail"><div class="carousel-caption"><strong>The Duo · interior detail</strong><span>Acoustic walls · adjustable desk · LED lighting</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-07-quad-side.jpg" alt="Quad side"><div class="carousel-caption"><strong>The Quad · side profile</strong><span>Modular construction · 90-min on-site assembly</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-08-accessible-detail.jpg" alt="Accessible detail"><div class="carousel-caption"><strong>Accessible Pod · interior</strong><span>Foldable desktop · barrier-free entry</span></div></div>
+</div>
+<div class="carousel-nav"><button id="carouselPrev" aria-label="Previous"><i data-lucide="arrow-left"></i></button><div class="carousel-counter" id="carouselCounter">1 / 18</div><button id="carouselNext" aria-label="Next"><i data-lucide="arrow-right"></i></button></div>
+</div>
+</section>
+
+<section class="fullbleed" id="showroom"><img src="assets/images/showroom-2.jpg" alt="MTIP Collective Pods in a real office"><div class="fullbleed-overlay"><div class="fullbleed-content"><div><div class="eyebrow" style="color:var(--red-light)">Try before you buy</div><h2>Sit in one.<br>Then decide.</h2><p>Pictures don't tell you what 30 dB feels like. Visit MTIP Collective in Florida and step inside. Take a real call. Listen to the difference. Then sign.</p><a href="mailto:mtip@hey.com?subject=Showroom%20Visit" class="btn btn-red btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a></div></div></div></section>
 
 <section class="section"><div class="container">
 <div class="section-header center"><div class="eyebrow">In the wild</div><h2>Drop one anywhere.<br>It works.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Coworking floors. Hotel lobbies. Airport terminals. Libraries. Warehouses. Home offices. The pod doesn't care where it lands.</p></div>
@@ -441,8 +658,20 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="order-table"><div class="order-table-wrap"><table><thead><tr><th>Pod</th><th>Capacity</th><th>Footprint</th><th>Pay Once</th><th>$0 Down · 12-mo</th></tr></thead><tbody><tr><td class="name"><strong>The Studio</strong></td><td>1</td><td>~10 sq ft</td><td class="price">$2,997</td><td class="price price-red">$299/mo</td></tr><tr><td class="name"><strong>The Duo</strong></td><td>2</td><td>~23 sq ft</td><td class="price">$4,497</td><td class="price price-red">$449/mo</td></tr><tr><td class="name"><strong>The Quad</strong></td><td>4</td><td>~31 sq ft</td><td class="price">$5,497</td><td class="price price-red">$549/mo</td></tr><tr class="featured"><td class="name"><strong>The Suite ★</strong></td><td>1–6</td><td>~49 sq ft</td><td class="price">$6,997</td><td class="price price-red">$699/mo</td></tr><tr><td><strong>Accessible Pod</strong></td><td>2 / 4</td><td>varies</td><td colspan="2" style="color:var(--text-mid)">On request</td></tr></tbody></table></div></div>
 <p class="compare-foot">Prices are landed delivery to continental US. International, custom finishes, and bulk orders quoted separately. Installment plan adds 20% to total price, divided into 12 equal payments, no down payment required.</p>
 
-<div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap"><a href="mailto:hello@mtip.ai?subject=MTIP%20Pod%20Reservation" class="btn btn-red btn-lg">Reserve Your Pod <i data-lucide="arrow-right"></i></a><a href="mailto:hello@mtip.ai?subject=MTIP%20Pod%20Inquiry" class="btn btn-outline btn-lg">Talk to Sales</a></div>
+<div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap"><a href="mailto:mtip@hey.com?subject=MTIP%20Pod%20Reservation" class="btn btn-red btn-lg">Reserve Your Pod <i data-lucide="arrow-right"></i></a><a href="mailto:mtip@hey.com?subject=MTIP%20Pod%20Inquiry" class="btn btn-outline btn-lg">Talk to the Team <i data-lucide="phone"></i></a></div>
 </div></section>
+
+
+<div class="cta-block">
+  <div>
+    <h3>Want to talk through it with someone?</h3>
+    <p>Pricing questions, custom configurations, bulk orders, or you just want a 10-minute walk-through call before you commit. Pick the channel.</p>
+  </div>
+  <div class="actions">
+    <a href="mailto:mtip@hey.com?subject=Book%20a%20call%20-%20MTIP%20Pods" class="btn btn-red">Book a call <i data-lucide="calendar"></i></a>
+    <a href="mailto:mtip@hey.com?subject=Question%20about%20MTIP%20Pods" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:white">Email the team <i data-lucide="mail"></i></a>
+  </div>
+</div>
 
 <section class="section section-soft"><div class="container">
 <div class="section-header center"><div class="eyebrow">Brochure &amp; resources</div><h2>Everything you need<br>to decide.</h2></div>
@@ -471,9 +700,9 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 </div></section>
 
-<section class="final-cta"><div class="container"><h2>Build your office in 90 days.<br>Not 9 months.</h2><p>You don't need a contractor. You don't need a permit. You don't need a 5-year lease. You need a pod.</p><div class="final-cta-buttons"><a href="mailto:hello@mtip.ai?subject=Reserve%20The%20Suite" class="btn btn-red btn-lg">Reserve The Suite — $6,997 <i data-lucide="arrow-right"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div></section>
+<section class="final-cta"><div class="container"><h2>Build your office in 90 days.<br>Not 9 months.</h2><p>You don't need a contractor. You don't need a permit. You don't need a 5-year lease. You need a pod.</p><div class="final-cta-buttons"><a href="mailto:mtip@hey.com?subject=Reserve%20The%20Suite" class="btn btn-red btn-lg">Reserve The Suite — $6,997 <i data-lucide="arrow-right"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div></section>
 
-<footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:hello@mtip.ai">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
+<footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
 
 <script>
 lucide.createIcons();
