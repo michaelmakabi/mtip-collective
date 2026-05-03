@@ -505,21 +505,110 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .press-item{font-size:0.95rem;font-weight:600;color:var(--text);letter-spacing:-0.01em}
 .press-item:not(:last-child)::after{content:'·';color:var(--silver-2);margin-left:32px}
 @media(max-width:768px){.press-item:not(:last-child)::after{display:none}}
+
+.deploy-section{padding:160px 0;background:linear-gradient(135deg,#1A1D24 0%,#0A0B0D 100%);position:relative;overflow:hidden}
+.deploy-section::before{content:'';position:absolute;top:0;right:-15%;width:60%;height:100%;background:radial-gradient(ellipse at center,rgba(229,59,59,0.18) 0%,transparent 70%);pointer-events:none}
+@media(max-width:768px){.deploy-section{padding:80px 0}}
+.deploy-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:24px;margin-top:64px;position:relative}
+@media(max-width:1100px){.deploy-grid{grid-template-columns:1fr;gap:20px}}
+.deploy-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px 32px;display:flex;flex-direction:column;backdrop-filter:blur(8px);position:relative;overflow:hidden}
+.deploy-card-hero{background:linear-gradient(180deg,rgba(229,59,59,0.12) 0%,rgba(229,59,59,0.04) 100%);border:1.5px solid rgba(229,59,59,0.4);box-shadow:0 16px 40px rgba(229,59,59,0.15)}
+.deploy-card-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(135deg,#E53B3B 0%,#DEE1E6 50%,#FFFFFF 75%,#E53B3B 100%)}
+.deploy-tag{font-size:0.72rem;font-weight:800;letter-spacing:0.18em;color:rgba(255,255,255,0.5);margin-bottom:16px}
+.deploy-tag-hero{color:var(--red-light);background:rgba(229,59,59,0.15);padding:6px 12px;border-radius:999px;display:inline-block;border:1px solid rgba(229,59,59,0.3)}
+.deploy-card h3{font-size:1.85rem;margin-bottom:16px;letter-spacing:-0.03em}
+.deploy-headline{font-family:'Inter',sans-serif;font-weight:900;font-size:1.4rem;line-height:1.15;letter-spacing:-0.025em;padding:18px 20px;background:rgba(255,255,255,0.05);border-radius:12px;margin-bottom:24px;border:1px solid rgba(255,255,255,0.08);color:white !important}
+.deploy-card-hero .deploy-headline{background:rgba(229,59,59,0.1);border-color:rgba(229,59,59,0.3);color:white !important}
+.deploy-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:24px;flex-grow:1}
+.deploy-list li{display:flex;align-items:flex-start;gap:12px;font-size:0.96rem;line-height:1.5;color:rgba(255,255,255,0.85)}
+.deploy-list li i{width:18px;height:18px;color:var(--red-light);flex-shrink:0;margin-top:3px}
+.deploy-list li strong{color:white;font-weight:700}
+.deploy-best{font-size:0.85rem;color:rgba(255,255,255,0.55);margin-bottom:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.08);font-style:italic}
+.deploy-callout{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;background:linear-gradient(135deg,#E53B3B 0%,#B82E2E 100%);border-radius:20px;padding:32px 40px;margin-top:64px;color:white;box-shadow:0 16px 40px rgba(229,59,59,0.25);position:relative;z-index:1}
+@media(max-width:640px){.deploy-callout{grid-template-columns:1fr;padding:28px}}
+.deploy-callout-icon{width:64px;height:64px;background:rgba(255,255,255,0.15);border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.deploy-callout-icon i{width:28px;height:28px;color:white}
+.deploy-callout strong{display:block;font-size:1.2rem;color:white;margin-bottom:8px;font-weight:700;letter-spacing:-0.015em;line-height:1.3}
+.deploy-callout p{color:rgba(255,255,255,0.92);font-size:1rem;line-height:1.6;margin-top:6px}
 </style>
 </head>
 <body>
-<nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><div class="nav-tabs"><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#compare">Compare</a><a href="#features">Features</a><a href="#order">Order</a></div><a href="#order" class="btn btn-red">Reserve a Pod</a></div></nav>
+<nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><div class="nav-tabs"><a href="#deploy">Deploy</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#compare">Compare</a><a href="#order">Order</a></div><a href="#deploy" class="btn btn-red">Get JV term sheet</a></div></nav>
 
-<section class="hero" id="top"><div class="container"><div class="hero-grid"><div><div class="eyebrow">Built for solo executives · real estate operators · podcast creators · coworking owners</div><h1>Stop renting an office.<br><span class="red-em">Own one.</span></h1><p class="hero-sub">Sound-insulated, plug-and-play executive offices. <strong>Delivered fully assembled in 90 days.</strong> The Suite replaces a Class A 1-person office for a one-time <strong>$6,997</strong>.</p><div class="hero-ctas"><a href="#suite" class="btn btn-red btn-lg">Meet The Suite <i data-lucide="arrow-right"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div><div class="hero-video-wrap"><video id="heroVideo" autoplay muted loop playsinline poster="assets/images/hero-landscape.jpg"><source src="assets/video/walkthrough.mp4" type="video/mp4"></video><button class="video-toggle" id="videoToggle" aria-label="Toggle sound"><i data-lucide="volume-x" id="videoIcon"></i></button></div></div></div></section>
+<section class="hero" id="top"><div class="container"><div class="hero-grid"><div><div class="eyebrow">Built for landlords · building owners · multi-tenant operators · coworking</div><h1>Stop building<br>$80K offices.<br><span class="red-em">Drop in pods.</span></h1><p class="hero-sub">A 49 sq ft TI build-out runs <strong>$10,000–$15,000</strong>, takes 6 months, and walks out the door when the tenant leaves. <strong>The Suite by MTIP Collective ships fully assembled in 90 days for $6,997.</strong> Or — let us fund <strong>100%</strong>, recover from rental revenue, and override-split with you in perpetuity.</p><div class="hero-ctas"><a href="#deploy" class="btn btn-red btn-lg">See the deal structures <i data-lucide="arrow-right"></i></a><a href="#suite" class="btn btn-outline btn-lg">See the product</a></div></div><div class="hero-video-wrap"><video id="heroVideo" autoplay muted loop playsinline poster="assets/images/hero-landscape.jpg"><source src="assets/video/walkthrough.mp4" type="video/mp4"></video><button class="video-toggle" id="videoToggle" aria-label="Toggle sound"><i data-lucide="volume-x" id="videoIcon"></i></button></div></div></div></section>
 
 <div class="trust-strip"><div class="container"><div class="trust-inner"><span><i data-lucide="volume-x"></i> ~30 dB sound insulation</span><span class="sep"></span><span><i data-lucide="truck"></i> 90-day delivery</span><span class="sep"></span><span><i data-lucide="package-check"></i> Fully assembled</span><span class="sep"></span><span><i data-lucide="shield-check"></i> 1-year warranty</span><span class="sep"></span><span><i data-lucide="credit-card"></i> $0 down · 12-mo plans</span><span class="sep"></span><span><i data-lucide="map-pin"></i> Florida showroom</span></div></div></div><div class="cert-strip"><div class="container"><div class="cert-inner"><div class="cert-item"><div class="cert-mark">ISO</div><div><strong>23351-1 Certified</strong><span>Acoustic performance to international standard</span></div></div><div class="cert-item"><div class="cert-mark">90<sub>day</sub></div><div><strong>Production lead time</strong><span>Deposit → fully assembled at your door</span></div></div><div class="cert-item"><div class="cert-mark">1<sub>yr</sub></div><div><strong>Manufacturer warranty</strong><span>Free replacement parts, full coverage</span></div></div><div class="cert-item"><div class="cert-mark">$0</div><div><strong>Down payment, financed</strong><span>12 monthly installments available</span></div></div></div></div></div>
 
 
-<section class="suite-hero section" id="suite"><div class="container"><div class="suite-grid"><div><div class="flagship-pill"><i data-lucide="star"></i> The Flagship</div><h2>The Suite.<br>It's not a pod.<br><span class="text-red">It's your office.</span></h2><p class="lead" style="margin-top:32px">A 49 sq ft sound-insulated office that ships fully assembled. <strong style="color:var(--text)">Seats one executive in luxury.</strong> Hosts six for a board meeting. Doubles as your podcast studio.</p><p class="lead" style="margin-top:20px">A typical Class A executive lease commits you to <strong style="color:var(--text)">3–5 years</strong>, with deposits, build-out, and a personal guarantor. <strong style="color:var(--red)">The Suite is yours for $6,997. Once.</strong></p>
 
-<div class="roi-table"><table><thead><tr><th>If you're paying</th><th>A year of that</th><th>The Suite pays back</th></tr></thead><tbody><tr><td>$1,500/mo office</td><td>$18,000</td><td class="payback">in 4.7 months</td></tr><tr><td>$2,000/mo office</td><td>$24,000</td><td class="payback">in 3.5 months</td></tr><tr><td>$2,500/mo office</td><td>$30,000</td><td class="payback">in 2.8 months</td></tr></tbody></table></div>
+<section class="section section-dark deploy-section" id="deploy">
+  <div class="container">
+    <div class="section-header center">
+      <div class="eyebrow" style="color:var(--red-light)">Three deal structures</div>
+      <h2 style="color:white">Three ways to put MTIP Pods<br>on your property.</h2>
+      <p class="lead" style="color:rgba(255,255,255,0.72);margin-left:auto;margin-right:auto">Buy them outright. Split capex 50/50 with us. Or pay zero and split the override. Whichever lines up with how you run your portfolio.</p>
+    </div>
 
-<div class="roi-calc"><div class="roi-calc-label">Run the math on your office</div><div class="roi-calc-input-row"><span class="dollar">$</span><input type="number" id="roiInput" value="2000" min="0" step="100" aria-label="Monthly office cost"><span class="month">/month</span></div><div class="roi-calc-result"><div>Annual cost<strong id="roiAnnual">$24,000</strong></div><div>Suite payback<strong class="red-num" id="roiPayback">3.5 mo</strong></div><div>5-year savings<strong class="red-num" id="roiSavings">$113,003</strong></div></div></div>
+    <div class="deploy-grid">
+      <div class="deploy-card">
+        <div class="deploy-tag">OPTION A</div>
+        <h3 style="color:white">Buy outright</h3>
+        <div class="deploy-headline" style="color:var(--text)">100% capex<br>100% revenue</div>
+        <ul class="deploy-list">
+          <li><i data-lucide="check"></i><span>You pay retail at order. Pods are yours, on your books.</span></li>
+          <li><i data-lucide="check"></i><span>100% of rental revenue is yours, in perpetuity.</span></li>
+          <li><i data-lucide="check"></i><span>Depreciable as commercial furniture (typically MACRS 7-year).</span></li>
+          <li><i data-lucide="check"></i><span>You manage. We deliver, support, and warranty for 1 year.</span></li>
+        </ul>
+        <div class="deploy-best">Best for: Owner-operators who want full control and full upside.</div>
+        <a href="#order" class="btn btn-outline" style="border-color:rgba(255,255,255,0.25);color:white;width:100%;justify-content:center">See pricing</a>
+      </div>
+
+      <div class="deploy-card">
+        <div class="deploy-tag">OPTION B</div>
+        <h3 style="color:white">50/50 Joint Venture</h3>
+        <div class="deploy-headline" style="color:var(--text)">50% capex<br>50/50 revenue split</div>
+        <ul class="deploy-list">
+          <li><i data-lucide="check"></i><span>We split equipment cost 50/50 with you at order.</span></li>
+          <li><i data-lucide="check"></i><span>Rental revenue split <strong>50/50 in perpetuity</strong>.</span></li>
+          <li><i data-lucide="check"></i><span>You or MTIP can manage — split stays the same.</span></li>
+          <li><i data-lucide="check"></i><span>Lower capital exposure with shared upside.</span></li>
+        </ul>
+        <div class="deploy-best">Best for: Landlords who want shared risk and shared income on a partnership basis.</div>
+        <a href="mailto:mtip@hey.com?subject=50/50%20JV%20Term%20Sheet%20Request" class="btn btn-outline" style="border-color:rgba(255,255,255,0.25);color:white;width:100%;justify-content:center">Request term sheet</a>
+      </div>
+
+      <div class="deploy-card deploy-card-hero">
+        <div class="deploy-tag deploy-tag-hero">★ OPTION C — FLAGSHIP</div>
+        <h3 style="color:white">Zero-Capex JV</h3>
+        <div class="deploy-headline" style="color:var(--red-light)">$0 capex<br>You earn perpetually</div>
+        <ul class="deploy-list">
+          <li><i data-lucide="check"></i><span><strong>You put in zero capital.</strong> MTIP funds 100% of equipment cost.</span></li>
+          <li><i data-lucide="check"></i><span>Rental revenue → MTIP first, until <strong>100% retail recovered</strong> (first money out).</span></li>
+          <li><i data-lucide="check"></i><span>After recoupment: <strong>75% to you / 25% to MTIP</strong> if you manage.</span></li>
+          <li><i data-lucide="check"></i><span>If MTIP manages the program for you: <strong>50/50 split</strong>.</span></li>
+          <li><i data-lucide="check"></i><span>Pure upside. No downside. Equipment stays serviceable for life.</span></li>
+        </ul>
+        <div class="deploy-best" style="color:var(--red-light)">Best for: Landlords who want pod amenity revenue without writing a capex check.</div>
+        <a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red" style="width:100%;justify-content:center">Get the JV term sheet <i data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+
+    <div class="deploy-callout">
+      <div class="deploy-callout-icon"><i data-lucide="trending-up"></i></div>
+      <div>
+        <strong>The smartest CapEx your portfolio will see this year is the one you don't have to write.</strong>
+        <p>Option C lets you add 6–10 pods to a building, generate $20K–$60K in annual rental income, and pay nothing upfront. We fund the pods, recover the cost from your tenant fees, then perpetual override. Your existing real estate becomes a higher-margin asset overnight.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="suite-hero section" id="suite"><div class="container"><div class="suite-grid"><div><div class="flagship-pill"><i data-lucide="star"></i> The Flagship</div><h2>The Suite.<br>The highest-margin<br><span class="text-red">49 sq ft on your floor plate.</span></h2><p class="lead" style="margin-top:32px">49 square feet. Fully assembled. Lands on your floor plate in 90 days. <strong style="color:var(--text)">Becomes a private office, a meeting room, a podcast studio, or a member-billable amenity</strong> — depending on what your tenants are paying for.</p><p class="lead" style="margin-top:20px">Building it the old way — TI, contractor, permits — runs <strong style="color:var(--text)">$10,000–$15,000</strong>, takes <strong style="color:var(--text)">4–6 months</strong>, and the asset stays with the building when the tenant leaves. <strong style="color:var(--red)">The Suite is $6,997, ships in 90 days, moves with your portfolio.</strong></p>
+
+<div class="roi-table"><table><thead><tr><th>Comparison frame</th><th>Cost &amp; time</th><th>What MTIP changes</th></tr></thead><tbody><tr><td>TI build-out (49 sq ft acoustic)</td><td>$10K–$15K · 4–6 mo</td><td class="payback">$6,997 · 90 days</td></tr><tr><td>Permits + contractor delays</td><td>6–12 weeks risk</td><td class="payback">Zero permits</td></tr><tr><td>Asset on tenant turnover</td><td>Walls stay, capital lost</td><td class="payback">Pod moves with portfolio</td></tr></tbody></table></div>
+
+<div class="roi-calc"><div class="roi-calc-label">Run the math on a single pod</div><div class="roi-calc-input-row"><span class="dollar">$</span><input type="number" id="roiInput" value="600" min="0" step="50" aria-label="Monthly rental income per pod"><span class="month">/mo per pod</span></div><div class="roi-calc-result"><div>Annual revenue<strong id="roiAnnual">$7,200</strong></div><div>Recoupment<strong class="red-num" id="roiPayback">11.7 mo</strong></div><div>5-year landlord net*<strong class="red-num" id="roiSavings">$22,500</strong></div></div></div>
 
 <div class="suite-spec"><div class="spec-item"><i data-lucide="users"></i><span><strong>1–6 people</strong> · solo or full meeting</span></div><div class="spec-item"><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> · 4.5 m²</span></div><div class="spec-item"><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> · ISO certified</span></div><div class="spec-item"><i data-lucide="wind"></i><span><strong>16 silent fans</strong> · 1.5-min refresh</span></div></div>
 
@@ -537,7 +626,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       </div>
       <div class="founder-content">
         <div class="eyebrow">From the operator</div>
-        <p class="founder-quote">"I priced a single Framery 2Q for my coworking floor. The quote came back at $26,400. I laughed, hung up, and called my factory direct. We're now shipping the same acoustic spec — better materials, larger interior, fully assembled — at half the price. Not because we cut corners. Because we cut the SoHo showroom rent and the white-glove markup. Real product, factory-direct, operator-to-operator."</p>
+        <p class="founder-quote">"I run real estate. I've written six-figure TI checks for build-outs that walked out the door with the tenant. So when I priced an acoustic pod from Framery at $26,400 retail and they wanted me to assemble it on-site, I called the factory direct. MTIP Collective is what I built next — same ISO acoustic spec, fully assembled, half the price. And for landlords who don't want to write the capex check at all, we fund the equipment, you collect override. Operator to operator."</p>
         <div class="founder-attr">
           <strong>Master Makabi</strong>
           <span>Founder · MTIP Collective · Florida</span>
@@ -547,7 +636,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   </div>
 </section>
 
-<div class="press-strip"><div class="container"><div class="press-inner"><span class="press-label">Built &amp; produced for:</span><span class="press-item">Coworking operators</span><span class="press-item">Multi-family investors</span><span class="press-item">RIA founders</span><span class="press-item">Podcast studios</span><span class="press-item">Architects &amp; facilities buyers</span></div></div></div>
+<div class="press-strip"><div class="container"><div class="press-inner"><span class="press-label">Deal structures available for:</span><span class="press-item">Class A / B landlords</span><span class="press-item">Multi-tenant operators</span><span class="press-item">Coworking + flex space</span><span class="press-item">Hospitality &amp; hotels</span><span class="press-item">Healthcare &amp; education</span></div></div></div>
 
 <section class="section section" id="lineup"><div class="container">
 <div class="section-header center"><div class="eyebrow">The Lineup</div><h2>Four sizes.<br>One standard of quality.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Same aluminum frame. Same ISO-certified acoustic walls. Same 6mm tempered glass. Same motion-sensor lighting. Same fresh-air system. Only the size and seating change.</p></div>
@@ -592,11 +681,11 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div></section>
 
 <section class="section section-dark vs-office"><div class="container">
-<div class="section-header center"><div class="eyebrow">Vs. a real office lease</div><h2 style="color:white">Why is this even close?</h2><p class="lead" style="color:rgba(255,255,255,0.7);margin-left:auto;margin-right:auto">A traditional 1-person private office in a Class A building runs $1,500–$2,500/month in most US markets — and far more in Manhattan, SF, or LA.</p></div>
+<div class="section-header center"><div class="eyebrow">Vs. building it out</div><h2 style="color:white">The math your<br>contractor won't show you.</h2><p class="lead" style="color:rgba(255,255,255,0.7);margin-left:auto;margin-right:auto">Building a 49 sq ft acoustic-treated private office on your floor plate runs $10,000–$15,000 in TI, takes 4–6 months, and ties up the space the entire time. Permits add risk. The walls don't move when your tenant does.</p></div>
 
-<div class="compare-table"><div class="compare-table-wrap"><table><thead><tr><th></th><th class="us" style="color:var(--red-light)">The Suite</th><th>Class A 1-Person Office</th></tr></thead><tbody><tr><td><strong style="color:white">Cost</strong></td><td class="us">$6,997 once</td><td>$18,000–$30,000 / year</td></tr><tr><td><strong style="color:white">5-year cost</strong></td><td class="us">$6,997</td><td>$90,000–$150,000</td></tr><tr><td><strong style="color:white">Lease commitment</strong></td><td class="us">None</td><td>3–5 years standard</td></tr><tr><td><strong style="color:white">Personal guarantor</strong></td><td class="us">None</td><td>Often required</td></tr><tr><td><strong style="color:white">Build-out delay</strong></td><td class="us">90 days</td><td>6–9 months</td></tr><tr><td><strong style="color:white">Permits / contractors</strong></td><td class="us">None</td><td>Required</td></tr><tr><td><strong style="color:white">Move it later</strong></td><td class="us"><span class="check">✓</span> Yes (silent casters)</td><td><span class="x">✗</span> Never</td></tr><tr><td><strong style="color:white">Sell it later</strong></td><td class="us"><span class="check">✓</span> Yes</td><td><span class="x">✗</span> Never</td></tr></tbody></table></div></div>
+<div class="compare-table"><div class="compare-table-wrap"><table><thead><tr><th></th><th class="us" style="color:var(--red-light)">MTIP Suite</th><th>Traditional TI build-out</th></tr></thead><tbody><tr><td><strong style="color:white">Capital cost</strong></td><td class="us">$6,997 (or $0 with Option C)</td><td>$10,000–$15,000</td></tr><tr><td><strong style="color:white">Time to revenue</strong></td><td class="us">90 days</td><td>4–6 months</td></tr><tr><td><strong style="color:white">Permits required</strong></td><td class="us">None</td><td>Yes (variable, 6–12 weeks)</td></tr><tr><td><strong style="color:white">Furniture &amp; ventilation</strong></td><td class="us">Included</td><td>Add $5–10K extra</td></tr><tr><td><strong style="color:white">Acoustic spec</strong></td><td class="us">ISO 23351-1 certified</td><td>Depends on contractor</td></tr><tr><td><strong style="color:white">Tenant turnover</strong></td><td class="us"><span class="check">✓</span> Asset stays / moves with portfolio</td><td><span class="x">✗</span> Capital lost when walls demo'd</td></tr><tr><td><strong style="color:white">Re-deployable</strong></td><td class="us"><span class="check">✓</span> Yes (silent casters)</td><td><span class="x">✗</span> Never — it's framing</td></tr><tr><td><strong style="color:white">Scalable</strong></td><td class="us"><span class="check">✓</span> Add or remove pods</td><td><span class="x">✗</span> New construction every time</td></tr><tr><td><strong style="color:white">Depreciation</strong></td><td class="us">7-year MACRS (commercial furniture)</td><td>39-year (real property)</td></tr></tbody></table></div></div>
 
-<div class="bottom-line-card"><h4>The bottom line.</h4><p>The Suite costs <strong>less than 4 months</strong> of a typical executive lease. Then it's yours — forever. It moves with you. It scales with you. It outlasts the building you put it in.</p></div>
+<div class="bottom-line-card"><h4>The bottom line for an operator.</h4><p>Same private workspace. Half the capital. Tenth the time. Asset moves with your portfolio instead of staying behind as sunk TI when the lease rolls. <strong>And with our Zero-Capex JV, you don't put a dollar down — we fund the equipment, you collect override revenue.</strong></p></div>
 </div></section>
 
 <section class="section" id="features"><div class="container">
@@ -762,6 +851,13 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <section class="section" id="faq"><div class="container-tight">
 <div class="section-header center"><div class="eyebrow">Questions answered</div><h2>The fine print,<br>made simple.</h2></div>
 <div class="faq-list">
+<div class="faq-item"><button class="faq-q">How does the Zero-Capex JV (Option C) actually work? <i data-lucide="plus"></i></button><div class="faq-a"><p>MTIP funds 100% of the equipment cost. Pods are installed on your property. All rental revenue from those pods flows to MTIP <strong>first</strong> until we have recovered 100% of the retail cost (first-money-out). After recoupment, the revenue split is <strong>75% to you / 25% to MTIP</strong> if you manage the program, or <strong>50/50</strong> if MTIP manages it for you. Override is perpetual. We handle warranty, you handle (or we handle) tenant interface.</p></div></div>
+<div class="faq-item"><button class="faq-q">What revenue can I expect per pod? <i data-lucide="plus"></i></button><div class="faq-a"><p>It depends on your rate model. Typical ranges we see: <strong>The Studio</strong> $99–$299/mo subscription or $5–$15/hr. <strong>The Duo</strong> $199–$499/mo or $10–$25/hr. <strong>The Quad</strong> $399–$999/mo or $20–$50/hr. <strong>The Suite</strong> $599–$1,500/mo or $30–$75/hr. Coworking operators typically run subscription. Class A landlords often run hourly amenity charges.</p></div></div>
+<div class="faq-item"><button class="faq-q">Who handles maintenance, warranty, and insurance? <i data-lucide="plus"></i></button><div class="faq-a"><p>Maintenance and warranty: <strong>MTIP, regardless of structure.</strong> 1-year manufacturer warranty on all parts. Insurance: MTIP carries product liability on the equipment; landlord covers the premises (standard CGL). Tenant damage: handled by your standard wear-and-tear / damage policy, plus our 1-year manufacturer coverage.</p></div></div>
+<div class="faq-item"><button class="faq-q">Is this depreciable? How does it sit on my books? <i data-lucide="plus"></i></button><div class="faq-a"><p><strong>Option A (buy outright):</strong> commercial furniture, 7-year MACRS depreciation. Real estate TI is typically 39-year — pods depreciate <strong>5x faster</strong>. <strong>Options B/C (JV structures):</strong> the asset sits with the JV entity / MTIP; you book your share of revenue. Talk to your tax counsel for specifics.</p></div></div>
+<div class="faq-item"><button class="faq-q">What real estate qualifies for the JV structures? <i data-lucide="plus"></i></button><div class="faq-a"><p>Class A and B office buildings, coworking floors, hospitality / hotel public spaces, multi-family amenity floors, healthcare facilities, education campuses, airports, and high-foot-traffic retail. We require a minimum throughput estimate (members, tenants, or transient users) to underwrite Option C — book a walkthrough and we'll model it.</p></div></div>
+<div class="faq-item"><button class="faq-q">Can I exit the JV later? Buy MTIP out? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes. The term sheet includes a buyout schedule based on remaining recoupment + a defined override multiple. Alternative exit: MTIP can re-deploy the pods to another property in the network if economics no longer fit.</p></div></div>
+<div class="faq-item"><button class="faq-q">Do you offer exclusives or portfolio deals? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes. Portfolio commitments of <strong>10+ pods</strong> across multiple properties qualify for exclusivity in defined geographies, custom SLAs, and accelerated production slots. Drop us a note with your portfolio summary.</p></div></div>
 <div class="faq-item"><button class="faq-q">How long is delivery? <i data-lucide="plus"></i></button><div class="faq-a"><p>90 days from deposit to your door. Pods ship fully assembled with white-glove freight.</p></div></div>
 <div class="faq-item"><button class="faq-q">Do I need permits? <i data-lucide="plus"></i></button><div class="faq-a"><p>No. MTIP Collective Pods are commercial furniture, not construction. They sit on your existing floor.</p></div></div>
 <div class="faq-item"><button class="faq-q">Will it fit through a doorway? <i data-lucide="plus"></i></button><div class="faq-a"><p>Pods ship in 6 modular components and assemble on-site. Single pod: 40 minutes. The Suite: 90 minutes. Standard freight elevators and 36-inch doors clear the panels.</p></div></div>
@@ -776,7 +872,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 </div></section>
 
-<section class="final-cta"><div class="container"><h2>Build your office in 90 days.<br>Not 9 months.</h2><p>You don't need a contractor. You don't need a permit. You don't need a 5-year lease. You need a pod.</p><div class="final-cta-buttons"><a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a 15-min walk-through <i data-lucide="calendar"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div></section>
+<section class="final-cta"><div class="container"><h2>The smartest CapEx<br>your portfolio sees this year<br>is the one you don't write.</h2><p>Three deal structures. One product. Pick the path that lines up with how you run your portfolio.</p><div class="final-cta-buttons"><a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red btn-lg">Get the JV term sheet <i data-lucide="arrow-right"></i></a><a href="#deploy" class="btn btn-outline btn-lg">See the deal structures</a></div></div></section>
 
 <footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-meta"><span><i data-lucide="map-pin" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> 16137 Biscayne Blvd · North Miami, FL</span><span style="margin:0 12px">·</span><span><i data-lucide="mail" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> <a href="mailto:mtip@hey.com" style="color:rgba(255,255,255,0.85)">mtip@hey.com</a></span></div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
 
@@ -794,7 +890,17 @@ const roiPayback=document.getElementById('roiPayback');
 const roiSavings=document.getElementById('roiSavings');
 const SUITE_PRICE=6997;
 function fmt(n){return '$'+Math.round(n).toLocaleString();}
-function calcROI(){const m=Math.max(0,parseFloat(roiInput.value)||0);const annual=m*12;const payback=m>0?SUITE_PRICE/m:0;const fiveYr=(annual*5)-SUITE_PRICE;roiAnnual.textContent=fmt(annual);roiPayback.textContent=m>0?payback.toFixed(1)+' mo':'—';roiSavings.textContent=fmt(Math.max(0,fiveYr));}
+function calcROI(){
+  const m=Math.max(0,parseFloat(roiInput.value)||0);
+  const annual=m*12;
+  // Zero-Capex JV math: 100% of revenue to MTIP until $6,997 recovered, then 75% to landlord
+  const recoupMonths = m>0 ? SUITE_PRICE/m : 0;
+  const fiveYrRevenue = annual*5;
+  const landlordNet = m>0 ? Math.max(0, (fiveYrRevenue - SUITE_PRICE) * 0.75) : 0;
+  roiAnnual.textContent=fmt(annual);
+  roiPayback.textContent=m>0?recoupMonths.toFixed(1)+' mo':'—';
+  roiSavings.textContent=fmt(landlordNet);
+}
 roiInput&&roiInput.addEventListener('input',calcROI);
 roiInput&&calcROI();
 document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>btn.parentElement.classList.toggle('open'));});
