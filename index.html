@@ -488,6 +488,23 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .founder-attr span{font-size:0.88rem;color:var(--text-mid)}
 
 .btn-red:hover{background:linear-gradient(135deg,#E53B3B 0%,#DEE1E6 50%,#FFFFFF 70%,#E53B3B 100%);color:#1A1D24}
+
+.cert-strip{padding:48px 0;background:white;border-bottom:1px solid var(--border)}
+.cert-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+@media(max-width:1024px){.cert-inner{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.cert-inner{grid-template-columns:1fr}}
+.cert-item{display:flex;align-items:center;gap:16px;padding:8px 0}
+.cert-mark{flex-shrink:0;width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#1A1D24 0%,#0A0B0D 100%);color:var(--red-light);display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:900;letter-spacing:-0.04em;box-shadow:var(--shadow-md)}
+.cert-mark sub{font-size:0.55rem;font-weight:600;letter-spacing:0.05em;margin-left:1px;color:rgba(255,255,255,0.6)}
+.cert-item strong{display:block;font-size:0.92rem;color:var(--text);font-weight:700;margin-bottom:2px}
+.cert-item span{display:block;font-size:0.82rem;color:var(--text-mid);line-height:1.4}
+
+.press-strip{padding:32px 0;background:var(--bg-soft);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.press-inner{display:flex;flex-wrap:wrap;align-items:center;gap:16px 32px;justify-content:center}
+.press-label{font-size:0.75rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-mid)}
+.press-item{font-size:0.95rem;font-weight:600;color:var(--text);letter-spacing:-0.01em}
+.press-item:not(:last-child)::after{content:'·';color:var(--silver-2);margin-left:32px}
+@media(max-width:768px){.press-item:not(:last-child)::after{display:none}}
 </style>
 </head>
 <body>
@@ -495,13 +512,14 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 <section class="hero" id="top"><div class="container"><div class="hero-grid"><div><div class="eyebrow">Built for solo executives · real estate operators · podcast creators · coworking owners</div><h1>Stop renting an office.<br><span class="red-em">Own one.</span></h1><p class="hero-sub">Sound-insulated, plug-and-play executive offices. <strong>Delivered fully assembled in 90 days.</strong> The Suite replaces a Class A 1-person office for a one-time <strong>$6,997</strong>.</p><div class="hero-ctas"><a href="#suite" class="btn btn-red btn-lg">Meet The Suite <i data-lucide="arrow-right"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div><div class="hero-video-wrap"><video id="heroVideo" autoplay muted loop playsinline poster="assets/images/hero-landscape.jpg"><source src="assets/video/walkthrough.mp4" type="video/mp4"></video><button class="video-toggle" id="videoToggle" aria-label="Toggle sound"><i data-lucide="volume-x" id="videoIcon"></i></button></div></div></div></section>
 
-<div class="trust-strip"><div class="container"><div class="trust-inner"><span><i data-lucide="volume-x"></i> ~30 dB sound insulation</span><span class="sep"></span><span><i data-lucide="truck"></i> 90-day delivery</span><span class="sep"></span><span><i data-lucide="package-check"></i> Fully assembled</span><span class="sep"></span><span><i data-lucide="shield-check"></i> 1-year warranty</span><span class="sep"></span><span><i data-lucide="credit-card"></i> $0 down · 12-mo plans</span><span class="sep"></span><span><i data-lucide="map-pin"></i> Florida showroom</span></div></div></div>
+<div class="trust-strip"><div class="container"><div class="trust-inner"><span><i data-lucide="volume-x"></i> ~30 dB sound insulation</span><span class="sep"></span><span><i data-lucide="truck"></i> 90-day delivery</span><span class="sep"></span><span><i data-lucide="package-check"></i> Fully assembled</span><span class="sep"></span><span><i data-lucide="shield-check"></i> 1-year warranty</span><span class="sep"></span><span><i data-lucide="credit-card"></i> $0 down · 12-mo plans</span><span class="sep"></span><span><i data-lucide="map-pin"></i> Florida showroom</span></div></div></div><div class="cert-strip"><div class="container"><div class="cert-inner"><div class="cert-item"><div class="cert-mark">ISO</div><div><strong>23351-1 Certified</strong><span>Acoustic performance to international standard</span></div></div><div class="cert-item"><div class="cert-mark">90<sub>day</sub></div><div><strong>Production lead time</strong><span>Deposit → fully assembled at your door</span></div></div><div class="cert-item"><div class="cert-mark">1<sub>yr</sub></div><div><strong>Manufacturer warranty</strong><span>Free replacement parts, full coverage</span></div></div><div class="cert-item"><div class="cert-mark">$0</div><div><strong>Down payment, financed</strong><span>12 monthly installments available</span></div></div></div></div></div>
 
-<section class="suite-hero section" id="suite"><div class="container"><div class="suite-grid"><div><div class="flagship-pill"><i data-lucide="star"></i> The Flagship</div><h2>The Suite.<br>It's not a pod.<br><span class="text-red">It's your office.</span></h2><p class="lead" style="margin-top:32px">A 49-square-foot, sound-insulated, fully assembled executive office. <strong style="color:var(--text)">Seats one in luxury.</strong> Or six in a meeting. Or your podcast crew. Or your investor pitch.</p><p class="lead" style="margin-top:20px">Compare it to a real 1-person office in any decent commercial building: <strong style="color:var(--text)">$1,500–$2,500 a month</strong>, plus deposits, plus build-out, plus a 5-year lease.</p><p class="lead" style="margin-top:20px">The Suite is <strong style="color:var(--red)">a one-time $6,997.</strong></p>
+
+<section class="suite-hero section" id="suite"><div class="container"><div class="suite-grid"><div><div class="flagship-pill"><i data-lucide="star"></i> The Flagship</div><h2>The Suite.<br>It's not a pod.<br><span class="text-red">It's your office.</span></h2><p class="lead" style="margin-top:32px">A 49 sq ft sound-insulated office that ships fully assembled. <strong style="color:var(--text)">Seats one executive in luxury.</strong> Hosts six for a board meeting. Doubles as your podcast studio.</p><p class="lead" style="margin-top:20px">A typical Class A executive lease commits you to <strong style="color:var(--text)">3–5 years</strong>, with deposits, build-out, and a personal guarantor. <strong style="color:var(--red)">The Suite is yours for $6,997. Once.</strong></p>
 
 <div class="roi-table"><table><thead><tr><th>If you're paying</th><th>A year of that</th><th>The Suite pays back</th></tr></thead><tbody><tr><td>$1,500/mo office</td><td>$18,000</td><td class="payback">in 4.7 months</td></tr><tr><td>$2,000/mo office</td><td>$24,000</td><td class="payback">in 3.5 months</td></tr><tr><td>$2,500/mo office</td><td>$30,000</td><td class="payback">in 2.8 months</td></tr></tbody></table></div>
 
-<div class="roi-calc"><div class="roi-calc-label">Run the math on your office</div><div class="roi-calc-input-row"><span class="dollar">$</span><input type="number" id="roiInput" value="1800" min="0" step="100" aria-label="Monthly office cost"><span class="month">/month</span></div><div class="roi-calc-result"><div>Annual cost<strong id="roiAnnual">$21,600</strong></div><div>Suite payback<strong class="red-num" id="roiPayback">3.9 mo</strong></div><div>5-year savings<strong class="red-num" id="roiSavings">$101,003</strong></div></div></div>
+<div class="roi-calc"><div class="roi-calc-label">Run the math on your office</div><div class="roi-calc-input-row"><span class="dollar">$</span><input type="number" id="roiInput" value="2000" min="0" step="100" aria-label="Monthly office cost"><span class="month">/month</span></div><div class="roi-calc-result"><div>Annual cost<strong id="roiAnnual">$24,000</strong></div><div>Suite payback<strong class="red-num" id="roiPayback">3.5 mo</strong></div><div>5-year savings<strong class="red-num" id="roiSavings">$113,003</strong></div></div></div>
 
 <div class="suite-spec"><div class="spec-item"><i data-lucide="users"></i><span><strong>1–6 people</strong> · solo or full meeting</span></div><div class="spec-item"><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> · 4.5 m²</span></div><div class="spec-item"><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> · ISO certified</span></div><div class="spec-item"><i data-lucide="wind"></i><span><strong>16 silent fans</strong> · 1.5-min refresh</span></div></div>
 
@@ -528,6 +546,8 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
     </div>
   </div>
 </section>
+
+<div class="press-strip"><div class="container"><div class="press-inner"><span class="press-label">Built &amp; produced for:</span><span class="press-item">Coworking operators</span><span class="press-item">Multi-family investors</span><span class="press-item">RIA founders</span><span class="press-item">Podcast studios</span><span class="press-item">Architects &amp; facilities buyers</span></div></div></div>
 
 <section class="section section" id="lineup"><div class="container">
 <div class="section-header center"><div class="eyebrow">The Lineup</div><h2>Four sizes.<br>One standard of quality.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Same aluminum frame. Same ISO-certified acoustic walls. Same 6mm tempered glass. Same motion-sensor lighting. Same fresh-air system. Only the size and seating change.</p></div>
@@ -653,28 +673,28 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="carousel-slide"><img src="assets/images/real-studio-open.jpg" alt="MTIP Studio with door open"><div class="carousel-caption"><strong>The Studio · door open</strong><span>Bar-stool desk · adjustable height · 10 sq ft</span></div></div>
 <div class="carousel-slide"><img src="assets/images/real-studio-lobby.jpg" alt="MTIP Studio in lobby setting"><div class="carousel-caption"><strong>The Studio · lobby setup</strong><span>Yellow accent furniture · welcoming workspace</span></div></div>
 <div class="carousel-slide"><img src="assets/images/real-studio-closed.jpg" alt="MTIP Studio closed door"><div class="carousel-caption"><strong>The Studio · closed</strong><span>Door shut. Sound out. Focus in.</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-19-real-showroom-pods.jpg" alt="Real MTIP Collective pods in showroom"><div class="carousel-caption"><strong>Live in the showroom</strong><span>Real MTIP Collective pod, real plants, real call</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-20-real-pod-front.jpg" alt="MTIP Collective Studio pod front view"><div class="carousel-caption"><strong>The Studio · showroom front</strong><span>10 sq ft of soundproof. Plug in. Sit down. Work.</span></div></div>
+
+
 <div class="carousel-slide"><img src="assets/images/carousel-09-pod-in-office.jpg" alt="Pod in office"><div class="carousel-caption"><strong>Open office, private call</strong><span>Drop one between desks · 28 dB sound floor</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-10-pod-coworking.jpg" alt="Pod in coworking"><div class="carousel-caption"><strong>Coworking floor</strong><span>Members get private space without a private lease</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-11-pod-lounge.jpg" alt="Pod in lounge"><div class="carousel-caption"><strong>Lobby and lounge</strong><span>Hospitality-grade aesthetic. Hotel + airport-ready.</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-12-pod-industrial.jpg" alt="Pod in industrial"><div class="carousel-caption"><strong>Industrial / WeWork-style</strong><span>Modern build-outs · slot in next to exposed brick</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-15-pod-lobby.jpg" alt="Pod in lobby"><div class="carousel-caption"><strong>Corporate lobby</strong><span>Quiet meetings without booking a conference room</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-16-pod-meeting.jpg" alt="Meeting pod"><div class="carousel-caption"><strong>The Quad as drop-in meeting room</strong><span>4-person session · zero build-out · zero permits</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-13-pod-walking-by.jpg" alt="Pod airport"><div class="carousel-caption"><strong>Airport terminal</strong><span>The call before the gate · 90 seconds of quiet</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-14-pod-multi.jpg" alt="Multi pods"><div class="carousel-caption"><strong>Multiple pods on a floor</strong><span>Bulk pricing for 2+ pod orders</span></div></div>
+
+
 <div class="carousel-slide"><img src="assets/images/carousel-17-pod-working.jpg" alt="Pod working"><div class="carousel-caption"><strong>Inside The Suite, working</strong><span>Real desk, real chair, real focus.</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-18-pod-accessible-context.jpg" alt="Accessible pod"><div class="carousel-caption"><strong>Accessible Pod</strong><span>Wide entry · auto-open door · multi-modal access</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-01-studio-front.jpg" alt="Studio front"><div class="carousel-caption"><strong>The Studio · Solo</strong><span>~10 sq ft · for recording, AI command, focus</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-02-duo-side.jpg" alt="Duo side"><div class="carousel-caption"><strong>The Duo · 1–2 person</strong><span>~23 sq ft · the smart 1-person office</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-03-quad-with-people.jpg" alt="Quad with people"><div class="carousel-caption"><strong>The Quad · 4-person</strong><span>~31 sq ft · drop-in meeting room</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-04-suite-interior.jpg" alt="Suite interior"><div class="carousel-caption"><strong>The Suite · 1–6 person</strong><span>~49 sq ft · replace your $1,500–$2,500/mo office</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-05-quad-alt-angle.jpg" alt="Quad alt"><div class="carousel-caption"><strong>The Quad — alternate angle</strong><span>Sliding door · 30 dB ISO-certified</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-06-duo-detail.jpg" alt="Duo detail"><div class="carousel-caption"><strong>The Duo · interior detail</strong><span>Acoustic walls · adjustable desk · LED lighting</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-07-quad-side.jpg" alt="Quad side"><div class="carousel-caption"><strong>The Quad · side profile</strong><span>Modular construction · 90-min on-site assembly</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-08-accessible-detail.jpg" alt="Accessible detail"><div class="carousel-caption"><strong>Accessible Pod · interior</strong><span>Foldable desktop · barrier-free entry</span></div></div>
+
+
+
+
 </div>
-<div class="carousel-nav"><button id="carouselPrev" aria-label="Previous"><i data-lucide="arrow-left"></i></button><div class="carousel-counter" id="carouselCounter">1 / 27</div><button id="carouselNext" aria-label="Next"><i data-lucide="arrow-right"></i></button></div>
+<div class="carousel-nav"><button id="carouselPrev" aria-label="Previous"><i data-lucide="arrow-left"></i></button><div class="carousel-counter" id="carouselCounter">1 / 19</div><button id="carouselNext" aria-label="Next"><i data-lucide="arrow-right"></i></button></div>
 </div>
 </section>
 
@@ -714,7 +734,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="order-table"><div class="order-table-wrap"><table><thead><tr><th>Pod</th><th>Capacity</th><th>Footprint</th><th>Pay Once</th><th>$0 Down · 12-mo</th></tr></thead><tbody><tr><td class="name"><strong>The Studio</strong></td><td>1</td><td>~10 sq ft</td><td class="price">$2,997</td><td class="price price-red">$299/mo</td></tr><tr><td class="name"><strong>The Duo</strong></td><td>2</td><td>~23 sq ft</td><td class="price">$4,497</td><td class="price price-red">$449/mo</td></tr><tr><td class="name"><strong>The Quad</strong></td><td>4</td><td>~31 sq ft</td><td class="price">$5,497</td><td class="price price-red">$549/mo</td></tr><tr class="featured"><td class="name"><strong>The Suite ★</strong></td><td>1–6</td><td>~49 sq ft</td><td class="price">$6,997</td><td class="price price-red">$699/mo</td></tr><tr><td><strong>Accessible Pod</strong></td><td>2 / 4</td><td>varies</td><td colspan="2" style="color:var(--text-mid)">On request</td></tr></tbody></table></div></div>
 <p class="compare-foot">Prices are landed delivery to continental US. International, custom finishes, and bulk orders quoted separately. Installment plan adds 20% to total price, divided into 12 equal payments, no down payment required.</p>
 
-<div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap"><a href="mailto:mtip@hey.com?subject=MTIP%20Pod%20Reservation" class="btn btn-red btn-lg">Reserve Your Pod <i data-lucide="arrow-right"></i></a><a href="mailto:mtip@hey.com?subject=MTIP%20Pod%20Inquiry" class="btn btn-outline btn-lg">Talk to the Team <i data-lucide="phone"></i></a></div>
+<div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap"><a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a 15-min call <i data-lucide="arrow-right"></i></a><a href="mailto:mtip@hey.com?subject=MTIP%20Pod%20Inquiry" class="btn btn-outline btn-lg">Talk to the Team <i data-lucide="phone"></i></a></div>
 </div></section>
 
 
@@ -756,7 +776,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 </div></section>
 
-<section class="final-cta"><div class="container"><h2>Build your office in 90 days.<br>Not 9 months.</h2><p>You don't need a contractor. You don't need a permit. You don't need a 5-year lease. You need a pod.</p><div class="final-cta-buttons"><a href="mailto:mtip@hey.com?subject=Reserve%20The%20Suite" class="btn btn-red btn-lg">Reserve The Suite — $6,997 <i data-lucide="arrow-right"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div></section>
+<section class="final-cta"><div class="container"><h2>Build your office in 90 days.<br>Not 9 months.</h2><p>You don't need a contractor. You don't need a permit. You don't need a 5-year lease. You need a pod.</p><div class="final-cta-buttons"><a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a 15-min walk-through <i data-lucide="calendar"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div></section>
 
 <footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-meta"><span><i data-lucide="map-pin" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> 16137 Biscayne Blvd · North Miami, FL</span><span style="margin:0 12px">·</span><span><i data-lucide="mail" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> <a href="mailto:mtip@hey.com" style="color:rgba(255,255,255,0.85)">mtip@hey.com</a></span></div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
 
