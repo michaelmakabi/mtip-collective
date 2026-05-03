@@ -33,6 +33,10 @@ cPrev&&cPrev.addEventListener('click',()=>cGo(cIdx-1));
 cNext&&cNext.addEventListener('click',()=>cGo(cIdx+1));
 if(cTrack){let cTimer;cTrack.addEventListener('scroll',()=>{clearTimeout(cTimer);cTimer=setTimeout(()=>{const center=cTrack.scrollLeft+cTrack.clientWidth/2;let best=0,bestD=Infinity;cSlides.forEach((s,i)=>{const d=Math.abs(s.offsetLeft+s.clientWidth/2-center);if(d<bestD){bestD=d;best=i;}});cIdx=best;cUpdate();},120);});}
 cUpdate();
+const cPrevHover = document.getElementById('carouselPrevHover');
+const cNextHover = document.getElementById('carouselNextHover');
+cPrevHover && cPrevHover.addEventListener('click', () => cGo(cIdx-1));
+cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
 
 // NOISE DEMO — Web Audio API
 let nCtx,nNoise,nGain,nFilter,nLfo,nLfoGain,nOscArr=[],nState='off';
@@ -462,6 +466,15 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .cta-block p{color:rgba(255,255,255,0.7)}
 .cta-block .actions{display:flex;flex-direction:column;gap:10px}
 @media(max-width:768px){.cta-block{grid-template-columns:1fr;padding:36px;text-align:center}.cta-block .actions{align-items:center}}
+
+.carousel-track{padding:8px 64px 32px}
+@media(max-width:768px){.carousel-track{padding:8px 24px 32px}}
+.carousel-arrow-overlay{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.95);box-shadow:var(--shadow-lg);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;z-index:5;transition:all 0.2s;color:var(--text)}
+.carousel-arrow-overlay:hover{background:var(--red);color:white;transform:translateY(-50%) scale(1.05)}
+.carousel-arrow-overlay i{width:22px;height:22px}
+.carousel-arrow-overlay.prev{left:24px}
+.carousel-arrow-overlay.next{right:24px}
+@media(max-width:640px){.carousel-arrow-overlay{display:none}}
 </style>
 </head>
 <body>
@@ -598,7 +611,11 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="section-header center"><div class="eyebrow">In every room</div><h2>One pod.<br>Every space.</h2><p class="lead" style="margin-left:auto;margin-right:auto">From private offices to airport terminals to coworking floors to home studios — see MTIP Collective Pods in the wild.</p></div>
 </div>
 <div class="carousel-wrap">
+<button class="carousel-arrow-overlay prev" id="carouselPrevHover" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
+<button class="carousel-arrow-overlay next" id="carouselNextHover" aria-label="Next"><i data-lucide="chevron-right"></i></button>
 <div class="carousel-track" id="carouselTrack">
+<div class="carousel-slide"><img src="assets/images/carousel-19-real-showroom-pods.jpg" alt="Real MTIP Collective pods in showroom"><div class="carousel-caption"><strong>Live in the showroom</strong><span>Real MTIP Collective pod, real plants, real call</span></div></div>
+<div class="carousel-slide"><img src="assets/images/carousel-20-real-pod-front.jpg" alt="MTIP Collective Studio pod front view"><div class="carousel-caption"><strong>The Studio · showroom front</strong><span>10 sq ft of soundproof. Plug in. Sit down. Work.</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-09-pod-in-office.jpg" alt="Pod in office"><div class="carousel-caption"><strong>Open office, private call</strong><span>Drop one between desks · 28 dB sound floor</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-10-pod-coworking.jpg" alt="Pod in coworking"><div class="carousel-caption"><strong>Coworking floor</strong><span>Members get private space without a private lease</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-11-pod-lounge.jpg" alt="Pod in lounge"><div class="carousel-caption"><strong>Lobby and lounge</strong><span>Hospitality-grade aesthetic. Hotel + airport-ready.</span></div></div>
@@ -618,7 +635,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="carousel-slide"><img src="assets/images/carousel-07-quad-side.jpg" alt="Quad side"><div class="carousel-caption"><strong>The Quad · side profile</strong><span>Modular construction · 90-min on-site assembly</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-08-accessible-detail.jpg" alt="Accessible detail"><div class="carousel-caption"><strong>Accessible Pod · interior</strong><span>Foldable desktop · barrier-free entry</span></div></div>
 </div>
-<div class="carousel-nav"><button id="carouselPrev" aria-label="Previous"><i data-lucide="arrow-left"></i></button><div class="carousel-counter" id="carouselCounter">1 / 18</div><button id="carouselNext" aria-label="Next"><i data-lucide="arrow-right"></i></button></div>
+<div class="carousel-nav"><button id="carouselPrev" aria-label="Previous"><i data-lucide="arrow-left"></i></button><div class="carousel-counter" id="carouselCounter">1 / 20</div><button id="carouselNext" aria-label="Next"><i data-lucide="arrow-right"></i></button></div>
 </div>
 </section>
 
