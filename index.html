@@ -161,7 +161,7 @@ p{color:var(--text-mid)}
 .section-header h2+p{margin-top:24px}
 .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,0.06)}
 .nav-inner{max-width:1380px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 32px}
-.nav-logo img{height:36px;width:auto}
+.nav-logo img{height:48px;width:auto}@media(max-width:640px){.nav-logo img{height:38px}}
 .nav-tabs{display:flex;gap:36px}
 .nav-tabs a{font-size:0.95rem;font-weight:500;color:var(--text-mid);transition:color 0.2s}
 .nav-tabs a:hover,.nav-tabs a.current{color:var(--red)}
@@ -178,20 +178,20 @@ p{color:var(--text-mid)}
 .section-dark .btn-outline{color:white;border-color:rgba(255,255,255,0.3)}
 .section-dark .btn-outline:hover{border-color:white;background:rgba(255,255,255,0.05)}
 .hero{padding:100px 0 120px;position:relative;overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:80px;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:center}
 @media(max-width:1024px){.hero-grid{grid-template-columns:1fr;gap:56px}}
 .hero h1{margin:28px 0 32px}
 .hero h1 .red-em{background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:italic;font-weight:900}
 .hero-sub{font-size:clamp(1.125rem,1.5vw,1.4rem);color:var(--text-mid);margin-bottom:40px;max-width:540px}
 .hero-sub strong{color:var(--text);font-weight:700}
 .hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
-.hero-video-wrap{position:relative;border-radius:24px;overflow:hidden;background:var(--black);aspect-ratio:4/5;box-shadow:var(--shadow-lg);max-height:720px}
+.hero-video-wrap{position:relative;border-radius:20px;overflow:hidden;background:var(--black);aspect-ratio:16/10;box-shadow:var(--shadow-lg)}
 .hero-video-wrap video{width:100%;height:100%;object-fit:cover}
 .video-toggle{position:absolute;bottom:24px;right:24px;width:48px;height:48px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;transition:all 0.2s;color:var(--text)}
 .video-toggle:hover{background:var(--red);color:white}
 .video-toggle i{width:20px;height:20px}
 .trust-strip{padding:28px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-soft)}
-.trust-inner{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px 40px;font-size:0.92rem;font-weight:500;color:var(--text-mid)}
+.trust-inner{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 36px;font-size:0.88rem;font-weight:500;color:var(--text-mid);max-width:1200px;margin:0 auto}
 .trust-inner span{display:inline-flex;align-items:center;gap:8px}
 .trust-inner i{width:16px;height:16px;color:var(--red)}
 .trust-inner .sep{width:4px;height:4px;background:var(--silver-2);border-radius:50%}
@@ -201,7 +201,7 @@ p{color:var(--text-mid)}
 @media(max-width:1024px){.suite-grid{grid-template-columns:1fr;gap:56px}}
 .flagship-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:white;border:1px solid var(--border);color:var(--red);border-radius:999px;font-size:0.78rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;box-shadow:var(--shadow-sm)}
 .flagship-pill i{width:14px;height:14px}
-.suite-image{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:4/5;box-shadow:var(--shadow-lg)}
+.suite-image{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;box-shadow:var(--shadow-lg)}
 .suite-image img{width:100%;height:100%;object-fit:cover}
 .suite-image-tag{position:absolute;bottom:24px;left:24px;padding:12px 20px;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);border-radius:12px;color:white;font-size:0.9rem;font-weight:600}
 .suite-image-tag span{color:var(--red-light);font-weight:700}
@@ -245,7 +245,7 @@ p{color:var(--text-mid)}
 .tier-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--text)}
 .tier-card.featured{border-color:var(--red);background:linear-gradient(180deg,#FFF8F8 0%,white 30%);box-shadow:0 16px 40px rgba(229,59,59,0.12)}
 .tier-card.featured::before{content:'FLAGSHIP';position:absolute;top:16px;right:16px;background:var(--red);color:white;padding:6px 12px;border-radius:999px;font-size:0.65rem;font-weight:800;letter-spacing:0.18em;z-index:2}
-.tier-img{background:var(--bg-section);aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.tier-img{background:var(--bg-section);aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.tier-img img{transition:transform 0.5s}.tier-card:hover .tier-img img{transform:scale(1.04)}
 .tier-img img{width:100%;height:100%;object-fit:cover}
 .tier-body{padding:28px 24px 24px;flex-grow:1;display:flex;flex-direction:column}
 .tier-rank{font-size:0.7rem;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-mid);margin-bottom:6px}
@@ -323,7 +323,7 @@ p{color:var(--text-mid)}
 .edge-card h4{margin-bottom:8px}
 .fullbleed{position:relative;overflow:hidden;height:80vh;min-height:600px;max-height:800px}
 .fullbleed img{width:100%;height:100%;object-fit:cover}
-.fullbleed-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 50%,transparent 100%);display:flex;align-items:center}
+.fullbleed-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.55) 30%,rgba(0,0,0,0.2) 60%,transparent 100%);display:flex;align-items:center}
 .fullbleed-content{max-width:1380px;margin:0 auto;padding:0 32px;width:100%;color:white}
 .fullbleed-content>div{max-width:600px}
 .fullbleed h2{color:white;margin-bottom:24px}
@@ -402,7 +402,7 @@ p{color:var(--text-mid)}
 .final-cta .btn-outline:hover{background:rgba(255,255,255,0.1);border-color:white}
 footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);text-align:center}
 .footer-logo img{height:48px;margin:0 auto 24px}
-.footer-tagline{font-size:0.95rem;margin-bottom:36px}
+.footer-tagline{font-size:0.95rem;margin-bottom:14px}.footer-meta{font-size:0.85rem;color:rgba(255,255,255,0.65);margin-bottom:32px}
 .footer-links{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;font-size:0.9rem}
 .footer-links a{color:rgba(255,255,255,0.7);transition:color 0.2s}
 .footer-links a:hover{color:white}
@@ -413,11 +413,11 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .carousel-section{padding:140px 0;background:var(--white);overflow:hidden}
 @media(max-width:768px){.carousel-section{padding:80px 0}}
 .carousel-wrap{position:relative;margin-top:48px}
-.carousel-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:8px 32px 32px;-webkit-overflow-scrolling:touch}
+.carousel-track{display:flex;gap:20px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:8px 32px 32px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;overscroll-behavior-y:auto}
 .carousel-track::-webkit-scrollbar{height:6px}
 .carousel-track::-webkit-scrollbar-track{background:var(--bg-section);border-radius:3px}
 .carousel-track::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px}
-.carousel-slide{flex:0 0 auto;width:560px;aspect-ratio:16/11;border-radius:20px;overflow:hidden;position:relative;scroll-snap-align:center;cursor:pointer;background:var(--bg-section);box-shadow:var(--shadow-sm)}
+.carousel-slide{flex:0 0 auto;width:480px;aspect-ratio:16/10;border-radius:16px;overflow:hidden;position:relative;scroll-snap-align:start;cursor:pointer;background:var(--bg-section);box-shadow:var(--shadow-sm)}
 @media(max-width:768px){.carousel-slide{width:88vw}}
 .carousel-slide img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s}
 .carousel-slide:hover img{transform:scale(1.04)}
@@ -475,16 +475,29 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .carousel-arrow-overlay.prev{left:24px}
 .carousel-arrow-overlay.next{right:24px}
 @media(max-width:640px){.carousel-arrow-overlay{display:none}}
+
+.founder-card{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;background:white;border:1px solid var(--border);border-radius:24px;padding:48px;box-shadow:var(--shadow-md)}
+@media(max-width:768px){.founder-card{grid-template-columns:1fr;text-align:center;padding:32px}}
+.founder-photo{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#E53B3B 0%,#B82E2E 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 8px 24px rgba(229,59,59,0.25)}
+@media(max-width:768px){.founder-photo{margin:0 auto}}
+.founder-mark{font-family:'Inter',sans-serif;font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1}
+.founder-content{}
+.founder-quote{font-size:1.18rem;line-height:1.55;color:var(--text);margin:12px 0 24px;font-weight:500;letter-spacing:-0.011em;font-style:italic}
+.founder-attr{display:flex;flex-direction:column;gap:2px}
+.founder-attr strong{font-size:1rem;color:var(--text);font-weight:700}
+.founder-attr span{font-size:0.88rem;color:var(--text-mid)}
+
+.btn-red:hover{background:linear-gradient(135deg,#E53B3B 0%,#DEE1E6 50%,#FFFFFF 70%,#E53B3B 100%);color:#1A1D24}
 </style>
 </head>
 <body>
 <nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><div class="nav-tabs"><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#compare">Compare</a><a href="#features">Features</a><a href="#order">Order</a></div><a href="#order" class="btn btn-red">Reserve a Pod</a></div></nav>
 
-<section class="hero" id="top"><div class="container"><div class="hero-grid"><div><div class="eyebrow">A new MTIP Collective offering · Pods</div><h1>Stop renting an office.<br><span class="red-em">Own one.</span></h1><p class="hero-sub">A Class A 1-person executive office runs <strong>$1,500–$2,500/month</strong>. The Suite by MTIP Collective is a one-time <strong>$6,997.</strong> Pays for itself in under five months. Stays yours forever.</p><div class="hero-ctas"><a href="#suite" class="btn btn-red btn-lg">Meet The Suite <i data-lucide="arrow-right"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div><div class="hero-video-wrap"><video id="heroVideo" autoplay muted loop playsinline poster="assets/images/hero-lifestyle-1.jpg"><source src="assets/video/walkthrough.mp4" type="video/mp4"></video><button class="video-toggle" id="videoToggle" aria-label="Toggle sound"><i data-lucide="volume-x" id="videoIcon"></i></button></div></div></div></section>
+<section class="hero" id="top"><div class="container"><div class="hero-grid"><div><div class="eyebrow">Built for solo executives · real estate operators · podcast creators · coworking owners</div><h1>Stop renting an office.<br><span class="red-em">Own one.</span></h1><p class="hero-sub">Sound-insulated, plug-and-play executive offices. <strong>Delivered fully assembled in 90 days.</strong> The Suite replaces a Class A 1-person office for a one-time <strong>$6,997</strong>.</p><div class="hero-ctas"><a href="#suite" class="btn btn-red btn-lg">Meet The Suite <i data-lucide="arrow-right"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div><div class="hero-video-wrap"><video id="heroVideo" autoplay muted loop playsinline poster="assets/images/hero-landscape.jpg"><source src="assets/video/walkthrough.mp4" type="video/mp4"></video><button class="video-toggle" id="videoToggle" aria-label="Toggle sound"><i data-lucide="volume-x" id="videoIcon"></i></button></div></div></div></section>
 
 <div class="trust-strip"><div class="container"><div class="trust-inner"><span><i data-lucide="volume-x"></i> ~30 dB sound insulation</span><span class="sep"></span><span><i data-lucide="truck"></i> 90-day delivery</span><span class="sep"></span><span><i data-lucide="package-check"></i> Fully assembled</span><span class="sep"></span><span><i data-lucide="shield-check"></i> 1-year warranty</span><span class="sep"></span><span><i data-lucide="credit-card"></i> $0 down · 12-mo plans</span><span class="sep"></span><span><i data-lucide="map-pin"></i> Florida showroom</span></div></div></div>
 
-<section class="suite-hero section" id="suite"><div class="container"><div class="suite-grid"><div><div class="flagship-pill"><i data-lucide="star"></i> The Flagship</div><h2>The Suite.<br>Your private executive office.<br><span class="text-red">Delivered.</span></h2><p class="lead" style="margin-top:32px">A 49-square-foot, sound-insulated, fully assembled executive office. <strong style="color:var(--text)">Seats one in luxury.</strong> Or six in a meeting. Or your podcast crew. Or your investor pitch.</p><p class="lead" style="margin-top:20px">Compare it to a real 1-person office in any decent commercial building: <strong style="color:var(--text)">$1,500–$2,500 a month</strong>, plus deposits, plus build-out, plus a 5-year lease.</p><p class="lead" style="margin-top:20px">The Suite is <strong style="color:var(--red)">a one-time $6,997.</strong></p>
+<section class="suite-hero section" id="suite"><div class="container"><div class="suite-grid"><div><div class="flagship-pill"><i data-lucide="star"></i> The Flagship</div><h2>The Suite.<br>It's not a pod.<br><span class="text-red">It's your office.</span></h2><p class="lead" style="margin-top:32px">A 49-square-foot, sound-insulated, fully assembled executive office. <strong style="color:var(--text)">Seats one in luxury.</strong> Or six in a meeting. Or your podcast crew. Or your investor pitch.</p><p class="lead" style="margin-top:20px">Compare it to a real 1-person office in any decent commercial building: <strong style="color:var(--text)">$1,500–$2,500 a month</strong>, plus deposits, plus build-out, plus a 5-year lease.</p><p class="lead" style="margin-top:20px">The Suite is <strong style="color:var(--red)">a one-time $6,997.</strong></p>
 
 <div class="roi-table"><table><thead><tr><th>If you're paying</th><th>A year of that</th><th>The Suite pays back</th></tr></thead><tbody><tr><td>$1,500/mo office</td><td>$18,000</td><td class="payback">in 4.7 months</td></tr><tr><td>$2,000/mo office</td><td>$24,000</td><td class="payback">in 3.5 months</td></tr><tr><td>$2,500/mo office</td><td>$30,000</td><td class="payback">in 2.8 months</td></tr></tbody></table></div>
 
@@ -494,19 +507,38 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 <div class="suite-price-card"><div class="suite-price-row"><span class="big">$6,997</span><span class="once">paid once · delivered turnkey</span></div><p class="install-note">Or <strong>$699/mo</strong> for 12 months · <strong>$0 down</strong> · 0 credit gymnastics</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a href="#order" class="btn btn-red">Reserve The Suite <i data-lucide="arrow-right"></i></a><a href="#showroom" class="btn btn-outline">See It In Person</a></div></div>
 </div>
-<div class="suite-image"><img src="assets/images/hero-lifestyle-1.jpg" alt="MTIP Collective Suite — interior"><div class="suite-image-tag">The Suite · 6-person · <span>Flagship</span></div></div>
+<div class="suite-image"><img src="assets/images/real-quad-showroom.jpg" alt="MTIP Collective Suite — flagship showroom" style="object-position:center 30%"><div class="suite-image-tag">The Suite · 6-person · <span>Flagship</span></div></div>
 </div></div></section>
 
-<section class="section section-soft" id="lineup"><div class="container">
+
+<section class="section section-soft" id="founder" style="padding:96px 0">
+  <div class="container-tight" style="max-width:920px">
+    <div class="founder-card">
+      <div class="founder-photo">
+        <div class="founder-mark">M</div>
+      </div>
+      <div class="founder-content">
+        <div class="eyebrow">From the operator</div>
+        <p class="founder-quote">"I priced a single Framery 2Q for my coworking floor. The quote came back at $26,400. I laughed, hung up, and called my factory direct. We're now shipping the same acoustic spec — better materials, larger interior, fully assembled — at half the price. Not because we cut corners. Because we cut the SoHo showroom rent and the white-glove markup. Real product, factory-direct, operator-to-operator."</p>
+        <div class="founder-attr">
+          <strong>Master Makabi</strong>
+          <span>Founder · MTIP Collective · Florida</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section" id="lineup"><div class="container">
 <div class="section-header center"><div class="eyebrow">The Lineup</div><h2>Four sizes.<br>One standard of quality.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Same aluminum frame. Same ISO-certified acoustic walls. Same 6mm tempered glass. Same motion-sensor lighting. Same fresh-air system. Only the size and seating change.</p></div>
 
 <div class="tier-toggle-wrap"><div class="tier-toggle" id="tierToggle"><button class="active" data-mode="cash">Pay Once</button><button data-mode="install">12-Month · $0 Down</button></div></div>
 
 <div class="tier-grid">
-<div class="tier-card"><div class="tier-img"><img src="assets/images/pod-studio.jpg" alt="The Studio"></div><div class="tier-body"><div class="tier-rank">Good · Solo</div><h3>The Studio</h3><p class="tier-tagline">A private studio in 10 sq ft. For recording, AI command, focus, sales floor.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1 person</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~10 sq ft</strong> (0.96 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>28 ± 3 dB</strong></span></li><li><i data-lucide="zap"></i><span>24W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$2,997" data-install="$299">$2,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
-<div class="tier-card"><div class="tier-img"><img src="assets/images/pod-duo.jpg" alt="The Duo"></div><div class="tier-body"><div class="tier-rank">Better · 1-Person Office</div><h3>The Duo</h3><p class="tier-tagline">The smart 1-person office. Or take real 2-person calls. Either works.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–2 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~23 sq ft</strong> (2.1 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>30W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$4,497" data-install="$449">$4,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
-<div class="tier-card"><div class="tier-img"><img src="assets/images/pod-quad.jpg" alt="The Quad"></div><div class="tier-body"><div class="tier-rank">Best · Meeting Room</div><h3>The Quad</h3><p class="tier-tagline">A real meeting room. Without the build-out. Workshops, sales rooms, pitches.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>4 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~31 sq ft</strong> (2.9 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>54W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$5,497" data-install="$549">$5,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
-<div class="tier-card featured"><div class="tier-img"><img src="assets/images/pod-suite.jpg" alt="The Suite"></div><div class="tier-body"><div class="tier-rank">Super-Best · Replace Your Office</div><h3>The Suite</h3><p class="tier-tagline">Replace your $1,500–$2,500/mo executive office. Pays back in under 5 months.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–6 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> (4.5 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>90W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$6,997" data-install="$699">$6,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-red">Reserve The Suite</a></div></div>
+<div class="tier-card"><div class="tier-img"><img src="assets/images/tier-studio.jpg" alt="The Studio — solo private workspace"></div><div class="tier-body"><div class="tier-rank">Good · Solo</div><h3>The Studio</h3><p class="tier-tagline">A private studio in 10 sq ft. For recording, AI command, focus, sales floor.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1 person</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~10 sq ft</strong> (0.96 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>28 ± 3 dB</strong></span></li><li><i data-lucide="zap"></i><span>24W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$2,997" data-install="$299">$2,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card"><div class="tier-img"><img src="assets/images/tier-duo.jpg" alt="The Duo — 2-person pod in office"></div><div class="tier-body"><div class="tier-rank">Better · 1-Person Office</div><h3>The Duo</h3><p class="tier-tagline">The smart 1-person office. Or take real 2-person calls. Either works.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–2 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~23 sq ft</strong> (2.1 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>30W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$4,497" data-install="$449">$4,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card"><div class="tier-img"><img src="assets/images/tier-quad.jpg" alt="The Quad — 4-person meeting room"></div><div class="tier-body"><div class="tier-rank">Best · Meeting Room</div><h3>The Quad</h3><p class="tier-tagline">A real meeting room. Without the build-out. Workshops, sales rooms, pitches.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>4 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~31 sq ft</strong> (2.9 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>54W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$5,497" data-install="$549">$5,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card featured"><div class="tier-img"><img src="assets/images/tier-suite.jpg" alt="The Suite — flagship showroom"></div><div class="tier-body"><div class="tier-rank">Super-Best · Replace Your Office</div><h3>The Suite</h3><p class="tier-tagline">Replace your $1,500–$2,500/mo executive office. Pays back in under 5 months.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–6 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> (4.5 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>90W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$6,997" data-install="$699">$6,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-red">Reserve The Suite</a></div></div>
 </div>
 
 <div style="text-align:center;margin-top:48px"><p style="color:var(--text-mid)">Need <strong style="color:var(--text)">accessibility configuration</strong>? The Accessible Pod is engineered for users with reduced mobility — wide entry, auto-opening door, multi-modal access. <strong style="color:var(--text)">Pricing on request.</strong></p><a href="mailto:mtip@hey.com?subject=Accessible%20Pod%20Inquiry" class="btn btn-ghost" style="margin-top:12px">Talk to us about accessibility <i data-lucide="arrow-right"></i></a></div>
@@ -646,14 +678,14 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 </section>
 
-<section class="fullbleed" id="showroom"><img src="assets/images/showroom-2.jpg" alt="MTIP Collective Pods in a real office"><div class="fullbleed-overlay"><div class="fullbleed-content"><div><div class="eyebrow" style="color:var(--red-light)">Real product · real showroom · in Florida</div><h2>This is one of ours.<br>Sit in it.</h2><p>Pictures don't tell you what 30 dB feels like. Visit MTIP Collective in Florida and step inside. Take a real call. Listen to the difference. Then sign.</p><a href="mailto:mtip@hey.com?subject=Showroom%20Visit" class="btn btn-red btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a></div></div></div></section>
+<section class="fullbleed" id="showroom"><img src="assets/images/showroom-2.jpg" alt="MTIP Collective Pods in a real office"><div class="fullbleed-overlay"><div class="fullbleed-content"><div><div class="eyebrow" style="color:var(--red-light)">Real product · real showroom · in Florida</div><h2>This is one of ours.<br>Sit in it.</h2><p>Pictures don't tell you what 30 dB feels like. Visit MTIP Collective in Florida and step inside. Take a real call. Listen to the difference. Then sign.</p><a href="https://calendly.com/mtip-collective/pods-walkthrough" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a></div></div></div></section>
 
 <section class="section"><div class="container">
 <div class="section-header center"><div class="eyebrow">In the wild</div><h2>Drop one anywhere.<br>It works.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Coworking floors. Hotel lobbies. Airport terminals. Libraries. Warehouses. Home offices. The pod doesn't care where it lands.</p></div>
 <div class="usecase-grid">
 <div class="usecase-card"><img src="assets/images/usecase-airport.jpg" alt="Pods in airport terminal"><div class="usecase-card-content"><h4>Airport Terminals</h4><p>A quiet corner in a busy terminal — for travelers who need to take the call before boarding.</p></div></div>
 <div class="usecase-card"><img src="assets/images/showroom-1.jpg" alt="Pods in office space"><div class="usecase-card-content"><h4>Coworking Floors</h4><p>Drop-in privacy at scale. No build-out.</p></div></div>
-<div class="usecase-card"><img src="assets/images/edge-styles.jpg" alt="Pods at home"><div class="usecase-card-content"><h4>Home Offices</h4><p>The room your spouse will thank you for.</p></div></div>
+<div class="usecase-card"><img src="assets/images/usecase-home.jpg" alt="MTIP Pod in home office setting"><div class="usecase-card-content"><h4>Home Offices</h4><p>The room your spouse will thank you for.</p></div></div>
 </div>
 </div></section>
 
@@ -692,7 +724,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
     <p>Pricing questions, custom configurations, bulk orders, or you just want a 10-minute walk-through call before you commit. Pick the channel.</p>
   </div>
   <div class="actions">
-    <a href="mailto:mtip@hey.com?subject=Book%20a%20call%20-%20MTIP%20Pods" class="btn btn-red">Book a call <i data-lucide="calendar"></i></a>
+    <a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red">Book a 15-min call <i data-lucide="calendar"></i></a>
     <a href="mailto:mtip@hey.com?subject=Question%20about%20MTIP%20Pods" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:white">Email the team <i data-lucide="mail"></i></a>
   </div>
 </div>
@@ -726,7 +758,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 <section class="final-cta"><div class="container"><h2>Build your office in 90 days.<br>Not 9 months.</h2><p>You don't need a contractor. You don't need a permit. You don't need a 5-year lease. You need a pod.</p><div class="final-cta-buttons"><a href="mailto:mtip@hey.com?subject=Reserve%20The%20Suite" class="btn btn-red btn-lg">Reserve The Suite — $6,997 <i data-lucide="arrow-right"></i></a><a href="#lineup" class="btn btn-outline btn-lg">See All Four Pods</a></div></div></section>
 
-<footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
+<footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-meta"><span><i data-lucide="map-pin" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> 16137 Biscayne Blvd · North Miami, FL</span><span style="margin:0 12px">·</span><span><i data-lucide="mail" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> <a href="mailto:mtip@hey.com" style="color:rgba(255,255,255,0.85)">mtip@hey.com</a></span></div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
 
 <script>
 lucide.createIcons();
