@@ -20,6 +20,233 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js">
 
+
+
+// ============================================================
+// JV WIZARD
+// ============================================================
+(function() {
+  const wState = {
+    step: 1,
+    propertyType: '',
+    city: '',
+    state: '',
+    sqft: '',
+    ceiling: '',
+    podCount: 6,
+    dealStructure: 'zero-capex',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: ''
+  };
+  const POD_RENT = 900; // $900/mo avg per Quad/Suite
+  const RETAIL_PER_POD = 7500; // ~weighted avg of Quad ($5,497) + Suite ($6,997) heavy mix
+  const TOTAL_STEPS = 5;
+
+  const $progress = document.querySelectorAll('.wizard-progress-step');
+  const $steps = document.querySelectorAll('.wizard-step');
+  const $report = document.querySelector('.wizard-report');
+  const $back = document.getElementById('wizardBack');
+  const $next = document.getElementById('wizardNext');
+  const $submit = document.getElementById('wizardSubmit');
+
+  function showStep(n) {
+    wState.step = n;
+    $steps.forEach(s => s.classList.toggle('active', parseInt(s.dataset.step) === n));
+    if ($report) $report.classList.toggle('active', n === 6);
+    $progress.forEach((p, i) => {
+      p.classList.toggle('done', i < n - 1);
+      p.classList.toggle('active', i === n - 1);
+    });
+    $back.disabled = (n === 1);
+    if (n === TOTAL_STEPS) {
+      $next.style.display = 'none';
+      $submit.style.display = 'inline-flex';
+    } else if (n > TOTAL_STEPS) {
+      $next.style.display = 'none';
+      $submit.style.display = 'none';
+    } else {
+      $next.style.display = 'inline-flex';
+      $submit.style.display = 'none';
+    }
+  }
+
+  // Option buttons
+  document.querySelectorAll('.wizard-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const field = btn.dataset.field;
+      const value = btn.dataset.value;
+      // Clear other options in this field group
+      document.querySelectorAll('.wizard-option[data-field="' + field + '"]').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      wState[field] = value;
+    });
+  });
+
+  // Text inputs
+  document.querySelectorAll('.wizard-input, .wizard-select').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const field = e.target.dataset.field;
+      if (field) wState[field] = e.target.value;
+    });
+  });
+
+  // Slider
+  const $slider = document.getElementById('podCountSlider');
+  const $countDisplay = document.getElementById('podCountDisplay');
+  const $revenuePreview = document.getElementById('podRevenuePreview');
+  if ($slider) {
+    $slider.addEventListener('input', () => {
+      const v = parseInt($slider.value);
+      wState.podCount = v;
+      $countDisplay.textContent = v;
+      $revenuePreview.textContent = '$' + (v * POD_RENT).toLocaleString();
+    });
+  }
+
+  // Validate
+  function validateStep(n) {
+    if (n === 1) return !!wState.propertyType;
+    if (n === 2) return !!(wState.city && wState.state && wState.sqft && wState.ceiling);
+    if (n === 3) return wState.podCount >= 2;
+    if (n === 4) return !!wState.dealStructure;
+    if (n === 5) return !!(wState.firstName && wState.email);
+    return true;
+  }
+
+  // Nav
+  $next.addEventListener('click', () => {
+    if (!validateStep(wState.step)) {
+      // Subtle shake
+      const s = document.querySelector('.wizard-step.active');
+      s.style.animation = 'none';
+      setTimeout(() => { s.style.animation = 'wizardFade 0.3s ease'; }, 10);
+      return;
+    }
+    if (wState.step < TOTAL_STEPS) showStep(wState.step + 1);
+  });
+  $back.addEventListener('click', () => {
+    if (wState.step > 1) showStep(wState.step - 1);
+  });
+
+  // Submit + report
+  function generateReport() {
+    const annualRevenue = wState.podCount * POD_RENT * 12;
+    const totalRetail = wState.podCount * RETAIL_PER_POD;
+    const monthlyRevenue = wState.podCount * POD_RENT;
+    let reportData = { annualRevenue, totalRetail, monthlyRevenue };
+
+    // Calculate based on deal structure
+    let dealLabel, dealHeadline, dealBody, recoupValue, recoupLabel, recoupHint, fiveYearNet;
+    const fiveYearRevenue = annualRevenue * 5;
+
+    if (wState.dealStructure === 'buy') {
+      recoupValue = (totalRetail / monthlyRevenue).toFixed(1) + ' mo';
+      recoupLabel = 'Capex payback';
+      recoupHint = 'You front the cost';
+      fiveYearNet = fiveYearRevenue - totalRetail;
+      dealLabel = 'Recommended deal: Buy outright (Option A)';
+      dealHeadline = 'Pay $' + totalRetail.toLocaleString() + ' upfront. Keep 100% of revenue. Full asset on your books.';
+      dealBody = 'You front the equipment cost (' + wState.podCount + ' pods × $' + RETAIL_PER_POD.toLocaleString() + ' avg = $' + totalRetail.toLocaleString() + '). Annual revenue: $' + annualRevenue.toLocaleString() + '. Capex pays back in ' + recoupValue + '. After that, $' + annualRevenue.toLocaleString() + '/yr is fully yours, plus the asset depreciates as commercial furniture (7-year MACRS).';
+    } else if (wState.dealStructure === '50-50') {
+      const yourCapex = totalRetail / 2;
+      recoupValue = '50/50 perpetual';
+      recoupLabel = 'Revenue split';
+      recoupHint = 'No recoupment phase';
+      fiveYearNet = fiveYearRevenue / 2 - yourCapex;
+      dealLabel = 'Recommended deal: 50/50 JV (Option B)';
+      dealHeadline = 'You and MTIP each fund $' + yourCapex.toLocaleString() + '. We split rental revenue 50/50, perpetually.';
+      dealBody = 'Equipment cost split: $' + yourCapex.toLocaleString() + ' from you, $' + yourCapex.toLocaleString() + ' from MTIP. Annual revenue: $' + annualRevenue.toLocaleString() + '. Each side gets $' + (annualRevenue/2).toLocaleString() + '/yr. Either party can manage.';
+    } else if (wState.dealStructure === 'percentage-lease') {
+      recoupValue = '% of gross';
+      recoupLabel = 'Lease basis';
+      recoupHint = 'No capex from you';
+      fiveYearNet = fiveYearRevenue * 0.20; // ~20% of gross to landlord
+      dealLabel = 'Recommended deal: Percentage lease';
+      dealHeadline = 'MTIP leases the space from you and pays a % of gross pod revenue as rent.';
+      dealBody = 'We bring the equipment, manage operations, pay you ~20% of gross rental revenue as percentage rent on a multi-year lease. Zero capex, zero operations from you. Predictable cash flow on space that may otherwise sit empty. Specific % varies with location and footprint — covered in the term sheet.';
+    } else {
+      // zero-capex (default) or not-sure
+      recoupValue = (totalRetail / monthlyRevenue).toFixed(1) + ' mo';
+      recoupLabel = 'Capital recovers in';
+      recoupHint = 'First-money-out · MTIP funds 100%';
+      const postRecoup5yr = (fiveYearRevenue - totalRetail) * 0.75;
+      fiveYearNet = postRecoup5yr;
+      dealLabel = wState.dealStructure === 'not-sure' ? 'Top fit: Zero-Capex JV (Option C)' : 'Recommended deal: Zero-Capex JV (Option C)';
+      dealHeadline = '$0 capex from you. We fund 100%, recover from rental income, then 75/25 perpetual override.';
+      dealBody = 'Your ' + wState.podCount + ' pods generate $' + annualRevenue.toLocaleString() + '/yr. We fund the equipment cost ($' + totalRetail.toLocaleString() + ' retail). After ~' + recoupValue + ' of revenue, capital is recouped. From that point onward: $' + Math.round(annualRevenue*0.75).toLocaleString() + '/yr to you, $' + Math.round(annualRevenue*0.25).toLocaleString() + '/yr to MTIP, in perpetuity. Pure upside, zero downside, on real estate you already own.';
+    }
+
+    document.getElementById('reportFirstName').textContent = wState.firstName ? 'for ' + wState.firstName : 'on your property';
+    document.getElementById('reportSummary').textContent = 'Based on ' + wState.podCount + ' Quads/Suites at $' + POD_RENT + '/mo average rental, located in ' + (wState.city || 'your market') + (wState.state ? ', ' + wState.state.toUpperCase() : '') + '.';
+    document.getElementById('reportAnnualRevenue').textContent = '$' + annualRevenue.toLocaleString();
+    document.getElementById('reportPodLine').textContent = wState.podCount + ' pods × $' + POD_RENT + '/mo';
+    document.getElementById('reportRecoup').textContent = recoupValue;
+    document.getElementById('reportRecoupLabel').textContent = recoupLabel;
+    document.getElementById('reportRecoupHint').textContent = recoupHint;
+    document.getElementById('report5yr').textContent = '$' + Math.round(Math.max(0, fiveYearNet)).toLocaleString();
+    document.getElementById('report5yrHint').textContent = wState.dealStructure === 'percentage-lease' ? '20% of gross over 5 years' : (wState.dealStructure === '50-50' ? 'Net of capex contribution' : 'After capex/recoupment');
+    document.getElementById('reportDealLabel').textContent = dealLabel;
+    document.getElementById('reportDealHeadline').textContent = dealHeadline;
+    document.getElementById('reportDealBody').textContent = dealBody;
+
+    return reportData;
+  }
+
+  // Submit handler — multi-channel capture
+  $submit.addEventListener('click', () => {
+    if (!validateStep(5)) return;
+    generateReport();
+    showStep(6);
+    // Send the data
+    submitWizardData();
+    // Refresh icons
+    if (window.lucide) window.lucide.createIcons();
+  });
+
+  function submitWizardData() {
+    const payload = {
+      timestamp: new Date().toISOString(),
+      source: 'pods.mtip.ai/JV-wizard',
+      ...wState,
+      derived: {
+        annualRevenue: wState.podCount * POD_RENT * 12,
+        totalRetail: wState.podCount * 7500,
+        monthlyRevenue: wState.podCount * POD_RENT
+      }
+    };
+
+    // Channel 1: Formspree → emails to mtip@hey.com
+    // Replace 'YOUR_FORMSPREE_ID' with actual Formspree form ID after setup
+    // Form created at formspree.io with email destination mtip@hey.com
+    fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify(payload)
+    }).catch(e => console.warn('Formspree submission failed (placeholder):', e));
+
+    // Channel 2: GHL webhook (placeholder — replace with real GHL inbound webhook URL)
+    // Configure in GHL: Settings → Integrations → API → create custom webhook
+    fetch('https://YOUR_GHL_WEBHOOK_URL', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    }).catch(e => console.warn('GHL webhook submission failed (placeholder):', e));
+
+    // Show success message
+    setTimeout(() => {
+      const successEl = document.getElementById('wizardSuccess');
+      if (successEl) successEl.classList.add('shown');
+    }, 600);
+  }
+
+  // Init
+  showStep(1);
+})();
+
+
 // CAROUSEL
 const cTrack = document.getElementById('carouselTrack');
 const cPrev = document.getElementById('carouselPrev');
@@ -530,14 +757,93 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .deploy-callout-icon i{width:28px;height:28px;color:white}
 .deploy-callout strong{display:block;font-size:1.2rem;color:white;margin-bottom:8px;font-weight:700;letter-spacing:-0.015em;line-height:1.3}
 .deploy-callout p{color:rgba(255,255,255,0.92);font-size:1rem;line-height:1.6;margin-top:6px}
+
+/* === JV WIZARD === */
+.wizard-section{padding:140px 0;background:linear-gradient(180deg,var(--bg-soft) 0%,white 100%);position:relative;overflow:hidden}
+@media(max-width:768px){.wizard-section{padding:80px 0}}
+.wizard-shell{max-width:920px;margin:0 auto;background:white;border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.06);overflow:hidden;position:relative}
+.wizard-header{padding:40px 48px 24px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#1A1D24 0%,#0A0B0D 100%);color:white;position:relative}
+.wizard-header h3{color:white;font-size:1.6rem;margin-bottom:6px;letter-spacing:-0.025em}
+.wizard-header p{color:rgba(255,255,255,0.7);font-size:0.95rem}
+.wizard-progress{display:flex;gap:6px;margin-top:24px}
+.wizard-progress-step{flex:1;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;transition:background 0.3s}
+.wizard-progress-step.done{background:var(--red)}
+.wizard-progress-step.active{background:var(--red-light)}
+.wizard-body{padding:48px}
+@media(max-width:640px){.wizard-header{padding:32px 24px 20px}.wizard-body{padding:32px 24px}}
+.wizard-step{display:none;animation:wizardFade 0.3s ease}
+.wizard-step.active{display:block}
+@keyframes wizardFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.wizard-step-label{font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.wizard-step h4{font-size:1.6rem;letter-spacing:-0.02em;margin-bottom:8px}
+.wizard-step p.hint{font-size:0.95rem;color:var(--text-mid);margin-bottom:28px}
+.wizard-options{display:grid;gap:12px;margin-bottom:32px}
+.wizard-options.grid-2{grid-template-columns:repeat(2,1fr)}
+.wizard-options.grid-3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:640px){.wizard-options.grid-2,.wizard-options.grid-3{grid-template-columns:1fr}}
+.wizard-option{padding:18px 22px;border:2px solid var(--border);border-radius:12px;background:white;cursor:pointer;transition:all 0.2s;font-family:inherit;font-size:1rem;font-weight:600;color:var(--text);text-align:left;display:flex;align-items:center;gap:14px;letter-spacing:-0.01em}
+.wizard-option:hover{border-color:var(--text)}
+.wizard-option.selected{border-color:var(--red);background:#FFF8F8}
+.wizard-option .check-circle{width:22px;height:22px;border-radius:50%;border:2px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.wizard-option.selected .check-circle{background:var(--red);border-color:var(--red)}
+.wizard-option.selected .check-circle::after{content:'';width:8px;height:8px;background:white;border-radius:50%}
+.wizard-option .opt-content{flex:1}
+.wizard-option .opt-title{display:block;font-weight:700;color:var(--text)}
+.wizard-option .opt-desc{display:block;font-size:0.85rem;color:var(--text-mid);font-weight:500;margin-top:2px}
+.wizard-input,.wizard-select{width:100%;padding:14px 16px;border:1.5px solid var(--border-strong);border-radius:10px;font-family:inherit;font-size:1rem;color:var(--text);background:white;outline:none;transition:border 0.2s}
+.wizard-input:focus,.wizard-select:focus{border-color:var(--red)}
+.wizard-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:640px){.wizard-row{grid-template-columns:1fr}}
+.wizard-field{margin-bottom:14px}
+.wizard-field label{display:block;font-size:0.85rem;font-weight:700;color:var(--text-mid);margin-bottom:6px;letter-spacing:0.02em}
+.wizard-slider-wrap{padding:18px 0}
+.wizard-slider-display{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.wizard-slider-display .num{font-family:'Inter',sans-serif;font-size:3rem;font-weight:900;color:var(--red);letter-spacing:-0.04em;line-height:1}
+.wizard-slider-display .label{color:var(--text-mid);font-size:0.95rem}
+.wizard-slider{width:100%;height:6px;border-radius:3px;background:var(--bg-section);outline:none;-webkit-appearance:none;appearance:none}
+.wizard-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--red);cursor:pointer;box-shadow:0 2px 8px rgba(229,59,59,0.35)}
+.wizard-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--red);cursor:pointer;border:none}
+.wizard-nav{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--border);margin-top:8px}
+.wizard-nav button{padding:12px 24px;font-family:inherit;font-size:0.95rem;font-weight:600;border-radius:999px;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s}
+.wizard-nav .back{background:transparent;color:var(--text-mid)}
+.wizard-nav .back:hover{color:var(--text)}
+.wizard-nav .back:disabled{opacity:0.3;cursor:not-allowed}
+.wizard-nav .next{background:var(--text);color:white}
+.wizard-nav .next:hover{background:var(--black)}
+.wizard-nav .submit{background:var(--grad-cta);color:white;box-shadow:var(--shadow-red);padding:14px 32px}
+.wizard-nav .submit:hover{transform:translateY(-1px)}
+.wizard-nav .next i,.wizard-nav .submit i{width:16px;height:16px}
+
+/* REPORT VIEW */
+.wizard-report{display:none}
+.wizard-report.active{display:block}
+.wizard-report-header{text-align:center;margin-bottom:32px}
+.wizard-report-eyebrow{font-size:0.75rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.wizard-report h4{font-size:2rem;letter-spacing:-0.025em;margin-bottom:12px}
+.wizard-report-summary{color:var(--text-mid);max-width:560px;margin:0 auto;font-size:1rem;line-height:1.55}
+.wizard-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+@media(max-width:640px){.wizard-stats{grid-template-columns:1fr}}
+.wizard-stat{padding:24px;background:linear-gradient(135deg,#1A1D24 0%,#0A0B0D 100%);color:white;border-radius:16px;text-align:center;position:relative;overflow:hidden}
+.wizard-stat::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:linear-gradient(90deg,#E53B3B,#DEE1E6,#FFFFFF,#E53B3B)}
+.wizard-stat .stat-label{font-size:0.7rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:10px}
+.wizard-stat .stat-value{font-family:'Inter',sans-serif;font-size:2rem;font-weight:900;letter-spacing:-0.04em;line-height:1.1;color:white;font-feature-settings:'tnum'}
+.wizard-stat.accent .stat-value{color:var(--red-light)}
+.wizard-stat .stat-suffix{font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:6px}
+.wizard-deal-card{background:#FFF8F8;border:1.5px solid var(--red);border-radius:16px;padding:24px 28px;margin:24px 0}
+.wizard-deal-card strong{color:var(--red);font-size:0.85rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:8px}
+.wizard-deal-card h5{font-size:1.25rem;color:var(--text);margin-bottom:8px;letter-spacing:-0.015em}
+.wizard-deal-card p{color:var(--text-mid);font-size:0.95rem;line-height:1.55}
+.wizard-success-msg{background:linear-gradient(135deg,#22C55E 0%,#16A34A 100%);color:white;border-radius:16px;padding:24px 28px;margin-top:24px;text-align:center;display:none}
+.wizard-success-msg.shown{display:block;animation:wizardFade 0.4s ease}
+.wizard-success-msg strong{display:block;font-size:1.15rem;margin-bottom:6px;font-weight:700}
 </style>
 </head>
 <body>
-<nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><div class="nav-tabs"><a href="#deploy">Deploy</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#compare">Compare</a><a href="#order">Order</a></div><a href="#deploy" class="btn btn-red">Get JV term sheet</a></div></nav>
+<nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><div class="nav-tabs"><a href="#deploy">Deploy</a><a href="#wizard">Run the math</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#compare">Compare</a></div><a href="#deploy" class="btn btn-red">Get JV term sheet</a></div></nav>
 
-<section class="hero" id="top"><div class="container"><div class="hero-grid"><div><div class="eyebrow">Built for landlords · building owners · multi-tenant operators · coworking</div><h1>Stop building<br>$80K offices.<br><span class="red-em">Drop in pods.</span></h1><p class="hero-sub">A 49 sq ft TI build-out runs <strong>$10,000–$15,000</strong>, takes 6 months, and walks out the door when the tenant leaves. <strong>The Suite by MTIP Collective ships fully assembled in 90 days for $6,997.</strong> Or — let us fund <strong>100%</strong>, recover from rental revenue, and override-split with you in perpetuity.</p><div class="hero-ctas"><a href="#deploy" class="btn btn-red btn-lg">See the deal structures <i data-lucide="arrow-right"></i></a><a href="#suite" class="btn btn-outline btn-lg">See the product</a></div></div><div class="hero-video-wrap"><video id="heroVideo" autoplay muted loop playsinline poster="assets/images/hero-landscape.jpg"><source src="assets/video/walkthrough.mp4" type="video/mp4"></video><button class="video-toggle" id="videoToggle" aria-label="Toggle sound"><i data-lucide="volume-x" id="videoIcon"></i></button></div></div></div></section>
+<section class="hero" id="top"><div class="container"><div class="hero-grid"><div><div class="eyebrow">Warehouses · retail plazas · ground-floor office · South Florida → national</div><h1>Stop building<br>$80K offices.<br><span class="red-em">Drop in pods.</span></h1><p class="hero-sub">A 49 sq ft TI build-out runs <strong>$10,000–$15,000</strong>, takes 6 months, and walks out the door when the tenant leaves. <strong>The Suite by MTIP Collective ships fully assembled in 90 days for $6,997.</strong> Or — let us fund <strong>100%</strong>, recover from rental revenue, and override-split with you in perpetuity.</p><div class="hero-ctas"><a href="#wizard" class="btn btn-red btn-lg">Run the math on your property <i data-lucide="arrow-right"></i></a><a href="#deploy" class="btn btn-outline btn-lg">See deal structures</a></div></div><div class="hero-video-wrap"><video id="heroVideo" autoplay muted loop playsinline poster="assets/images/hero-landscape.jpg"><source src="assets/video/walkthrough.mp4" type="video/mp4"></video><button class="video-toggle" id="videoToggle" aria-label="Toggle sound"><i data-lucide="volume-x" id="videoIcon"></i></button></div></div></div></section>
 
-<div class="trust-strip"><div class="container"><div class="trust-inner"><span><i data-lucide="volume-x"></i> ~30 dB sound insulation</span><span class="sep"></span><span><i data-lucide="truck"></i> 90-day delivery</span><span class="sep"></span><span><i data-lucide="package-check"></i> Fully assembled</span><span class="sep"></span><span><i data-lucide="shield-check"></i> 1-year warranty</span><span class="sep"></span><span><i data-lucide="credit-card"></i> $0 down · 12-mo plans</span><span class="sep"></span><span><i data-lucide="map-pin"></i> Florida showroom</span></div></div></div><div class="cert-strip"><div class="container"><div class="cert-inner"><div class="cert-item"><div class="cert-mark">ISO</div><div><strong>23351-1 Certified</strong><span>Acoustic performance to international standard</span></div></div><div class="cert-item"><div class="cert-mark">90<sub>day</sub></div><div><strong>Production lead time</strong><span>Deposit → fully assembled at your door</span></div></div><div class="cert-item"><div class="cert-mark">1<sub>yr</sub></div><div><strong>Manufacturer warranty</strong><span>Free replacement parts, full coverage</span></div></div><div class="cert-item"><div class="cert-mark">$0</div><div><strong>Down payment, financed</strong><span>12 monthly installments available</span></div></div></div></div></div>
+<div class="trust-strip"><div class="container"><div class="trust-inner"><span><i data-lucide="volume-x"></i> ~30 dB sound insulation</span><span class="sep"></span><span><i data-lucide="truck"></i> 90-day delivery</span><span class="sep"></span><span><i data-lucide="package-check"></i> Fully assembled</span><span class="sep"></span><span><i data-lucide="shield-check"></i> 1-year warranty</span><span class="sep"></span><span><i data-lucide="credit-card"></i> $0 down · 12-mo plans</span><span class="sep"></span><span><i data-lucide="map-pin"></i> Showroom · 16137 Biscayne Blvd, North Miami Beach</span></div></div></div><div class="cert-strip"><div class="container"><div class="cert-inner"><div class="cert-item"><div class="cert-mark">ISO</div><div><strong>23351-1 Certified</strong><span>Acoustic performance to international standard</span></div></div><div class="cert-item"><div class="cert-mark">90<sub>day</sub></div><div><strong>Production lead time</strong><span>Deposit → fully assembled at your door</span></div></div><div class="cert-item"><div class="cert-mark">1<sub>yr</sub></div><div><strong>Manufacturer warranty</strong><span>Free replacement parts, full coverage</span></div></div><div class="cert-item"><div class="cert-mark">$0</div><div><strong>Down payment, financed</strong><span>12 monthly installments available</span></div></div></div></div></div>
 
 
 
@@ -598,7 +904,164 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       <div class="deploy-callout-icon"><i data-lucide="trending-up"></i></div>
       <div>
         <strong>The smartest CapEx your portfolio will see this year is the one you don't have to write.</strong>
-        <p>Option C lets you add 6–10 pods to a building, generate $20K–$60K in annual rental income, and pay nothing upfront. We fund the pods, recover the cost from your tenant fees, then perpetual override. Your existing real estate becomes a higher-margin asset overnight.</p>
+        <p>Option C: add 6 Quads &amp; Suites to a property. At <strong>$900/mo each</strong>, that's <strong>$64,800/yr</strong> in rental revenue. We fund the equipment (~$45K retail). Cost recovers in <strong>~8 months</strong>. After recoupment: <strong>$48,600/yr to you</strong> if you manage. Pure perpetual upside, zero capital outlay, on real estate you already own.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="wizard-section" id="wizard">
+  <div class="container">
+    <div class="section-header center">
+      <div class="eyebrow">See it for your property</div>
+      <h2>Run the math<br>on your building.</h2>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Tell us about the space. We'll model the rental revenue, the deal structure economics, and email you a personalized opportunity report — plus a follow-up call.</p>
+    </div>
+
+    <div class="wizard-shell">
+      <div class="wizard-header">
+        <h3>JV Opportunity Wizard</h3>
+        <p>5 quick steps · ~90 seconds · we'll send your custom report to your inbox</p>
+        <div class="wizard-progress" id="wizardProgress">
+          <div class="wizard-progress-step active"></div>
+          <div class="wizard-progress-step"></div>
+          <div class="wizard-progress-step"></div>
+          <div class="wizard-progress-step"></div>
+          <div class="wizard-progress-step"></div>
+        </div>
+      </div>
+
+      <div class="wizard-body">
+        <!-- STEP 1: Property type -->
+        <div class="wizard-step active" data-step="1">
+          <div class="wizard-step-label">Step 1 of 5</div>
+          <h4>What kind of property are we working with?</h4>
+          <p class="hint">Pick the one that fits best — we underwrite ground-level + parking + high ceilings fastest.</p>
+          <div class="wizard-options grid-2">
+            <button type="button" class="wizard-option" data-field="propertyType" data-value="warehouse"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">Warehouse / Industrial</span><span class="opt-desc">High ceilings, parking, flex zoning</span></span></button>
+            <button type="button" class="wizard-option" data-field="propertyType" data-value="retail-plaza"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">Retail shopping plaza</span><span class="opt-desc">Strip mall, mixed-use, foot traffic</span></span></button>
+            <button type="button" class="wizard-option" data-field="propertyType" data-value="ground-office"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">Ground-floor office</span><span class="opt-desc">Street-level, multi-tenant</span></span></button>
+            <button type="button" class="wizard-option" data-field="propertyType" data-value="multi-story"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">2-story office building</span><span class="opt-desc">Multi-tenant, elevator-served</span></span></button>
+            <button type="button" class="wizard-option" data-field="propertyType" data-value="coworking"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">Coworking / flex space</span><span class="opt-desc">Member-billed amenity model</span></span></button>
+            <button type="button" class="wizard-option" data-field="propertyType" data-value="other"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">Something else</span><span class="opt-desc">Hospitality, healthcare, education</span></span></button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Location + size -->
+        <div class="wizard-step" data-step="2">
+          <div class="wizard-step-label">Step 2 of 5</div>
+          <h4>Where is it, and how much space is available?</h4>
+          <p class="hint">South Florida is our home market. We deploy nationally — just adds a bit to lead time.</p>
+          <div class="wizard-row">
+            <div class="wizard-field">
+              <label>City</label>
+              <input type="text" class="wizard-input" data-field="city" placeholder="e.g. Miami, Fort Lauderdale">
+            </div>
+            <div class="wizard-field">
+              <label>State</label>
+              <input type="text" class="wizard-input" data-field="state" placeholder="e.g. FL" maxlength="2">
+            </div>
+          </div>
+          <div class="wizard-field">
+            <label>Available square footage for pods</label>
+            <select class="wizard-select" data-field="sqft">
+              <option value="">Select range</option>
+              <option value="<500">Less than 500 sq ft</option>
+              <option value="500-1500">500 – 1,500 sq ft</option>
+              <option value="1500-3000">1,500 – 3,000 sq ft</option>
+              <option value="3000-5000">3,000 – 5,000 sq ft</option>
+              <option value=">5000">More than 5,000 sq ft</option>
+            </select>
+          </div>
+          <div class="wizard-field">
+            <label>Ceiling height</label>
+            <select class="wizard-select" data-field="ceiling">
+              <option value="">Select</option>
+              <option value="standard">Standard 8–9 ft (works fine)</option>
+              <option value="high">High 10–14 ft (ideal)</option>
+              <option value="industrial">Industrial / warehouse 14ft+ (perfect)</option>
+              <option value="unknown">Not sure</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- STEP 3: How many pods -->
+        <div class="wizard-step" data-step="3">
+          <div class="wizard-step-label">Step 3 of 5</div>
+          <h4>How many pods are you considering?</h4>
+          <p class="hint">We rent The Quad and The Suite only — those are the revenue-generating units. Most properties start with 4–8.</p>
+          <div class="wizard-slider-wrap">
+            <div class="wizard-slider-display">
+              <span class="num" id="podCountDisplay">6</span>
+              <span class="label">pods</span>
+            </div>
+            <input type="range" class="wizard-slider" id="podCountSlider" min="2" max="20" value="6" data-field="podCount">
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--text-light);margin-top:8px;font-weight:600"><span>2</span><span>10</span><span>20</span></div>
+          </div>
+          <div style="margin-top:24px;padding:18px 20px;background:var(--bg-section);border-radius:12px;font-size:0.92rem;color:var(--text-mid);line-height:1.55">
+            At <strong style="color:var(--text)">$900/mo per pod average</strong>, your projected monthly rental revenue is <strong style="color:var(--red)" id="podRevenuePreview">$5,400</strong>.
+          </div>
+        </div>
+
+        <!-- STEP 4: Deal structure -->
+        <div class="wizard-step" data-step="4">
+          <div class="wizard-step-label">Step 4 of 5</div>
+          <h4>Which deal structure makes sense for you?</h4>
+          <p class="hint">Pick a primary preference — we'll model all four in your report.</p>
+          <div class="wizard-options">
+            <button type="button" class="wizard-option" data-field="dealStructure" data-value="buy"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">Buy outright (Option A)</span><span class="opt-desc">Pay capex, keep 100% revenue</span></span></button>
+            <button type="button" class="wizard-option" data-field="dealStructure" data-value="50-50"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">50/50 JV (Option B)</span><span class="opt-desc">Split capex 50/50, split revenue 50/50 perpetual</span></span></button>
+            <button type="button" class="wizard-option" data-field="dealStructure" data-value="zero-capex"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">★ Zero-Capex JV (Option C)</span><span class="opt-desc">$0 down, 75/25 split after MTIP recoups (you manage)</span></span></button>
+            <button type="button" class="wizard-option" data-field="dealStructure" data-value="percentage-lease"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">Percentage lease</span><span class="opt-desc">We lease space from you with revenue share</span></span></button>
+            <button type="button" class="wizard-option" data-field="dealStructure" data-value="not-sure"><span class="check-circle"></span><span class="opt-content"><span class="opt-title">Not sure yet</span><span class="opt-desc">Show me all four side-by-side</span></span></button>
+          </div>
+        </div>
+
+        <!-- STEP 5: Contact -->
+        <div class="wizard-step" data-step="5">
+          <div class="wizard-step-label">Step 5 of 5</div>
+          <h4>Where should we send the report?</h4>
+          <p class="hint">We'll generate your custom opportunity report and email it to you within minutes. Then a brief follow-up to walk through it.</p>
+          <div class="wizard-row">
+            <div class="wizard-field"><label>First name</label><input type="text" class="wizard-input" data-field="firstName" placeholder="First name"></div>
+            <div class="wizard-field"><label>Last name</label><input type="text" class="wizard-input" data-field="lastName" placeholder="Last name"></div>
+          </div>
+          <div class="wizard-field"><label>Email</label><input type="email" class="wizard-input" data-field="email" placeholder="you@company.com"></div>
+          <div class="wizard-row">
+            <div class="wizard-field"><label>Phone</label><input type="tel" class="wizard-input" data-field="phone" placeholder="(305) 555-0100"></div>
+            <div class="wizard-field"><label>Company / Property name</label><input type="text" class="wizard-input" data-field="company" placeholder="Optional"></div>
+          </div>
+        </div>
+
+        <!-- REPORT -->
+        <div class="wizard-report" data-step="6">
+          <div class="wizard-report-header">
+            <div class="wizard-report-eyebrow">Your custom MTIP opportunity</div>
+            <h4>Here's the math <span style="color:var(--red)" id="reportFirstName">on your property</span>.</h4>
+            <p class="wizard-report-summary" id="reportSummary">Based on your inputs, here's the projected revenue and your share under your selected deal structure.</p>
+          </div>
+          <div class="wizard-stats">
+            <div class="wizard-stat"><div class="stat-label">Annual rental revenue</div><div class="stat-value" id="reportAnnualRevenue">$64,800</div><div class="stat-suffix" id="reportPodLine">6 pods × $900/mo</div></div>
+            <div class="wizard-stat accent"><div class="stat-label" id="reportRecoupLabel">Capital recovers in</div><div class="stat-value" id="reportRecoup">8 mo</div><div class="stat-suffix" id="reportRecoupHint">First-money-out</div></div>
+            <div class="wizard-stat"><div class="stat-label">Your 5-year net</div><div class="stat-value" id="report5yr">$216,000</div><div class="stat-suffix" id="report5yrHint">After recoupment, 75/25 split</div></div>
+          </div>
+          <div class="wizard-deal-card">
+            <strong id="reportDealLabel">Recommended deal: Zero-Capex JV</strong>
+            <h5 id="reportDealHeadline">$0 capex from you. We fund 100%, recover from rental income, then 75/25 perpetual override.</h5>
+            <p id="reportDealBody">Your 6 pods generate $64,800/yr. We fund the equipment cost ($45K retail). After ~8 months of revenue, capital is recouped. From month 9 onward: $48,600/yr to you, $16,200/yr to MTIP, in perpetuity. Pure upside, zero downside, on real estate you already own.</p>
+          </div>
+          <div class="wizard-success-msg" id="wizardSuccess">
+            <strong>✓ Your opportunity report is on the way.</strong>
+            We've also booked a follow-up to your inbox. We'll be in touch within 24 hours.
+          </div>
+        </div>
+
+        <div class="wizard-nav">
+          <button type="button" class="back" id="wizardBack" disabled><i data-lucide="arrow-left"></i> Back</button>
+          <button type="button" class="next" id="wizardNext">Next <i data-lucide="arrow-right"></i></button>
+          <button type="button" class="submit" id="wizardSubmit" style="display:none">Send my opportunity report <i data-lucide="arrow-right"></i></button>
+        </div>
       </div>
     </div>
   </div>
@@ -608,7 +1071,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 <div class="roi-table"><table><thead><tr><th>Comparison frame</th><th>Cost &amp; time</th><th>What MTIP changes</th></tr></thead><tbody><tr><td>TI build-out (49 sq ft acoustic)</td><td>$10K–$15K · 4–6 mo</td><td class="payback">$6,997 · 90 days</td></tr><tr><td>Permits + contractor delays</td><td>6–12 weeks risk</td><td class="payback">Zero permits</td></tr><tr><td>Asset on tenant turnover</td><td>Walls stay, capital lost</td><td class="payback">Pod moves with portfolio</td></tr></tbody></table></div>
 
-<div class="roi-calc"><div class="roi-calc-label">Run the math on a single pod</div><div class="roi-calc-input-row"><span class="dollar">$</span><input type="number" id="roiInput" value="600" min="0" step="50" aria-label="Monthly rental income per pod"><span class="month">/mo per pod</span></div><div class="roi-calc-result"><div>Annual revenue<strong id="roiAnnual">$7,200</strong></div><div>Recoupment<strong class="red-num" id="roiPayback">11.7 mo</strong></div><div>5-year landlord net*<strong class="red-num" id="roiSavings">$22,500</strong></div></div></div>
+<div class="roi-calc"><div class="roi-calc-label">Run the math on a single pod</div><div class="roi-calc-input-row"><span class="dollar">$</span><input type="number" id="roiInput" value="900" min="0" step="50" aria-label="Monthly rental income per pod"><span class="month">/mo per pod</span></div><div class="roi-calc-result"><div>Annual revenue<strong id="roiAnnual">$7,200</strong></div><div>Recoupment<strong class="red-num" id="roiPayback">11.7 mo</strong></div><div>5-year landlord net*<strong class="red-num" id="roiSavings">$22,500</strong></div></div></div>
 
 <div class="suite-spec"><div class="spec-item"><i data-lucide="users"></i><span><strong>1–6 people</strong> · solo or full meeting</span></div><div class="spec-item"><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> · 4.5 m²</span></div><div class="spec-item"><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> · ISO certified</span></div><div class="spec-item"><i data-lucide="wind"></i><span><strong>16 silent fans</strong> · 1.5-min refresh</span></div></div>
 
@@ -636,7 +1099,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   </div>
 </section>
 
-<div class="press-strip"><div class="container"><div class="press-inner"><span class="press-label">Deal structures available for:</span><span class="press-item">Class A / B landlords</span><span class="press-item">Multi-tenant operators</span><span class="press-item">Coworking + flex space</span><span class="press-item">Hospitality &amp; hotels</span><span class="press-item">Healthcare &amp; education</span></div></div></div>
+<div class="press-strip"><div class="container"><div class="press-inner"><span class="press-label">Built for:</span><span class="press-item">Warehouses with parking</span><span class="press-item">Retail shopping plazas</span><span class="press-item">Ground-floor office</span><span class="press-item">Multi-tenant 2-story</span><span class="press-item">Coworking + flex</span></div></div></div>
 
 <section class="section section" id="lineup"><div class="container">
 <div class="section-header center"><div class="eyebrow">The Lineup</div><h2>Four sizes.<br>One standard of quality.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Same aluminum frame. Same ISO-certified acoustic walls. Same 6mm tempered glass. Same motion-sensor lighting. Same fresh-air system. Only the size and seating change.</p></div>
@@ -787,13 +1250,13 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 </section>
 
-<section class="fullbleed" id="showroom"><img src="assets/images/showroom-2.jpg" alt="MTIP Collective Pods in a real office"><div class="fullbleed-overlay"><div class="fullbleed-content"><div><div class="eyebrow" style="color:var(--red-light)">Real product · real showroom · in Florida</div><h2>This is one of ours.<br>Sit in it.</h2><p>Pictures don't tell you what 30 dB feels like. Visit MTIP Collective in Florida and step inside. Take a real call. Listen to the difference. Then sign.</p><a href="https://calendly.com/mtip-collective/pods-walkthrough" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a></div></div></div></section>
+<section class="fullbleed" id="showroom"><img src="assets/images/showroom-2.jpg" alt="MTIP Collective Pods in a real office"><div class="fullbleed-overlay"><div class="fullbleed-content"><div><div class="eyebrow" style="color:var(--red-light)">Real product · real showroom · in Florida</div><h2>This is one of ours.<br>Sit in it.</h2><p>Pictures don't tell you what 30 dB feels like. Walk through our North Miami Beach showroom — 16137 Biscayne Blvd — and step inside any of the four sizes. Then we map the deal to your property.</p><a href="https://calendly.com/mtip-collective/pods-walkthrough" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a></div></div></div></section>
 
 <section class="section"><div class="container">
 <div class="section-header center"><div class="eyebrow">In the wild</div><h2>Drop one anywhere.<br>It works.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Coworking floors. Hotel lobbies. Airport terminals. Libraries. Warehouses. Home offices. The pod doesn't care where it lands.</p></div>
 <div class="usecase-grid">
 <div class="usecase-card"><img src="assets/images/usecase-airport.jpg" alt="Pods in airport terminal"><div class="usecase-card-content"><h4>Airport Terminals</h4><p>A quiet corner in a busy terminal — for travelers who need to take the call before boarding.</p></div></div>
-<div class="usecase-card"><img src="assets/images/showroom-1.jpg" alt="Pods in office space"><div class="usecase-card-content"><h4>Coworking Floors</h4><p>Drop-in privacy at scale. No build-out.</p></div></div>
+<div class="usecase-card"><img src="assets/images/showroom-1.jpg" alt="Pods in office space"><div class="usecase-card-content"><h4>Retail &amp; coworking</h4><p>Shopping plazas, coworking floors, flex space — pods slot in next to existing tenants.</p></div></div>
 <div class="usecase-card"><img src="assets/images/usecase-home.jpg" alt="MTIP Pod in home office setting"><div class="usecase-card-content"><h4>Home Offices</h4><p>The room your spouse will thank you for.</p></div></div>
 </div>
 </div></section>
@@ -852,10 +1315,10 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="section-header center"><div class="eyebrow">Questions answered</div><h2>The fine print,<br>made simple.</h2></div>
 <div class="faq-list">
 <div class="faq-item"><button class="faq-q">How does the Zero-Capex JV (Option C) actually work? <i data-lucide="plus"></i></button><div class="faq-a"><p>MTIP funds 100% of the equipment cost. Pods are installed on your property. All rental revenue from those pods flows to MTIP <strong>first</strong> until we have recovered 100% of the retail cost (first-money-out). After recoupment, the revenue split is <strong>75% to you / 25% to MTIP</strong> if you manage the program, or <strong>50/50</strong> if MTIP manages it for you. Override is perpetual. We handle warranty, you handle (or we handle) tenant interface.</p></div></div>
-<div class="faq-item"><button class="faq-q">What revenue can I expect per pod? <i data-lucide="plus"></i></button><div class="faq-a"><p>It depends on your rate model. Typical ranges we see: <strong>The Studio</strong> $99–$299/mo subscription or $5–$15/hr. <strong>The Duo</strong> $199–$499/mo or $10–$25/hr. <strong>The Quad</strong> $399–$999/mo or $20–$50/hr. <strong>The Suite</strong> $599–$1,500/mo or $30–$75/hr. Coworking operators typically run subscription. Class A landlords often run hourly amenity charges.</p></div></div>
+<div class="faq-item"><button class="faq-q">What revenue can I expect per pod? <i data-lucide="plus"></i></button><div class="faq-a"><p><strong>We rent The Quad and The Suite only — not the Studio or Duo (those are sold for solo/dedicated use).</strong> Real rental revenue from a Quad or a Suite runs <strong>$800–$1,000 per month</strong> on a typical subscription/hourly mix in South Florida. That revenue is what offsets the equipment cost first (Option C), then becomes the override-split with you.</p></div></div>
 <div class="faq-item"><button class="faq-q">Who handles maintenance, warranty, and insurance? <i data-lucide="plus"></i></button><div class="faq-a"><p>Maintenance and warranty: <strong>MTIP, regardless of structure.</strong> 1-year manufacturer warranty on all parts. Insurance: MTIP carries product liability on the equipment; landlord covers the premises (standard CGL). Tenant damage: handled by your standard wear-and-tear / damage policy, plus our 1-year manufacturer coverage.</p></div></div>
 <div class="faq-item"><button class="faq-q">Is this depreciable? How does it sit on my books? <i data-lucide="plus"></i></button><div class="faq-a"><p><strong>Option A (buy outright):</strong> commercial furniture, 7-year MACRS depreciation. Real estate TI is typically 39-year — pods depreciate <strong>5x faster</strong>. <strong>Options B/C (JV structures):</strong> the asset sits with the JV entity / MTIP; you book your share of revenue. Talk to your tax counsel for specifics.</p></div></div>
-<div class="faq-item"><button class="faq-q">What real estate qualifies for the JV structures? <i data-lucide="plus"></i></button><div class="faq-a"><p>Class A and B office buildings, coworking floors, hospitality / hotel public spaces, multi-family amenity floors, healthcare facilities, education campuses, airports, and high-foot-traffic retail. We require a minimum throughput estimate (members, tenants, or transient users) to underwrite Option C — book a walkthrough and we'll model it.</p></div></div>
+<div class="faq-item"><button class="faq-q">What real estate qualifies for the JV structures? <i data-lucide="plus"></i></button><div class="faq-a"><p>Our sweet spot: <strong>warehouses with ample parking, retail shopping plazas with available square footage, ground-floor office, and 2-story multi-tenant buildings.</strong> High ceilings are a plus. We can also work with Class A/B office above ground floor, coworking, hospitality, healthcare, and education — but ground-level access with parking is what we underwrite fastest. <strong>South Florida is our primary market (HQ in North Miami Beach), national rollout is live.</strong></p></div></div>
 <div class="faq-item"><button class="faq-q">Can I exit the JV later? Buy MTIP out? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes. The term sheet includes a buyout schedule based on remaining recoupment + a defined override multiple. Alternative exit: MTIP can re-deploy the pods to another property in the network if economics no longer fit.</p></div></div>
 <div class="faq-item"><button class="faq-q">Do you offer exclusives or portfolio deals? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes. Portfolio commitments of <strong>10+ pods</strong> across multiple properties qualify for exclusivity in defined geographies, custom SLAs, and accelerated production slots. Drop us a note with your portfolio summary.</p></div></div>
 <div class="faq-item"><button class="faq-q">How long is delivery? <i data-lucide="plus"></i></button><div class="faq-a"><p>90 days from deposit to your door. Pods ship fully assembled with white-glove freight.</p></div></div>
@@ -874,7 +1337,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 <section class="final-cta"><div class="container"><h2>The smartest CapEx<br>your portfolio sees this year<br>is the one you don't write.</h2><p>Three deal structures. One product. Pick the path that lines up with how you run your portfolio.</p><div class="final-cta-buttons"><a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red btn-lg">Get the JV term sheet <i data-lucide="arrow-right"></i></a><a href="#deploy" class="btn btn-outline btn-lg">See the deal structures</a></div></div></section>
 
-<footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-meta"><span><i data-lucide="map-pin" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> 16137 Biscayne Blvd · North Miami, FL</span><span style="margin:0 12px">·</span><span><i data-lucide="mail" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> <a href="mailto:mtip@hey.com" style="color:rgba(255,255,255,0.85)">mtip@hey.com</a></span></div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
+<footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-meta"><span><i data-lucide="map-pin" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> 16137 Biscayne Blvd · North Miami Beach, FL</span><span style="margin:0 12px">·</span><span><i data-lucide="mail" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> <a href="mailto:mtip@hey.com" style="color:rgba(255,255,255,0.85)">mtip@hey.com</a></span></div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
 
 <script>
 lucide.createIcons();
