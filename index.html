@@ -25,6 +25,9 @@
 // ============================================================
 // JV WIZARD
 // ============================================================
+
+window.__GHL_PIT = 'pit-b1c8e50d-9629-415e-8209-f71956488e5b';
+window.__wizardLoadedAt = Date.now();
 (function() {
   const wState = {
     step: 1,
@@ -207,35 +210,111 @@
   });
 
   function submitWizardData() {
-    const payload = {
-      timestamp: new Date().toISOString(),
+    // Anti-spam: honeypot + dwell time
+    const hpEl = document.getElementById('wizard-hp');
+    if (hpEl && hpEl.value) {
+      console.warn('Honeypot triggered — submission blocked');
+      return;
+    }
+    if (!window.__wizardLoadedAt) window.__wizardLoadedAt = Date.now() - 3500;
+    if (Date.now() - window.__wizardLoadedAt < 2500) {
+      console.warn('Too-fast submission — likely bot');
+      return;
+    }
+
+    const annualRevenue = wState.podCount * POD_RENT * 12;
+    const totalRetail = wState.podCount * 7500;
+    const monthlyRevenue = wState.podCount * POD_RENT;
+    let recoupMonths = '', fiveYrNet = 0;
+    if (wState.dealStructure === 'buy') {
+      recoupMonths = (totalRetail/monthlyRevenue).toFixed(1) + ' mo';
+      fiveYrNet = annualRevenue*5 - totalRetail;
+    } else if (wState.dealStructure === '50-50') {
+      recoupMonths = '50/50 perpetual';
+      fiveYrNet = annualRevenue*5/2 - totalRetail/2;
+    } else if (wState.dealStructure === 'percentage-lease') {
+      recoupMonths = '% of gross';
+      fiveYrNet = annualRevenue*5*0.20;
+    } else {
+      recoupMonths = (totalRetail/monthlyRevenue).toFixed(1) + ' mo';
+      fiveYrNet = (annualRevenue*5 - totalRetail) * 0.75;
+    }
+
+    // GHL Contact Creation API — direct, no proxy
+    // Custom field IDs from the MTIP Collective sub-account (created via API)
+    const ghlPayload = {
+      locationId: '0NHYHZyUXGnIKzXtwqJB',
+      firstName: wState.firstName,
+      lastName: wState.lastName,
+      email: wState.email,
+      phone: wState.phone || '',
+      companyName: wState.company || '',
+      city: wState.city,
+      state: (wState.state || '').toUpperCase(),
+      country: 'US',
       source: 'pods.mtip.ai/JV-wizard',
-      ...wState,
-      derived: {
-        annualRevenue: wState.podCount * POD_RENT * 12,
-        totalRetail: wState.podCount * 7500,
-        monthlyRevenue: wState.podCount * POD_RENT
-      }
+      tags: ['pod-jv-lead'],
+      customFields: [
+        {id: 'P52lBLzsOsPgNBnuH3xE', value: wState.propertyType},
+        {id: 'oEFx8MxTseCu04Jr6gCb', value: wState.city},
+        {id: 'bnnHe4bcuhoLElnwoBNH', value: (wState.state||'').toUpperCase()},
+        {id: '89W6yJEvZu2tRWq2G11s', value: wState.sqft},
+        {id: 'e8V3Ja33H940fz3vDx0h', value: wState.ceiling},
+        {id: 'nGyZGaSn050UIpebpYO7', value: wState.podCount},
+        {id: 'Q0M4FQQJDGrEoybkB64R', value: wState.dealStructure},
+        {id: 'o86twLp4ZE8u8iH7eFQP', value: annualRevenue},
+        {id: 'n3qwb02WUUC1LT6kxf5d', value: recoupMonths},
+        {id: 'QH4n1OVh6cgLRUhKfRZr', value: Math.max(0, Math.round(fiveYrNet))},
+        {id: 'gkbUsjyzpPfic5Fqnkri', value: totalRetail},
+        {id: 'WhF02cerhstv8jADPdR0', value: new Date().toISOString()},
+        {id: 'A0D47fqcCV5HjtTHSih1', value: 'pods.mtip.ai JV Wizard'}
+      ]
     };
 
-    // Channel 1: Formspree → emails to mtip@hey.com
-    // Replace 'YOUR_FORMSPREE_ID' with actual Formspree form ID after setup
-    // Form created at formspree.io with email destination mtip@hey.com
-    fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
+    fetch('https://services.leadconnectorhq.com/contacts/', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-      body: JSON.stringify(payload)
-    }).catch(e => console.warn('Formspree submission failed (placeholder):', e));
+      headers: {
+        'Authorization': 'Bearer ' + window.__GHL_PIT,
+        'Version': '2021-07-28',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(ghlPayload)
+    }).then(r => r.json()).then(data => {
+      const contactId = data && data.contact && data.contact.id;
+      if (contactId) {
+        // Add a note with the calculation summary
+        const noteBody = ['MTIP Pods JV Wizard Submission',
+          '─────────────────',
+          'Property type: ' + wState.propertyType,
+          'Location: ' + wState.city + ', ' + (wState.state||'').toUpperCase(),
+          'Sqft available: ' + wState.sqft,
+          'Ceiling: ' + wState.ceiling,
+          'Pod count: ' + wState.podCount,
+          'Deal structure preference: ' + wState.dealStructure,
+          '',
+          'Projected annual rental revenue: $' + annualRevenue.toLocaleString(),
+          'Equipment retail: $' + totalRetail.toLocaleString(),
+          'Recoupment: ' + recoupMonths,
+          '5-year landlord net (computed): $' + Math.max(0,Math.round(fiveYrNet)).toLocaleString(),
+          '',
+          'Submitted: ' + new Date().toLocaleString(),
+          'Company: ' + (wState.company || '—'),
+          'Phone: ' + (wState.phone || '—')
+        ].join('\n');
+        fetch('https://services.leadconnectorhq.com/contacts/' + contactId + '/notes', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + window.__GHL_PIT,
+            'Version': '2021-07-28',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ body: noteBody, userId: '0bYKT0YpEIRrizq06pMN' })
+        }).catch(e => console.warn('Note add failed:', e));
+      }
+    }).catch(e => console.warn('GHL submit failed:', e));
 
-    // Channel 2: GHL webhook (placeholder — replace with real GHL inbound webhook URL)
-    // Configure in GHL: Settings → Integrations → API → create custom webhook
-    fetch('https://YOUR_GHL_WEBHOOK_URL', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
-    }).catch(e => console.warn('GHL webhook submission failed (placeholder):', e));
-
-    // Show success message
+    // Show success
     setTimeout(() => {
       const successEl = document.getElementById('wizardSuccess');
       if (successEl) successEl.classList.add('shown');
@@ -265,8 +344,7 @@ const cNextHover = document.getElementById('carouselNextHover');
 cPrevHover && cPrevHover.addEventListener('click', () => cGo(cIdx-1));
 cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
 
-// NOISE DEMO — Web Audio API
-let nCtx,nNoise,nGain,nFilter,nLfo,nLfoGain,nOscArr=[],nState='off';
+// NOISE DEMO — REAL audio playback with crossfade
 const nDb=document.getElementById('noiseDb');
 const nFill=document.getElementById('noiseFill');
 const nStatus=document.getElementById('noiseStatus');
@@ -275,90 +353,94 @@ const nDesc=document.getElementById('noiseStateDesc');
 const nBtnO=document.getElementById('noiseBtnOutside');
 const nBtnI=document.getElementById('noiseBtnInside');
 const nBtnS=document.getElementById('noiseBtnStop');
-function nMakeNoise(ctx){
-  const buffer=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);
-  const data=buffer.getChannelData(0);
-  let lastOut=0;
-  // pink noise
-  for(let i=0;i<data.length;i++){const white=Math.random()*2-1;data[i]=(lastOut+(0.02*white))/1.02;lastOut=data[i];data[i]*=3.5;}
-  const src=ctx.createBufferSource();src.buffer=buffer;src.loop=true;return src;
-}
-function nStart(mode){
-  if(!nCtx){nCtx=new(window.AudioContext||window.webkitAudioContext)();}
-  if(nCtx.state==='suspended')nCtx.resume();
-  nStop(true);
-  nNoise=nMakeNoise(nCtx);
-  nFilter=nCtx.createBiquadFilter();
-  nFilter.type='lowpass';
-  nGain=nCtx.createGain();
-  nNoise.connect(nFilter);nFilter.connect(nGain);nGain.connect(nCtx.destination);
-  // Subtle "voices" added with detuned oscillators sweeping
-  const freqs=[180,240,300,420];
-  freqs.forEach(f=>{
-    const o=nCtx.createOscillator();const og=nCtx.createGain();
-    o.type='sawtooth';o.frequency.value=f;og.gain.value=0.012;
-    const lf=nCtx.createOscillator();const lfg=nCtx.createGain();
-    lf.frequency.value=0.4+Math.random()*0.6;lfg.gain.value=8;
-    lf.connect(lfg);lfg.connect(o.frequency);
-    o.connect(og);og.connect(nFilter);
-    o.start();lf.start();
-    nOscArr.push({o:o,lf:lf});
-  });
-  nNoise.start();
-  if(mode==='outside'){
-    nFilter.frequency.value=8000;
-    nGain.gain.value=0.30;
-    nState='outside';
-    setMeter(68,'Open office — too loud to focus.','outside');
-    nBtnO.classList.add('active');nBtnI.classList.remove('active');
-    nLabel.textContent='Open office — outside the pod';nDesc.textContent='Phone calls. Keyboard typing. Conversations.';
-  }else{
-    // smooth transition outside → inside
-    nFilter.frequency.value=8000;nGain.gain.value=0.30;
-    const t=nCtx.currentTime;
-    nFilter.frequency.exponentialRampToValueAtTime(420,t+1.2);
-    nGain.gain.exponentialRampToValueAtTime(0.04,t+1.2);
-    nState='inside';
-    setMeter(38,'Inside the pod — conversation-private.','inside');
-    nBtnI.classList.add('active');nBtnO.classList.remove('active');
-    nLabel.textContent='Inside the MTIP Pod';nDesc.textContent='30 dB acoustic walls. Filtered. Quiet. Yours.';
+
+// Two looping audio elements, crossfade between them on toggle
+const nAudioOutside = new Audio('assets/audio/office-outside.mp3');
+const nAudioInside = new Audio('assets/audio/office-inside.mp3');
+nAudioOutside.loop = true;
+nAudioInside.loop = true;
+nAudioOutside.preload = 'auto';
+nAudioInside.preload = 'auto';
+let nState = 'off';
+
+function nCrossfade(targetAudio, otherAudio, targetVol, durMs){
+  const start = performance.now();
+  const fromVol = otherAudio.volume;
+  const toVol = targetVol;
+  // Make sure target is playing
+  if (targetAudio.paused) {
+    targetAudio.volume = 0;
+    const p = targetAudio.play();
+    if (p && p.catch) p.catch(()=>{});
   }
+  function step(t){
+    const k = Math.min(1, (t - start)/durMs);
+    targetAudio.volume = k * toVol;
+    otherAudio.volume = (1 - k) * fromVol;
+    if (k < 1) requestAnimationFrame(step);
+    else {
+      otherAudio.pause();
+      otherAudio.currentTime = 0;
+    }
+  }
+  requestAnimationFrame(step);
 }
-function setMeter(db,msg,mode){
-  const start=parseInt(nDb.textContent)||db;
+
+function nMeter(db, msg, mode){
+  const start = parseInt(nDb.textContent) || db;
   let frame=0;
-  const total=24;
+  const total=20;
   const stepDb=(db-start)/total;
-  const interval=setInterval(()=>{
+  const ival = setInterval(()=>{
     frame++;
-    const cur=Math.round(start+stepDb*frame);
-    nDb.textContent=cur;
-    nFill.style.width=Math.max(5,Math.min(100,(cur-20)*1.5))+'%';
-    if(frame>=total)clearInterval(interval);
-  },24);
-  nStatus.textContent=msg;
-  if(mode==='inside'){nDb.classList.add('quiet');nStatus.classList.add('quiet');}
-  else{nDb.classList.remove('quiet');nStatus.classList.remove('quiet');}
+    const cur = Math.round(start + stepDb*frame);
+    nDb.textContent = cur;
+    nFill.style.width = Math.max(5, Math.min(100, (cur-20)*1.5)) + '%';
+    if (frame >= total) clearInterval(ival);
+  }, 25);
+  if (nStatus) nStatus.textContent = msg;
+  if (nDb) nDb.classList.toggle('quiet', mode==='inside');
+  if (nStatus) nStatus.classList.toggle('quiet', mode==='inside');
 }
-function nStop(silent){
-  if(nNoise){try{nNoise.stop();}catch(e){}nNoise.disconnect();}
-  nOscArr.forEach(({o,lf})=>{try{o.stop();lf.stop();}catch(e){}});
-  nOscArr=[];
-  if(!silent){
-    nState='off';nBtnO.classList.remove('active');nBtnI.classList.remove('active');
-    setMeter(0,'Demo paused.','outside');
-    nDb.classList.remove('quiet');nStatus.classList.remove('quiet');
+
+function nGoOutside(){
+  nState = 'outside';
+  nCrossfade(nAudioOutside, nAudioInside, 0.85, 700);
+  nMeter(68, 'Open office — too loud to focus.', 'outside');
+  if (nBtnO) nBtnO.classList.add('active');
+  if (nBtnI) nBtnI.classList.remove('active');
+  if (nLabel) nLabel.textContent = 'Open office — outside the pod';
+  if (nDesc) nDesc.textContent = 'Phone calls. Keyboard typing. Conversations.';
+}
+function nGoInside(){
+  nState = 'inside';
+  nCrossfade(nAudioInside, nAudioOutside, 0.6, 900);
+  nMeter(38, 'Inside the pod — conversation-private.', 'inside');
+  if (nBtnI) nBtnI.classList.add('active');
+  if (nBtnO) nBtnO.classList.remove('active');
+  if (nLabel) nLabel.textContent = 'Inside the MTIP Pod';
+  if (nDesc) nDesc.textContent = '30 dB acoustic walls. Filtered. Quiet. Yours.';
+}
+function nStop(){
+  nAudioOutside.pause(); nAudioOutside.currentTime = 0;
+  nAudioInside.pause(); nAudioInside.currentTime = 0;
+  nState = 'off';
+  if (nBtnO) nBtnO.classList.remove('active');
+  if (nBtnI) nBtnI.classList.remove('active');
+  nMeter(0, 'Demo paused.', 'outside');
+}
+
+if (nBtnO) nBtnO.addEventListener('click', nGoOutside);
+if (nBtnI) nBtnI.addEventListener('click', () => {
+  if (nState === 'off') {
+    // Start outside first, then auto-transition inside after a beat
+    nGoOutside();
+    setTimeout(nGoInside, 1200);
+  } else {
+    nGoInside();
   }
-}
-nBtnO&&nBtnO.addEventListener('click',()=>nStart('outside'));
-nBtnI&&nBtnI.addEventListener('click',()=>{
-  if(nState==='off')nStart('outside');
-  setTimeout(()=>nStart('inside'),200);
 });
-nBtnS&&nBtnS.addEventListener('click',()=>nStop());
-</script>
-<style>
-:root{--white:#FFFFFF;--bg-soft:#FAFAFA;--bg-section:#F5F5F7;--text:#1A1D24;--text-mid:#4B4F58;--text-light:#9CA3AF;--border:#E5E7EB;--border-strong:#D1D5DB;--black:#0A0B0D;--black-soft:#16181C;--red:#E53B3B;--red-dark:#B82E2E;--red-light:#F56363;--red-glow:rgba(229,59,59,0.12);--silver:#DEE1E6;--silver-2:#C9CDD3;--grad-cta:linear-gradient(135deg,#E53B3B 0%,#B82E2E 100%);--grad-cta-hover:linear-gradient(135deg,#F56363 0%,#E53B3B 100%);--shadow-sm:0 1px 3px rgba(0,0,0,0.06);--shadow-md:0 4px 16px rgba(0,0,0,0.08);--shadow-lg:0 16px 48px rgba(0,0,0,0.12);--shadow-red:0 8px 24px rgba(229,59,59,0.25)}
+if (nBtnS) nBtnS.addEventListener('click', nStop);
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--white);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:-0.011em}
@@ -836,6 +918,14 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .wizard-success-msg{background:linear-gradient(135deg,#22C55E 0%,#16A34A 100%);color:white;border-radius:16px;padding:24px 28px;margin-top:24px;text-align:center;display:none}
 .wizard-success-msg.shown{display:block;animation:wizardFade 0.4s ease}
 .wizard-success-msg strong{display:block;font-size:1.15rem;margin-bottom:6px;font-weight:700}
+
+.wizard-calendar-section{margin-top:48px}
+.wizard-calendar-divider{text-align:center;font-size:0.85rem;font-weight:600;letter-spacing:0.04em;color:var(--text-mid);text-transform:uppercase;margin:32px 0 24px;position:relative}
+.wizard-calendar-divider::before,.wizard-calendar-divider::after{content:'';position:absolute;top:50%;width:25%;height:1px;background:var(--border)}
+.wizard-calendar-divider::before{left:0}.wizard-calendar-divider::after{right:0}
+.wizard-calendar-divider span{background:white;padding:0 16px;display:inline-block}
+.wizard-calendar-frame{background:var(--bg-soft);border:1px solid var(--border);border-radius:16px;padding:8px;overflow:hidden}
+.wizard-calendar-frame iframe{display:block}
 </style>
 </head>
 <body>
@@ -896,7 +986,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
           <li><i data-lucide="check"></i><span>Pure upside. No downside. Equipment stays serviceable for life.</span></li>
         </ul>
         <div class="deploy-best" style="color:var(--red-light)">Best for: Landlords who want pod amenity revenue without writing a capex check.</div>
-        <a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red" style="width:100%;justify-content:center">Get the JV term sheet <i data-lucide="arrow-right"></i></a>
+        <a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red" style="width:100%;justify-content:center">Get the JV term sheet <i data-lucide="arrow-right"></i></a>
       </div>
     </div>
 
@@ -1028,6 +1118,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
             <div class="wizard-field"><label>Last name</label><input type="text" class="wizard-input" data-field="lastName" placeholder="Last name"></div>
           </div>
           <div class="wizard-field"><label>Email</label><input type="email" class="wizard-input" data-field="email" placeholder="you@company.com"></div>
+          <input type="text" id="wizard-hp" name="company-website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none" aria-hidden="true">
           <div class="wizard-row">
             <div class="wizard-field"><label>Phone</label><input type="tel" class="wizard-input" data-field="phone" placeholder="(305) 555-0100"></div>
             <div class="wizard-field"><label>Company / Property name</label><input type="text" class="wizard-input" data-field="company" placeholder="Optional"></div>
@@ -1053,8 +1144,21 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
           </div>
           <div class="wizard-success-msg" id="wizardSuccess">
             <strong>✓ Your opportunity report is on the way.</strong>
-            We've also booked a follow-up to your inbox. We'll be in touch within 24 hours.
+            We've also added you to our pipeline. We'll reach out within 24 hours.
           </div>
+          <div class="wizard-calendar-section">
+            <div class="wizard-calendar-divider">
+              <span>or skip the wait — book the walkthrough directly</span>
+            </div>
+            <div class="wizard-calendar-frame">
+              <iframe src="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU"
+                      style="width:100%;border:none;min-height:680px;background:white;border-radius:12px"
+                      scrolling="no"
+                      id="mtip-pods-calendar-widget"
+                      title="Book MTIP Pods JV Walkthrough"></iframe>
+            </div>
+          </div>
+
         </div>
 
         <div class="wizard-nav">
@@ -1250,7 +1354,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 </section>
 
-<section class="fullbleed" id="showroom"><img src="assets/images/showroom-2.jpg" alt="MTIP Collective Pods in a real office"><div class="fullbleed-overlay"><div class="fullbleed-content"><div><div class="eyebrow" style="color:var(--red-light)">Real product · real showroom · in Florida</div><h2>This is one of ours.<br>Sit in it.</h2><p>Pictures don't tell you what 30 dB feels like. Walk through our North Miami Beach showroom — 16137 Biscayne Blvd — and step inside any of the four sizes. Then we map the deal to your property.</p><a href="https://calendly.com/mtip-collective/pods-walkthrough" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a></div></div></div></section>
+<section class="fullbleed" id="showroom"><img src="assets/images/showroom-2.jpg" alt="MTIP Collective Pods in a real office"><div class="fullbleed-overlay"><div class="fullbleed-content"><div><div class="eyebrow" style="color:var(--red-light)">Real product · real showroom · in Florida</div><h2>This is one of ours.<br>Sit in it.</h2><p>Pictures don't tell you what 30 dB feels like. Walk through our North Miami Beach showroom — 16137 Biscayne Blvd — and step inside any of the four sizes. Then we map the deal to your property.</p><a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a Showroom Visit <i data-lucide="arrow-right"></i></a></div></div></div></section>
 
 <section class="section"><div class="container">
 <div class="section-header center"><div class="eyebrow">In the wild</div><h2>Drop one anywhere.<br>It works.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Coworking floors. Hotel lobbies. Airport terminals. Libraries. Warehouses. Home offices. The pod doesn't care where it lands.</p></div>
@@ -1286,7 +1390,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="order-table"><div class="order-table-wrap"><table><thead><tr><th>Pod</th><th>Capacity</th><th>Footprint</th><th>Pay Once</th><th>$0 Down · 12-mo</th></tr></thead><tbody><tr><td class="name"><strong>The Studio</strong></td><td>1</td><td>~10 sq ft</td><td class="price">$2,997</td><td class="price price-red">$299/mo</td></tr><tr><td class="name"><strong>The Duo</strong></td><td>2</td><td>~23 sq ft</td><td class="price">$4,497</td><td class="price price-red">$449/mo</td></tr><tr><td class="name"><strong>The Quad</strong></td><td>4</td><td>~31 sq ft</td><td class="price">$5,497</td><td class="price price-red">$549/mo</td></tr><tr class="featured"><td class="name"><strong>The Suite ★</strong></td><td>1–6</td><td>~49 sq ft</td><td class="price">$6,997</td><td class="price price-red">$699/mo</td></tr><tr><td><strong>Accessible Pod</strong></td><td>2 / 4</td><td>varies</td><td colspan="2" style="color:var(--text-mid)">On request</td></tr></tbody></table></div></div>
 <p class="compare-foot">Prices are landed delivery to continental US. International, custom finishes, and bulk orders quoted separately. Installment plan adds 20% to total price, divided into 12 equal payments, no down payment required.</p>
 
-<div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap"><a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a 15-min call <i data-lucide="arrow-right"></i></a><a href="mailto:mtip@hey.com?subject=MTIP%20Pod%20Inquiry" class="btn btn-outline btn-lg">Talk to the Team <i data-lucide="phone"></i></a></div>
+<div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap"><a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a 15-min call <i data-lucide="arrow-right"></i></a><a href="mailto:mtip@hey.com?subject=MTIP%20Pod%20Inquiry" class="btn btn-outline btn-lg">Talk to the Team <i data-lucide="phone"></i></a></div>
 </div></section>
 
 
@@ -1296,7 +1400,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
     <p>Pricing questions, custom configurations, bulk orders, or you just want a 10-minute walk-through call before you commit. Pick the channel.</p>
   </div>
   <div class="actions">
-    <a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red">Book a 15-min call <i data-lucide="calendar"></i></a>
+    <a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red">Book a 15-min call <i data-lucide="calendar"></i></a>
     <a href="mailto:mtip@hey.com?subject=Question%20about%20MTIP%20Pods" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:white">Email the team <i data-lucide="mail"></i></a>
   </div>
 </div>
@@ -1335,7 +1439,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 </div></section>
 
-<section class="final-cta"><div class="container"><h2>The smartest CapEx<br>your portfolio sees this year<br>is the one you don't write.</h2><p>Three deal structures. One product. Pick the path that lines up with how you run your portfolio.</p><div class="final-cta-buttons"><a href="https://calendly.com/mtip-collective/pods-15min" target="_blank" rel="noopener" class="btn btn-red btn-lg">Get the JV term sheet <i data-lucide="arrow-right"></i></a><a href="#deploy" class="btn btn-outline btn-lg">See the deal structures</a></div></div></section>
+<section class="final-cta"><div class="container"><h2>The smartest CapEx<br>your portfolio sees this year<br>is the one you don't write.</h2><p>Three deal structures. One product. Pick the path that lines up with how you run your portfolio.</p><div class="final-cta-buttons"><a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red btn-lg">Get the JV term sheet <i data-lucide="arrow-right"></i></a><a href="#deploy" class="btn btn-outline btn-lg">See the deal structures</a></div></div></section>
 
 <footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-meta"><span><i data-lucide="map-pin" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> 16137 Biscayne Blvd · North Miami Beach, FL</span><span style="margin:0 12px">·</span><span><i data-lucide="mail" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> <a href="mailto:mtip@hey.com" style="color:rgba(255,255,255,0.85)">mtip@hey.com</a></span></div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
 
