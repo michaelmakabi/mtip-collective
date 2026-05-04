@@ -440,6 +440,30 @@ if (nBtnI) nBtnI.addEventListener('click', () => {
   }
 });
 if (nBtnS) nBtnS.addEventListener('click', nStop);
+
+// PODSHOW image swapper
+(function(){
+  const stage = document.getElementById('podshowImage');
+  const nameEl = document.getElementById('podshowName');
+  const specEl = document.getElementById('podshowSpec');
+  const btns = document.querySelectorAll('.podshow-btn');
+  if (!stage || !btns.length) return;
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      stage.classList.add('swapping');
+      setTimeout(() => {
+        stage.src = btn.dataset.img;
+        stage.alt = btn.dataset.name + ' — ' + btn.dataset.spec;
+        if (nameEl) nameEl.textContent = btn.dataset.name;
+        if (specEl) specEl.textContent = btn.dataset.spec;
+        requestAnimationFrame(() => stage.classList.remove('swapping'));
+      }, 180);
+    });
+  });
+})();
+
 } // end __initInteractive
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', __initInteractive);
@@ -980,6 +1004,20 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .ship-step p{color:var(--text-mid);font-size:0.93rem;line-height:1.55}
 .ship-step strong{color:var(--text);font-weight:700}
 
+
+.podshow-wrap{max-width:1100px;margin:48px auto 0;background:#FFFFFF;border:1px solid var(--border);border-radius:24px;padding:32px;box-shadow:var(--shadow-lg)}
+.podshow-stage{background:linear-gradient(180deg,#FAFAFB 0%,#F1F2F4 100%);border-radius:16px;aspect-ratio:16/10;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.podshow-stage img{max-width:88%;max-height:88%;width:auto;height:auto;object-fit:contain;transition:opacity 0.3s ease,transform 0.3s ease;filter:drop-shadow(0 30px 40px rgba(0,0,0,0.15))}
+.podshow-stage img.swapping{opacity:0;transform:scale(0.97)}
+.podshow-meta{position:absolute;left:24px;bottom:24px;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);padding:14px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.06);max-width:62%}
+.podshow-meta-name{font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-0.02em}
+.podshow-meta-spec{font-size:0.78rem;color:var(--text-mid);font-weight:500;margin-top:4px;letter-spacing:-0.01em}
+.podshow-controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.podshow-btn{background:white;border:2px solid var(--border);color:var(--text-mid);font-family:inherit;font-size:0.92rem;font-weight:700;padding:11px 22px;border-radius:999px;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em}
+.podshow-btn:hover{border-color:var(--text);color:var(--text)}
+.podshow-btn.active{background:var(--red);border-color:var(--red);color:white;box-shadow:var(--shadow-red)}
+@media(max-width:640px){.podshow-wrap{padding:20px}.podshow-meta{position:static;max-width:100%;margin-top:14px}}
+
 .rotation-3d-wrap{max-width:1100px;margin:48px auto 0;background:linear-gradient(180deg,#1A1D24 0%,#0A0B0D 100%);border-radius:24px;padding:24px;box-shadow:var(--shadow-lg)}
 .pod-3d-canvas{width:100%;aspect-ratio:16/10;background:#0A0B0D;border-radius:16px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
 .pod-3d-canvas canvas{display:block;width:100%;height:100%;cursor:grab}
@@ -1300,21 +1338,24 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <section class="section" id="explore3d">
   <div class="container">
     <div class="section-header center">
-      <div class="eyebrow">Explore in 3D</div>
-      <h2>Walk around it.</h2>
-      <p class="lead" style="margin-left:auto;margin-right:auto">Drag to rotate. Scroll to zoom. The pod you're looking at is The Suite — 49 sq ft, 6-person capacity, ISO-certified acoustic walls.</p>
+      <div class="eyebrow">See the product</div>
+      <h2>Pick a size. See it isolated.</h2>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Studio. Duo. Quad. Suite. Same aluminum frame, same ISO-certified acoustic walls, same 6mm tempered glass. Click through to see each one.</p>
     </div>
-    <div class="rotation-3d-wrap">
-      <div id="pod3d-container" class="pod-3d-canvas">
-        <div class="pod-3d-loading"><i data-lucide="loader" style="width:24px;height:24px;animation:spin 1s linear infinite"></i> Loading 3D model…</div>
+    <div class="podshow-wrap">
+      <div class="podshow-stage">
+        <img id="podshowImage" src="assets/images/pod-suite.jpg" alt="The Suite — 49 sq ft 6-person pod">
+        <div class="podshow-meta">
+          <div class="podshow-meta-name" id="podshowName">The Suite</div>
+          <div class="podshow-meta-spec" id="podshowSpec">~49 sq ft · 1–6 people · 30 ± 3 dB ISO certified · 90W USB-C + Qi</div>
+        </div>
       </div>
-      <div class="rotation-3d-controls">
-        <button class="rot3d-btn" id="rot3dStudio" data-pod="studio">Studio · 1P</button>
-        <button class="rot3d-btn" id="rot3dDuo" data-pod="duo">Duo · 2P</button>
-        <button class="rot3d-btn" id="rot3dQuad" data-pod="quad">Quad · 4P</button>
-        <button class="rot3d-btn active" id="rot3dSuite" data-pod="suite">Suite · 6P</button>
+      <div class="podshow-controls">
+        <button class="podshow-btn" data-pod="studio" data-img="assets/images/pod-studio.jpg" data-name="The Studio" data-spec="~10 sq ft · 1 person · 28 ± 3 dB · 24W USB + USB-C">Studio · 1P</button>
+        <button class="podshow-btn" data-pod="duo" data-img="assets/images/pod-duo.jpg" data-name="The Duo" data-spec="~23 sq ft · 1–2 people · 30 ± 3 dB ISO certified · 30W USB + USB-C">Duo · 2P</button>
+        <button class="podshow-btn" data-pod="quad" data-img="assets/images/pod-quad.jpg" data-name="The Quad" data-spec="~31 sq ft · 4 people · 30 ± 3 dB ISO certified · 54W USB-C + Qi">Quad · 4P</button>
+        <button class="podshow-btn active" data-pod="suite" data-img="assets/images/pod-suite.jpg" data-name="The Suite" data-spec="~49 sq ft · 1–6 people · 30 ± 3 dB ISO certified · 90W USB-C + Qi">Suite · 6P · Flagship</button>
       </div>
-      <p class="rotation-3d-hint">Drag to rotate · scroll to zoom · ISO-23351-1 acoustic spec · 6mm tempered glass</p>
     </div>
   </div>
 </section>
@@ -1750,194 +1791,8 @@ const sections=['#suite','#lineup','#compare','#features','#order'].map(s=>docum
 window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)current='#'+s.id;});navLinks.forEach(a=>a.classList.toggle('current',a.getAttribute('href')===current));});
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-// 3D POD ROTATION VIEWER — simplified geometry placeholder
-(function(){
-  const container = document.getElementById('pod3d-container');
-  if (!container || !window.THREE) return;
-  // Pod dimensions in arbitrary units (footprint scaling)
-  const podDims = {
-    studio: {w: 0.96, d: 1.0, h: 2.2, label: 'Studio'},
-    duo:    {w: 1.5, d: 1.4, h: 2.2, label: 'Duo'},
-    quad:   {w: 2.1, d: 1.4, h: 2.2, label: 'Quad'},
-    suite:  {w: 2.1, d: 2.1, h: 2.25, label: 'Suite'}
-  };
-
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0A0B0D);
-
-  const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
-  camera.position.set(5, 3, 5);
-  camera.lookAt(0, 0.8, 0);
-
-  const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  // Remove loading message + add canvas
-  const loadingEl = container.querySelector('.pod-3d-loading');
-  if (loadingEl) loadingEl.remove();
-  container.appendChild(renderer.domElement);
-
-  // Lighting — soft 3-point setup
-  const keyLight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
-  keyLight.position.set(5, 8, 5);
-  scene.add(keyLight);
-  const fillLight = new THREE.DirectionalLight(0xE53B3B, 0.18);
-  fillLight.position.set(-5, 3, -3);
-  scene.add(fillLight);
-  scene.add(new THREE.AmbientLight(0xFFFFFF, 0.35));
-
-  // Floor (subtle ground plane)
-  const floorMat = new THREE.MeshStandardMaterial({color: 0x16181C, roughness: 0.9});
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), floorMat);
-  floor.rotation.x = -Math.PI / 2;
-  scene.add(floor);
-  // Subtle grid
-  const grid = new THREE.GridHelper(10, 10, 0x2A2722, 0x1F1F22);
-  grid.position.y = 0.001;
-  scene.add(grid);
-
-  // Pod group (we'll rebuild this on tier change)
-  let podGroup = new THREE.Group();
-  scene.add(podGroup);
-
-  function buildPod(tier) {
-    while (podGroup.children.length) podGroup.remove(podGroup.children[0]);
-    const d = podDims[tier];
-    const w = d.w, dp = d.d, ht = d.h;
-
-    // White outer shell (slightly transparent)
-    const shellMat = new THREE.MeshStandardMaterial({color: 0xF5F5F7, roughness: 0.7, metalness: 0.05});
-    const shell = new THREE.Mesh(new THREE.BoxGeometry(w, ht, dp), shellMat);
-    shell.position.y = ht / 2;
-    podGroup.add(shell);
-
-    // Glass front (smaller box at front face)
-    const glassMat = new THREE.MeshPhysicalMaterial({
-      color: 0x16181C,
-      roughness: 0.05,
-      metalness: 0.3,
-      transmission: 0.7,
-      thickness: 0.1,
-      transparent: true,
-      opacity: 0.65
-    });
-    const glassW = w * 0.85, glassH = ht * 0.85;
-    const glass = new THREE.Mesh(new THREE.PlaneGeometry(glassW, glassH), glassMat);
-    glass.position.set(0, ht / 2, dp / 2 + 0.001);
-    podGroup.add(glass);
-
-    // Black aluminum frame (edges)
-    const frameMat = new THREE.MeshStandardMaterial({color: 0x1A1D24, roughness: 0.4, metalness: 0.5});
-    const frameThick = 0.04;
-    // Vertical edges (4)
-    [[-w/2, dp/2], [w/2, dp/2], [-w/2, -dp/2], [w/2, -dp/2]].forEach(([x, z]) => {
-      const edge = new THREE.Mesh(new THREE.BoxGeometry(frameThick, ht, frameThick), frameMat);
-      edge.position.set(x, ht / 2, z);
-      podGroup.add(edge);
-    });
-    // Top edges
-    [[0, ht, dp/2, w], [0, ht, -dp/2, w], [-w/2, ht, 0, dp], [w/2, ht, 0, dp]].forEach(([x, y, z, len], i) => {
-      const isWidth = i < 2;
-      const geo = new THREE.BoxGeometry(isWidth ? len : frameThick, frameThick, isWidth ? frameThick : len);
-      const edge = new THREE.Mesh(geo, frameMat);
-      edge.position.set(x, y, z);
-      podGroup.add(edge);
-    });
-    // Bottom edges
-    [[0, 0, dp/2, w], [0, 0, -dp/2, w], [-w/2, 0, 0, dp], [w/2, 0, 0, dp]].forEach(([x, y, z, len], i) => {
-      const isWidth = i < 2;
-      const geo = new THREE.BoxGeometry(isWidth ? len : frameThick, frameThick, isWidth ? frameThick : len);
-      const edge = new THREE.Mesh(geo, frameMat);
-      edge.position.set(x, y, z);
-      podGroup.add(edge);
-    });
-
-    // Door handle (subtle)
-    const handleMat = new THREE.MeshStandardMaterial({color: 0x6B5232, roughness: 0.4, metalness: 0.3});
-    const handle = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.4, 0.04), handleMat);
-    handle.position.set(w * 0.35, ht * 0.5, dp / 2 + 0.04);
-    podGroup.add(handle);
-
-    // Center camera so pod fits
-    const dist = Math.max(w, dp) * 2.4 + 1.5;
-    camera.position.set(dist, ht * 1.2, dist);
-    camera.lookAt(0, ht / 2.5, 0);
-  }
-
-  buildPod('suite');
-
-  // Mouse rotation
-  let isDragging = false;
-  let prevX = 0, prevY = 0;
-  let rotY = Math.PI / 5, rotX = 0.18;
-  const targetRot = {y: rotY, x: rotX};
-
-  renderer.domElement.addEventListener('mousedown', e => { isDragging = true; prevX = e.clientX; prevY = e.clientY; });
-  window.addEventListener('mouseup', () => { isDragging = false; });
-  window.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    targetRot.y += (e.clientX - prevX) * 0.01;
-    targetRot.x += (e.clientY - prevY) * 0.005;
-    targetRot.x = Math.max(-0.3, Math.min(0.6, targetRot.x));
-    prevX = e.clientX; prevY = e.clientY;
-  });
-  // Touch
-  renderer.domElement.addEventListener('touchstart', e => { isDragging = true; prevX = e.touches[0].clientX; prevY = e.touches[0].clientY; });
-  window.addEventListener('touchend', () => { isDragging = false; });
-  window.addEventListener('touchmove', e => {
-    if (!isDragging) return;
-    targetRot.y += (e.touches[0].clientX - prevX) * 0.01;
-    targetRot.x += (e.touches[0].clientY - prevY) * 0.005;
-    targetRot.x = Math.max(-0.3, Math.min(0.6, targetRot.x));
-    prevX = e.touches[0].clientX; prevY = e.touches[0].clientY;
-  }, {passive: true});
-  // Zoom
-  renderer.domElement.addEventListener('wheel', e => {
-    e.preventDefault();
-    const factor = e.deltaY > 0 ? 1.1 : 0.9;
-    camera.position.multiplyScalar(factor);
-    const len = camera.position.length();
-    if (len < 3) camera.position.setLength(3);
-    if (len > 15) camera.position.setLength(15);
-  }, {passive: false});
-
-  // Auto-rotate when not interacting
-  let lastInteraction = Date.now();
-  ['mousedown','touchstart','wheel'].forEach(ev => renderer.domElement.addEventListener(ev, () => { lastInteraction = Date.now(); }));
-
-  function animate() {
-    requestAnimationFrame(animate);
-    rotY += (targetRot.y - rotY) * 0.08;
-    rotX += (targetRot.x - rotX) * 0.08;
-    if (!isDragging && Date.now() - lastInteraction > 4000) {
-      targetRot.y += 0.003;
-    }
-    podGroup.rotation.y = rotY;
-    podGroup.rotation.x = rotX;
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  // Resize
-  window.addEventListener('resize', () => {
-    if (!container.clientWidth) return;
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-  });
-
-  // Tier toggle
-  document.querySelectorAll('.rot3d-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.rot3d-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      buildPod(btn.dataset.pod);
-    });
-  });
-})();
-</script>
+<!-- 3D library removed; replaced with image showcase -->
+<!-- 3D viewer code removed -->
 
 </body>
 </html>
