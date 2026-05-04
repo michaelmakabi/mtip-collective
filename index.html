@@ -343,103 +343,144 @@ const cNextHover = document.getElementById('carouselNextHover');
 cPrevHover && cPrevHover.addEventListener('click', () => cGo(cIdx-1));
 cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
 
-// NOISE DEMO — REAL audio playback with crossfade
-const nDb=document.getElementById('noiseDb');
-const nFill=document.getElementById('noiseFill');
-const nStatus=document.getElementById('noiseStatus');
-const nLabel=document.getElementById('noiseStateLabel');
-const nDesc=document.getElementById('noiseStateDesc');
-const nBtnO=document.getElementById('noiseBtnOutside');
-const nBtnI=document.getElementById('noiseBtnInside');
-const nBtnS=document.getElementById('noiseBtnStop');
+// NOISE DEMO — single source + Web Audio low-pass filter for "inside" state
+(function(){
+  const playBtn = document.getElementById('noisePlayBtn');
+  const playIcon = document.getElementById('noisePlayIcon');
+  const playLabel = document.getElementById('noisePlayLabel');
+  const toggle = document.getElementById('noiseToggle');
+  const tabs = toggle ? toggle.querySelectorAll('.noise-tab') : [];
+  const stateLabel = document.getElementById('noiseStateLabel');
+  const stateDesc = document.getElementById('noiseStateDesc');
+  const stateIcon = document.getElementById('noiseStateIcon');
+  const dbDisplay = document.getElementById('noiseDb');
+  const fillBar = document.getElementById('noiseFill');
+  const status = document.getElementById('noiseStatus');
+  if (!playBtn || !toggle) return;
 
-// Two looping audio elements, crossfade between them on toggle
-const nAudioOutside = new Audio('assets/audio/office-outside.mp3');
-const nAudioInside = new Audio('assets/audio/office-inside.mp3');
-nAudioOutside.loop = true;
-nAudioInside.loop = true;
-nAudioOutside.preload = 'auto';
-nAudioInside.preload = 'auto';
-let nState = 'off';
+  let audio = null;
+  let ctx = null;
+  let source = null;
+  let lpFilter = null;
+  let highshelf = null;
+  let gainNode = null;
+  let mode = 'outside';   // outside | inside
+  let playing = false;
+  let dbAnimRAF = null;
 
-function nCrossfade(targetAudio, otherAudio, targetVol, durMs){
-  const start = performance.now();
-  const fromVol = otherAudio.volume;
-  const toVol = targetVol;
-  // Make sure target is playing
-  if (targetAudio.paused) {
-    targetAudio.volume = 0;
-    const p = targetAudio.play();
-    if (p && p.catch) p.catch(()=>{});
+  function buildGraph(){
+    if (ctx) return;
+    audio = new Audio('assets/audio/office-boilerroom.mp3');
+    audio.crossOrigin = 'anonymous';
+    audio.loop = true;
+    audio.preload = 'auto';
+    const Ctor = window.AudioContext || window.webkitAudioContext;
+    ctx = new Ctor();
+    source = ctx.createMediaElementSource(audio);
+    lpFilter = ctx.createBiquadFilter();
+    lpFilter.type = 'lowpass';
+    lpFilter.frequency.value = 18000;   // wide open = no muffling
+    lpFilter.Q.value = 0.7;
+    highshelf = ctx.createBiquadFilter();
+    highshelf.type = 'highshelf';
+    highshelf.frequency.value = 1200;
+    highshelf.gain.value = 0;
+    gainNode = ctx.createGain();
+    gainNode.gain.value = 0.85;
+    source.connect(lpFilter);
+    lpFilter.connect(highshelf);
+    highshelf.connect(gainNode);
+    gainNode.connect(ctx.destination);
   }
-  function step(t){
-    const k = Math.min(1, (t - start)/durMs);
-    targetAudio.volume = k * toVol;
-    otherAudio.volume = (1 - k) * fromVol;
-    if (k < 1) requestAnimationFrame(step);
-    else {
-      otherAudio.pause();
-      otherAudio.currentTime = 0;
+
+  function applyMode(m, ramp){
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const dur = ramp ? 0.45 : 0.01;
+    if (m === 'inside'){
+      lpFilter.frequency.cancelScheduledValues(t);
+      lpFilter.frequency.linearRampToValueAtTime(280, t + dur);
+      highshelf.gain.cancelScheduledValues(t);
+      highshelf.gain.linearRampToValueAtTime(-22, t + dur);
+      gainNode.gain.cancelScheduledValues(t);
+      gainNode.gain.linearRampToValueAtTime(0.18, t + dur);
+    } else {
+      lpFilter.frequency.cancelScheduledValues(t);
+      lpFilter.frequency.linearRampToValueAtTime(18000, t + dur);
+      highshelf.gain.cancelScheduledValues(t);
+      highshelf.gain.linearRampToValueAtTime(0, t + dur);
+      gainNode.gain.cancelScheduledValues(t);
+      gainNode.gain.linearRampToValueAtTime(0.85, t + dur);
     }
   }
-  requestAnimationFrame(step);
-}
 
-function nMeter(db, msg, mode){
-  const start = parseInt(nDb.textContent) || db;
-  let frame=0;
-  const total=20;
-  const stepDb=(db-start)/total;
-  const ival = setInterval(()=>{
-    frame++;
-    const cur = Math.round(start + stepDb*frame);
-    nDb.textContent = cur;
-    nFill.style.width = Math.max(5, Math.min(100, (cur-20)*1.5)) + '%';
-    if (frame >= total) clearInterval(ival);
-  }, 25);
-  if (nStatus) nStatus.textContent = msg;
-  if (nDb) nDb.classList.toggle('quiet', mode==='inside');
-  if (nStatus) nStatus.classList.toggle('quiet', mode==='inside');
-}
-
-function nGoOutside(){
-  nState = 'outside';
-  nCrossfade(nAudioOutside, nAudioInside, 0.85, 700);
-  nMeter(68, 'Open office — too loud to focus.', 'outside');
-  if (nBtnO) nBtnO.classList.add('active');
-  if (nBtnI) nBtnI.classList.remove('active');
-  if (nLabel) nLabel.textContent = 'Open office — outside the pod';
-  if (nDesc) nDesc.textContent = 'Phone calls. Keyboard typing. Conversations.';
-}
-function nGoInside(){
-  nState = 'inside';
-  nCrossfade(nAudioInside, nAudioOutside, 0.6, 900);
-  nMeter(38, 'Inside the pod — conversation-private.', 'inside');
-  if (nBtnI) nBtnI.classList.add('active');
-  if (nBtnO) nBtnO.classList.remove('active');
-  if (nLabel) nLabel.textContent = 'Inside the MTIP Pod';
-  if (nDesc) nDesc.textContent = '30 dB acoustic walls. Filtered. Quiet. Yours.';
-}
-function nStop(){
-  nAudioOutside.pause(); nAudioOutside.currentTime = 0;
-  nAudioInside.pause(); nAudioInside.currentTime = 0;
-  nState = 'off';
-  if (nBtnO) nBtnO.classList.remove('active');
-  if (nBtnI) nBtnI.classList.remove('active');
-  nMeter(0, 'Demo paused.', 'outside');
-}
-
-if (nBtnO) nBtnO.addEventListener('click', nGoOutside);
-if (nBtnI) nBtnI.addEventListener('click', () => {
-  if (nState === 'off') {
-    // Start outside first, then auto-transition inside after a beat
-    nGoOutside();
-    setTimeout(nGoInside, 1200);
-  } else {
-    nGoInside();
+  function paintMeter(targetDb, statusText, statusClass){
+    if (dbAnimRAF) cancelAnimationFrame(dbAnimRAF);
+    let cur = parseFloat(dbDisplay.textContent) || targetDb;
+    function step(){
+      cur += (targetDb - cur) * 0.18;
+      const v = Math.round(cur);
+      dbDisplay.textContent = v;
+      const pct = Math.max(0, Math.min(100, ((v - 25) / 65) * 100));
+      fillBar.style.width = pct + '%';
+      if (Math.abs(cur - targetDb) > 0.4) dbAnimRAF = requestAnimationFrame(step);
+    }
+    step();
+    if (status){
+      status.textContent = statusText;
+      status.className = 'noise-meter-status ' + (statusClass || '');
+    }
   }
-});
-if (nBtnS) nBtnS.addEventListener('click', nStop);
+
+  function setMode(m){
+    mode = m;
+    tabs.forEach(t => {
+      const on = t.dataset.mode === m;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on);
+    });
+    toggle.dataset.mode = m;
+    if (m === 'inside'){
+      stateLabel.textContent = 'Inside the pod';
+      stateDesc.textContent = 'Same audio. Walls in between. Drops to ~38 dB.';
+      paintMeter(38, 'Inside the pod — conversation-private.', 'good');
+    } else {
+      stateLabel.textContent = 'Outside the pod';
+      stateDesc.textContent = 'Calls. Conversations. Keyboards. Phones ringing.';
+      paintMeter(68, 'Open office — too loud to focus.', 'bad');
+    }
+    if (playing) applyMode(m, true);
+  }
+
+  function play(){
+    buildGraph();
+    if (ctx.state === 'suspended') ctx.resume();
+    applyMode(mode, false);
+    audio.play().then(() => {
+      playing = true;
+      playIcon && playIcon.setAttribute('data-lucide', 'pause');
+      playLabel && (playLabel.textContent = 'Pause');
+      if (window.lucide) window.lucide.createIcons();
+      paintMeter(mode === 'inside' ? 38 : 68,
+        mode === 'inside' ? 'Inside the pod — conversation-private.' : 'Open office — too loud to focus.',
+        mode === 'inside' ? 'good' : 'bad');
+    }).catch(()=>{});
+  }
+  function pause(){
+    if (!audio) return;
+    audio.pause();
+    playing = false;
+    playIcon && playIcon.setAttribute('data-lucide', 'play');
+    playLabel && (playLabel.textContent = 'Play the demo');
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  playBtn.addEventListener('click', () => playing ? pause() : play());
+  tabs.forEach(t => t.addEventListener('click', () => setMode(t.dataset.mode)));
+
+  // Initial state
+  setMode('outside');
+})();
 
 // PODSHOW image swapper
 (function(){
@@ -802,6 +843,18 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .noise-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:64px}
 @media(max-width:1024px){.noise-grid{grid-template-columns:1fr;gap:40px}}
 .noise-controls{display:flex;flex-direction:column;gap:24px}
+.noise-play-btn{display:flex;align-items:center;gap:14px;background:var(--red);color:white;border:none;font-family:inherit;font-size:1rem;font-weight:700;padding:18px 28px;border-radius:14px;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em;width:100%;justify-content:center;box-shadow:var(--shadow-red)}
+.noise-play-btn:hover{background:var(--red-dark);transform:translateY(-1px)}
+.noise-play-btn i{width:22px;height:22px}
+.noise-toggle{position:relative;display:grid;grid-template-columns:1fr 1fr;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:999px;padding:5px;overflow:hidden}
+.noise-toggle-pill{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);background:white;border-radius:999px;transition:transform 0.32s cubic-bezier(0.5,0.05,0.2,1);box-shadow:0 4px 14px rgba(0,0,0,0.3);z-index:0}
+.noise-toggle[data-mode="inside"] .noise-toggle-pill{transform:translateX(100%)}
+.noise-tab{position:relative;background:transparent;border:none;font-family:inherit;font-size:0.95rem;font-weight:700;letter-spacing:-0.01em;color:rgba(255,255,255,0.6);padding:14px 20px;border-radius:999px;cursor:pointer;z-index:1;transition:color 0.25s}
+.noise-tab.active{color:var(--text)}
+.noise-disclaimer{color:rgba(255,255,255,0.45);font-size:0.85rem;margin-top:8px}
+.noise-meter-status.good{color:#22C55E}
+.noise-meter-status.bad{color:#FF8A7A}
+
 .noise-state{display:flex;align-items:center;gap:16px;padding:24px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px}
 .noise-state-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(229,59,59,0.15)}
 .noise-state-icon i{width:26px;height:26px;color:var(--red-light)}
@@ -1500,16 +1553,20 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 
 <section class="noise-demo" id="hear-it"><div class="container">
-<div class="section-header center"><div class="eyebrow" style="color:var(--red-light)">Hear it for yourself</div><h2>30 dB.<br>That's the difference.</h2><p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">A normal open office sits between 60 and 75 dB — calls, keyboards, meetings, footsteps. Inside an MTIP Collective Pod, that drops to roughly 40 dB. Hit play. Then step inside.</p></div>
+<div class="section-header center"><div class="eyebrow" style="color:var(--red-light)">Hear it for yourself</div><h2>30 dB.<br>That's the difference.</h2><p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">Hit play. You're in the boiler room — phones, conversations, keyboards. Slide the toggle. Same exact audio, walls between you and it.</p></div>
 <div class="noise-grid">
 <div class="noise-controls">
-<div class="noise-state"><div class="noise-state-icon"><i data-lucide="ear" id="noiseStateIcon"></i></div><div class="noise-state-text"><strong id="noiseStateLabel">Open office — outside the pod</strong><span id="noiseStateDesc">Phone calls. Keyboard typing. Conversations.</span></div></div>
-<div class="noise-button-group">
-<button class="noise-btn active" id="noiseBtnOutside"><i data-lucide="play"></i><div><strong>Outside the pod</strong><div style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:2px">Hear what your office sounds like right now</div></div></button>
-<button class="noise-btn" id="noiseBtnInside"><i data-lucide="volume-1"></i><div><strong>Step inside the pod</strong><div style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:2px">Same sound, with our 30 dB acoustic walls</div></div></button>
-<button class="noise-btn" id="noiseBtnStop" style="opacity:0.6"><i data-lucide="square"></i><div><strong>Stop demo</strong></div></button>
+<div class="noise-state" id="noiseState"><div class="noise-state-icon"><i data-lucide="volume-2" id="noiseStateIcon"></i></div><div class="noise-state-text"><strong id="noiseStateLabel">Outside the pod</strong><span id="noiseStateDesc">Calls. Conversations. Keyboards. Phones ringing.</span></div></div>
+
+<button class="noise-play-btn" id="noisePlayBtn" type="button"><i data-lucide="play" id="noisePlayIcon"></i><span id="noisePlayLabel">Play the demo</span></button>
+
+<div class="noise-toggle" id="noiseToggle" role="tablist" aria-label="Outside or inside the pod">
+  <button type="button" class="noise-tab active" data-mode="outside" role="tab" aria-selected="true">Outside</button>
+  <button type="button" class="noise-tab" data-mode="inside" role="tab" aria-selected="false">Inside the pod</button>
+  <span class="noise-toggle-pill" aria-hidden="true"></span>
 </div>
-<p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-top:8px"><i data-lucide="info" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> Browser audio simulation. Not a measurement of an actual pod — but the dB drop is what real ISO-23351-1 testing reports.</p>
+
+<p class="noise-disclaimer"><i data-lucide="info" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> Browser audio simulation. Not a measurement of an actual pod — but the dB drop is what real ISO-23351-1 testing reports.</p>
 </div>
 <div class="noise-meter-wrap">
 <div class="noise-meter-label">Sound level</div>
