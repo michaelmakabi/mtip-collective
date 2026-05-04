@@ -441,6 +441,33 @@ if (nBtnI) nBtnI.addEventListener('click', () => {
 if (nBtnS) nBtnS.addEventListener('click', nStop);
 </script>
 <style>
+:root{
+  --white:#FFFFFF;
+  --bg-soft:#FAFAFA;
+  --bg-section:#F5F5F7;
+  --text:#1A1D24;
+  --text-mid:#4B4F58;
+  --text-light:#9CA3AF;
+  --border:#E5E7EB;
+  --border-strong:#D1D5DB;
+  --black:#0A0B0D;
+  --black-soft:#16181C;
+  --red:#E53B3B;
+  --red-dark:#B82E2E;
+  --red-light:#F56363;
+  --red-glow:rgba(229,59,59,0.12);
+  --silver:#DEE1E6;
+  --silver-2:#C9CDD3;
+  --accent:#E53B3B;
+  --accent-hi:#F56363;
+  --grad-cta:linear-gradient(135deg,#E53B3B 0%,#B82E2E 100%);
+  --grad-cta-hover:linear-gradient(135deg,#F56363 0%,#E53B3B 100%);
+  --grad-red-silver:linear-gradient(135deg,#E53B3B 0%,#DEE1E6 50%,#FFFFFF 75%,#E53B3B 100%);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg:0 16px 48px rgba(0,0,0,0.12);
+  --shadow-red:0 8px 24px rgba(229,59,59,0.25);
+}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--white);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:-0.011em}
@@ -957,6 +984,17 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .rot3d-btn:hover{background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.25)}
 .rot3d-btn.active{background:var(--red);border-color:var(--red);color:white;box-shadow:var(--shadow-red)}
 .rotation-3d-hint{text-align:center;color:rgba(255,255,255,0.4);font-size:0.78rem;font-style:italic;padding-bottom:12px}
+
+.lineup-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:0 auto 32px;padding:8px}
+@media(max-width:1100px){.lineup-tiles{grid-template-columns:repeat(2,1fr);gap:20px}}
+@media(max-width:600px){.lineup-tiles{grid-template-columns:1fr;gap:16px}}
+.lineup-tile{position:relative;background:linear-gradient(180deg,#FFFFFF 0%,#F5F5F7 100%);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.04),0 12px 32px rgba(0,0,0,0.06);transition:all 0.3s ease;aspect-ratio:4/5}
+.lineup-tile::after{content:'';position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.8),inset 0 0 0 1px rgba(0,0,0,0.02);pointer-events:none}
+.lineup-tile:hover{transform:translateY(-6px);box-shadow:0 4px 12px rgba(0,0,0,0.06),0 20px 50px rgba(0,0,0,0.12);border-color:var(--text)}
+.lineup-tile img{width:100%;height:100%;object-fit:cover;display:block}
+.lineup-tile.featured{border:2px solid var(--red);background:linear-gradient(180deg,#FFF8F8 0%,#FAFAFA 100%);box-shadow:0 4px 12px rgba(229,59,59,0.08),0 16px 48px rgba(229,59,59,0.18)}
+.lineup-tile.featured:hover{box-shadow:0 8px 20px rgba(229,59,59,0.12),0 24px 60px rgba(229,59,59,0.25)}
+.lineup-tile-badge{position:absolute;top:14px;right:14px;background:var(--red);color:white;padding:5px 12px;border-radius:999px;font-size:0.65rem;font-weight:800;letter-spacing:0.18em;z-index:2;box-shadow:0 4px 12px rgba(229,59,59,0.35)}
 </style>
 </head>
 <body>
@@ -1277,7 +1315,13 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <section class="section" id="compare"><div class="container">
 <div class="section-header center"><div class="eyebrow">Compared head to head</div><h2>The same pod.<br>Half the price.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Office pods aren't new. Premium pods cost premium money. We don't sell premium money — we sell premium product at the price of mid-market. Factory-direct, no SoHo showroom rent, no white-glove markup.</p></div>
 
-<div class="compare-visual"><img src="assets/images/lineup-comparison.jpg" alt="MTIP Collective Pods relative size comparison"><p class="compare-visual-caption">The full MTIP Collective lineup, drawn to relative scale: The Studio (1P) · The Duo (2P) · The Quad (4P) · The Suite (6P)</p></div>
+<div class="lineup-tiles">
+      <div class="lineup-tile"><img src="assets/images/lineup-studio.jpg" alt="The Studio · 1 Person"></div>
+      <div class="lineup-tile"><img src="assets/images/lineup-duo.jpg" alt="The Duo · 2 Person"></div>
+      <div class="lineup-tile"><img src="assets/images/lineup-quad.jpg" alt="The Quad · 4 Person"></div>
+      <div class="lineup-tile featured"><img src="assets/images/lineup-suite.jpg" alt="The Suite · 6 Person"><span class="lineup-tile-badge">FLAGSHIP</span></div>
+    </div>
+    <p class="compare-visual-caption">Four sizes. One standard of quality. The full MTIP Collective lineup, drawn to relative scale.</p>
 
 <h3 style="margin-bottom:24px;font-size:1.4rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-mid);font-weight:700">Solo · 1-Person Booth</h3>
 <div class="compare-table"><div class="compare-table-wrap"><table><thead><tr><th class="us">The Studio</th><th><a href="https://room.com/products/office-phone-booth/" target="_blank" rel="noopener">ROOM One ↗</a></th><th><a href="https://zenbooth.net/products/zenbooth-solo" target="_blank" rel="noopener">ZenBooth Solo ↗</a></th><th><a href="https://framery.com/en-us/office-pods-and-booths/framery-one/" target="_blank" rel="noopener">Framery One ↗</a></th></tr></thead><tbody><tr><td class="us">$2,997</td><td>$6,495</td><td>$5,490</td><td>$14,690</td></tr><tr><td class="us">28 ± 3 dB</td><td>30 dB</td><td>27 dB</td><td>35 dB</td></tr><tr><td class="us"><span class="check">✓</span> Delivered turnkey</td><td><span class="x">✗</span> Site assembly</td><td><span class="x">✗</span> Site assembly</td><td><span class="x">✗</span> Site assembly</td></tr><tr><td class="us">90 days lead time</td><td>Varies</td><td>Varies</td><td>8–12 weeks</td></tr><tr><td class="us">— baseline</td><td class="savings">+117% more</td><td class="savings">+83% more</td><td class="savings">+390% more</td></tr></tbody></table></div></div>
