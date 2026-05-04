@@ -1,11 +1,59 @@
 [
   {
+    "name": "ai-suite-orbit",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic three-quarter exterior view from front-right at a 30-degree angle showing front face and right side of a premium standalone six-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: large bench seat on left wall, integrated desk on right, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-suite-orbit-left",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic three-quarter exterior view from front-left at a 30-degree angle showing front face and left side of a premium standalone six-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: large bench seat on left wall, integrated desk on right, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-suite-front",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic head-on direct front elevation view of a premium standalone six-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: large bench seat on left wall, integrated desk on right, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-suite-side",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic right-side profile view showing the full side panel of charcoal acoustic felt of a premium standalone six-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: large bench seat on left wall, integrated desk on right, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-suite-rear",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic three-quarter rear view at a 30-degree angle showing the back panel of charcoal acoustic felt and the right side of a premium standalone six-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: large bench seat on left wall, integrated desk on right, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-suite-aerial",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic top-down 60-degree aerial view of a premium standalone six-person acoustic office pod isolated on a light-grey gradient studio floor. Visible from above: satin-finish charcoal aluminum frame with brushed-edge metal corners, the polished aluminum top panel with subtle integrated LED strip glowing through, frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel showing large bench seat on left wall, integrated desk on right below, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Soft realistic drop shadow. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
     "name": "ai-suite-int-wide",
     "ref": "assets/images/pod-suite.jpg",
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic ultra-wide-angle interior view inside a premium acoustic office pod. Camera in the back of the pod looking forward through the tempered glass front door. Integrated white work desk on right side with metal supports and a closed laptop, charcoal felt acoustic walls with realistic textile texture, soft warm LED strip ceiling lighting, black ventilation grille at top center, polished aluminum frame, dark grey carpet floor. Through the glass: softly lit modern open-plan office with daylight, blurred desks visible. Cinematic, premium architectural photography, ultra-detailed, sharp, evenly lit, no people, no text, no logos, no watermarks."
+    "prompt": "Photorealistic ultra-wide interior view inside a six-person acoustic office pod, 49 sq ft footprint. Camera at eye level near the back wall looking forward through the frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel. Visible inside: large bench seat on left wall, integrated desk on right. high-density woven charcoal acoustic felt walls with realistic textile micro-texture on left and right. warm 3200K LED ceiling strip glowing softly along the inside top edges. low-profile black aluminum ventilation grille at top center of front wall. satin-finish charcoal aluminum frame with brushed-edge metal corners edges. dark grey low-pile commercial carpet. Through the glass: a softly lit modern open-plan office with daylight streaming through far windows, blurred desks and ergonomic chairs in the background. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "ai-suite-pov",
@@ -13,31 +61,7 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic point-of-view shot from a person seated at the integrated desk inside an acoustic office pod, facing the closed tempered glass door. Edge of white desk in foreground, an open silver laptop with soft blue screen glow, a black notebook beside it, charcoal felt acoustic walls left and right, warm LED strip ceiling overhead, black ventilation grille at top of front wall, polished aluminum frame around the glass door. Through the glass: a soft-focus modern open-plan office. Cinematic depth-of-field, sharp foreground, photorealistic, no people, no text, no logos."
-  },
-  {
-    "name": "ai-suite-orbit",
-    "ref": "assets/images/pod-suite.jpg",
-    "model": "gpt-image-2",
-    "size": "1536x1024",
-    "quality": "high",
-    "prompt": "Photorealistic three-quarter exterior view of a premium standalone six-person acoustic office pod isolated on a clean light-grey gradient studio background. Charcoal aluminum frame, full-height tempered glass front with integrated black framed door, charcoal felt acoustic side and back walls, sleek polished aluminum top panel, soft drop shadow under the pod. Camera at 30 degree angle from front-right showing front face and right side. Premium product photography, even studio lighting, sharp, photorealistic, no people, no text, no logos."
-  },
-  {
-    "name": "ai-quad-int-wide",
-    "ref": "assets/images/pod-quad.jpg",
-    "model": "gpt-image-2",
-    "size": "1536x1024",
-    "quality": "high",
-    "prompt": "Photorealistic interior view inside a four-person acoustic meeting room pod. Camera in back looking forward through the tempered glass front. A round white meeting table in center with four ergonomic charcoal swivel chairs around it, charcoal felt acoustic walls with subtle texture, warm LED strip ceiling lighting, ventilation grille at top, polished aluminum frame, grey carpet floor. Through the glass: softly lit modern open-plan office. Premium architectural photography, sharp, photorealistic, no people, no text, no logos."
-  },
-  {
-    "name": "ai-quad-pov",
-    "ref": "assets/images/pod-quad.jpg",
-    "model": "gpt-image-2",
-    "size": "1536x1024",
-    "quality": "high",
-    "prompt": "Photorealistic point-of-view from a chair inside a four-person acoustic meeting pod. Looking across a round white table at the empty chair opposite, with ergonomic charcoal swivel chairs visible left and right. Charcoal felt acoustic walls, warm LED ceiling strip, ventilation grille, glass door visible to one side showing soft-focus modern office beyond. Cinematic depth-of-field, sharp, photorealistic, no people, no text, no logos."
+    "prompt": "Photorealistic seated point-of-view from inside a six-person acoustic office pod, looking forward toward the closed glass door. Foreground: edge of a desk surface with a closed silver laptop and a black leather-bound notebook. high-density woven charcoal acoustic felt walls with realistic textile micro-texture on left and right. warm 3200K LED ceiling strip glowing softly along the inside top edges overhead. low-profile black aluminum ventilation grille at top center of front wall at top of front wall. satin-finish charcoal aluminum frame with brushed-edge metal corners around the frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel. Through the glass: a soft-focus modern open-plan office, gentle bokeh. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "ai-quad-orbit",
@@ -45,23 +69,63 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic three-quarter exterior view of a premium four-person acoustic meeting pod isolated on a clean light-grey gradient studio background. Charcoal aluminum frame, full-height tempered glass front, charcoal felt acoustic side and back walls. Through the glass: a round white table and four chairs visible inside. Soft drop shadow. Camera at 30 degree angle from front-right. Premium product photography, even studio lighting, sharp, photorealistic, no people, no text, no logos."
+    "prompt": "Photorealistic three-quarter exterior view from front-right at a 30-degree angle showing front face and right side of a premium standalone four-person meeting acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: round white meeting table with four ergonomic charcoal swivel chairs, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
-    "name": "ai-duo-int-wide",
-    "ref": "assets/images/pod-duo.jpg",
+    "name": "ai-quad-orbit-left",
+    "ref": "assets/images/pod-quad.jpg",
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic interior view inside a two-person acoustic office pod. Camera in back looking forward through the tempered glass front door. A small white work surface against the side wall with one ergonomic chair, charcoal felt acoustic walls, warm LED strip ceiling lighting, ventilation grille, polished aluminum frame, grey carpet floor. Through the glass: softly lit modern office. Compact, intimate, premium architectural photography, sharp, photorealistic, no people, no text, no logos."
+    "prompt": "Photorealistic three-quarter exterior view from front-left at a 30-degree angle showing front face and left side of a premium standalone four-person meeting acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: round white meeting table with four ergonomic charcoal swivel chairs, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
-    "name": "ai-duo-pov",
-    "ref": "assets/images/pod-duo.jpg",
+    "name": "ai-quad-front",
+    "ref": "assets/images/pod-quad.jpg",
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic point-of-view from a chair inside a two-person acoustic office pod, facing the white work surface mounted against one wall. An open laptop and a notebook on the desk, charcoal felt acoustic walls, warm LED ceiling, ventilation grille above, glass door to the right showing soft-focus office beyond. Cinematic depth-of-field, sharp foreground, photorealistic, no people, no text, no logos."
+    "prompt": "Photorealistic head-on direct front elevation view of a premium standalone four-person meeting acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: round white meeting table with four ergonomic charcoal swivel chairs, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-quad-side",
+    "ref": "assets/images/pod-quad.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic right-side profile view showing the full side panel of charcoal acoustic felt of a premium standalone four-person meeting acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: round white meeting table with four ergonomic charcoal swivel chairs, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-quad-rear",
+    "ref": "assets/images/pod-quad.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic three-quarter rear view at a 30-degree angle showing the back panel of charcoal acoustic felt and the right side of a premium standalone four-person meeting acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: round white meeting table with four ergonomic charcoal swivel chairs, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-quad-aerial",
+    "ref": "assets/images/pod-quad.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic top-down 60-degree aerial view of a premium standalone four-person meeting acoustic office pod isolated on a light-grey gradient studio floor. Visible from above: satin-finish charcoal aluminum frame with brushed-edge metal corners, the polished aluminum top panel with subtle integrated LED strip glowing through, frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel showing round white meeting table with four ergonomic charcoal swivel chairs below, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Soft realistic drop shadow. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-quad-int-wide",
+    "ref": "assets/images/pod-quad.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic ultra-wide interior view inside a four-person meeting acoustic office pod, 31 sq ft footprint. Camera at eye level near the back wall looking forward through the frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel. Visible inside: round white meeting table with four ergonomic charcoal swivel chairs. high-density woven charcoal acoustic felt walls with realistic textile micro-texture on left and right. warm 3200K LED ceiling strip glowing softly along the inside top edges. low-profile black aluminum ventilation grille at top center of front wall. satin-finish charcoal aluminum frame with brushed-edge metal corners edges. dark grey low-pile commercial carpet. Through the glass: a softly lit modern open-plan office with daylight streaming through far windows, blurred desks and ergonomic chairs in the background. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-quad-pov",
+    "ref": "assets/images/pod-quad.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic seated point-of-view from inside a four-person meeting acoustic office pod, looking forward toward the closed glass door. Foreground: edge of a desk surface with a closed silver laptop and a black leather-bound notebook. high-density woven charcoal acoustic felt walls with realistic textile micro-texture on left and right. warm 3200K LED ceiling strip glowing softly along the inside top edges overhead. low-profile black aluminum ventilation grille at top center of front wall at top of front wall. satin-finish charcoal aluminum frame with brushed-edge metal corners around the frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel. Through the glass: a soft-focus modern open-plan office, gentle bokeh. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "ai-duo-orbit",
@@ -69,23 +133,63 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic three-quarter exterior view of a premium two-person acoustic office pod isolated on a clean light-grey gradient studio background. Charcoal aluminum frame, full-height tempered glass front with framed door, charcoal felt acoustic side walls. Camera at 30 degree angle from front-right. Soft drop shadow. Premium product photography, even studio lighting, sharp, photorealistic, no people, no text, no logos."
+    "prompt": "Photorealistic three-quarter exterior view from front-right at a 30-degree angle showing front face and right side of a premium standalone two-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: one slim wall-mounted work surface with a single ergonomic chair, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
-    "name": "ai-studio-int-wide",
-    "ref": "assets/images/pod-studio.jpg",
+    "name": "ai-duo-orbit-left",
+    "ref": "assets/images/pod-duo.jpg",
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic interior view inside a single-person acoustic phone booth pod. Camera in back looking forward through the tempered glass front. A wall-mounted bar-stool height white work surface with a single tall stool, charcoal felt acoustic walls, warm LED strip ceiling, ventilation grille, polished aluminum frame, grey carpet floor. Through the glass: softly lit office floor with people working in background. Compact, focused, premium architectural photography, sharp, photorealistic, no people inside the pod, no text, no logos."
+    "prompt": "Photorealistic three-quarter exterior view from front-left at a 30-degree angle showing front face and left side of a premium standalone two-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: one slim wall-mounted work surface with a single ergonomic chair, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
-    "name": "ai-studio-pov",
-    "ref": "assets/images/pod-studio.jpg",
+    "name": "ai-duo-front",
+    "ref": "assets/images/pod-duo.jpg",
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic point-of-view from standing inside a single-person acoustic phone booth pod. Looking down at a slender wall-mounted white work surface holding an open laptop, the glass door visible directly ahead. Charcoal felt acoustic walls left and right, warm LED ceiling strip overhead, ventilation grille at top of front wall. Through the glass: a soft-focus modern open office. Cinematic, intimate, photorealistic, no people, no text, no logos."
+    "prompt": "Photorealistic head-on direct front elevation view of a premium standalone two-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: one slim wall-mounted work surface with a single ergonomic chair, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-duo-side",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic right-side profile view showing the full side panel of charcoal acoustic felt of a premium standalone two-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: one slim wall-mounted work surface with a single ergonomic chair, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-duo-rear",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic three-quarter rear view at a 30-degree angle showing the back panel of charcoal acoustic felt and the right side of a premium standalone two-person acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: one slim wall-mounted work surface with a single ergonomic chair, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-duo-aerial",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic top-down 60-degree aerial view of a premium standalone two-person acoustic office pod isolated on a light-grey gradient studio floor. Visible from above: satin-finish charcoal aluminum frame with brushed-edge metal corners, the polished aluminum top panel with subtle integrated LED strip glowing through, frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel showing one slim wall-mounted work surface with a single ergonomic chair below, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Soft realistic drop shadow. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-duo-int-wide",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic ultra-wide interior view inside a two-person acoustic office pod, 23 sq ft footprint. Camera at eye level near the back wall looking forward through the frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel. Visible inside: one slim wall-mounted work surface with a single ergonomic chair. high-density woven charcoal acoustic felt walls with realistic textile micro-texture on left and right. warm 3200K LED ceiling strip glowing softly along the inside top edges. low-profile black aluminum ventilation grille at top center of front wall. satin-finish charcoal aluminum frame with brushed-edge metal corners edges. dark grey low-pile commercial carpet. Through the glass: a softly lit modern open-plan office with daylight streaming through far windows, blurred desks and ergonomic chairs in the background. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-duo-pov",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic seated point-of-view from inside a two-person acoustic office pod, looking forward toward the closed glass door. Foreground: edge of a desk surface with a closed silver laptop and a black leather-bound notebook. high-density woven charcoal acoustic felt walls with realistic textile micro-texture on left and right. warm 3200K LED ceiling strip glowing softly along the inside top edges overhead. low-profile black aluminum ventilation grille at top center of front wall at top of front wall. satin-finish charcoal aluminum frame with brushed-edge metal corners around the frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel. Through the glass: a soft-focus modern open-plan office, gentle bokeh. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "ai-studio-orbit",
@@ -93,7 +197,63 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic three-quarter exterior view of a premium single-person acoustic phone booth pod isolated on a clean light-grey gradient studio background. Charcoal aluminum frame, narrow tempered glass front with integrated framed door, charcoal felt acoustic side and back walls. Camera at 30 degree angle from front-right. Soft drop shadow. Premium product photography, even studio lighting, sharp, photorealistic, no people, no text, no logos."
+    "prompt": "Photorealistic three-quarter exterior view from front-right at a 30-degree angle showing front face and right side of a premium standalone single-person phone-booth acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: narrow wall-mounted bar-height work surface with a single tall stool, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-studio-orbit-left",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic three-quarter exterior view from front-left at a 30-degree angle showing front face and left side of a premium standalone single-person phone-booth acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: narrow wall-mounted bar-height work surface with a single tall stool, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-studio-front",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic head-on direct front elevation view of a premium standalone single-person phone-booth acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: narrow wall-mounted bar-height work surface with a single tall stool, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-studio-side",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic right-side profile view showing the full side panel of charcoal acoustic felt of a premium standalone single-person phone-booth acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: narrow wall-mounted bar-height work surface with a single tall stool, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-studio-rear",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic three-quarter rear view at a 30-degree angle showing the back panel of charcoal acoustic felt and the right side of a premium standalone single-person phone-booth acoustic office pod isolated on a clean light-grey gradient studio background. The pod has a satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Interior visible through the glass: narrow wall-mounted bar-height work surface with a single tall stool, warm 3200K LED ceiling strip glowing softly along the inside top edges, dark grey low-pile commercial carpet. Soft realistic drop shadow under the pod. Even softbox studio lighting (5500K daylight). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-studio-aerial",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic top-down 60-degree aerial view of a premium standalone single-person phone-booth acoustic office pod isolated on a light-grey gradient studio floor. Visible from above: satin-finish charcoal aluminum frame with brushed-edge metal corners, the polished aluminum top panel with subtle integrated LED strip glowing through, frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel showing narrow wall-mounted bar-height work surface with a single tall stool below, high-density woven charcoal acoustic felt walls with realistic textile micro-texture. Soft realistic drop shadow. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-studio-int-wide",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic ultra-wide interior view inside a single-person phone-booth acoustic office pod, 10 sq ft footprint. Camera at eye level near the back wall looking forward through the frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel. Visible inside: narrow wall-mounted bar-height work surface with a single tall stool. high-density woven charcoal acoustic felt walls with realistic textile micro-texture on left and right. warm 3200K LED ceiling strip glowing softly along the inside top edges. low-profile black aluminum ventilation grille at top center of front wall. satin-finish charcoal aluminum frame with brushed-edge metal corners edges. dark grey low-pile commercial carpet. Through the glass: a softly lit modern open-plan office with daylight streaming through far windows, blurred desks and ergonomic chairs in the background. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "ai-studio-pov",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic seated point-of-view from inside a single-person phone-booth acoustic office pod, looking forward toward the closed glass door. Foreground: edge of a desk surface with a closed silver laptop and a black leather-bound notebook. high-density woven charcoal acoustic felt walls with realistic textile micro-texture on left and right. warm 3200K LED ceiling strip glowing softly along the inside top edges overhead. low-profile black aluminum ventilation grille at top center of front wall at top of front wall. satin-finish charcoal aluminum frame with brushed-edge metal corners around the frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel. Through the glass: a soft-focus modern open-plan office, gentle bokeh. Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "lifestyle-modern-office",
@@ -101,7 +261,7 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic environmental shot of a charcoal-and-glass acoustic office pod placed in the middle of a modern open-plan office floor. Polished concrete floor, exposed ceiling beams with track lighting, rows of desks with monitors visible in the soft-focus background, large floor-to-ceiling windows with daylight on the far wall. The pod is sharp in foreground, charcoal felt walls, glass front, with a meeting visible inside as a soft glow. Architectural editorial photography, premium, no people directly visible, no text, no logos."
+    "prompt": "Photorealistic environmental product placement: a premium four-person meeting acoustic office pod placed in a modern open-plan office floor with polished concrete, exposed black ceiling beams with industrial track lighting, rows of slender white desks with monitors and ergonomic chairs in soft focus along both sides, large floor-to-ceiling windows on the far wall flooding the space with cool 5500K daylight. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with round white meeting table with four ergonomic charcoal swivel chairs faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "lifestyle-coworking",
@@ -109,7 +269,7 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic environmental shot of a charcoal-and-glass acoustic office pod in a vibrant industrial coworking space. Exposed brick walls, polished concrete floor, hanging Edison-bulb lights, eclectic mid-century furniture in soft focus, plants on shelves. The pod is sharp in foreground showing charcoal felt walls and glass front. Cinematic warm tone, editorial photography, premium, no people directly visible, no text, no logos."
+    "prompt": "Photorealistic environmental product placement: a premium four-person meeting acoustic office pod placed in a vibrant industrial coworking space with exposed red brick walls, polished concrete floor, hanging Edison-bulb pendant lights at warm 2700K, eclectic mid-century lounge furniture in soft focus, large green plants on metal shelves. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with round white meeting table with four ergonomic charcoal swivel chairs faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "lifestyle-lobby",
@@ -117,7 +277,7 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic environmental shot of a premium charcoal-and-glass acoustic office pod placed in a modern luxury hotel lobby. Marble floor, soft ambient lighting, leather lounge chairs in soft focus, large abstract artwork on a far wall, low decorative plants. The pod is sharp in foreground showing charcoal felt walls and tempered glass front. Editorial hospitality photography, premium, sophisticated, no people directly visible, no text, no logos."
+    "prompt": "Photorealistic environmental product placement: a premium six-person acoustic office pod placed in a modern luxury hotel lobby with white veined marble floor, soft warm 3000K ambient lighting, deep brown leather lounge chairs in soft focus, oversized abstract artwork on a far wall, low decorative bronze planters with green foliage. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with large bench seat on left wall, integrated desk on right faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "lifestyle-cafe",
@@ -125,7 +285,7 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic environmental shot of a single-person acoustic phone booth pod placed inside a modern coffee shop near a window. Warm wood floors, exposed brick wall, espresso bar in soft-focus background with bottles and cups, hanging pendant lights. The pod is sharp in foreground showing charcoal felt walls and glass front, blending with the cafe's design. Editorial cafe photography, warm light, no people directly visible, no text, no logos."
+    "prompt": "Photorealistic environmental product placement: a premium single-person phone-booth acoustic office pod placed in a modern third-wave coffee shop with warm reclaimed wood floors, exposed brick wall on one side, espresso bar in soft-focus background with copper machines and bottles, hanging brass pendant lights, warm 2700K ambient glow. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with narrow wall-mounted bar-height work surface with a single tall stool faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   },
   {
     "name": "lifestyle-airport",
@@ -133,6 +293,126 @@
     "model": "gpt-image-2",
     "size": "1536x1024",
     "quality": "high",
-    "prompt": "Photorealistic environmental shot of a charcoal-and-glass acoustic phone booth pod placed in a modern international airport terminal lounge. Sleek polished floor, large windows with planes visible in soft focus, modern travelers' lounge seating in background, bright daylight. The pod is sharp in foreground showing charcoal felt walls and glass front. Editorial commercial photography, premium, contemporary, no people directly visible, no text, no logos."
+    "prompt": "Photorealistic environmental product placement: a premium single-person phone-booth acoustic office pod placed in a modern international airport terminal lounge with sleek polished stone floors, large windows with parked aircraft visible in soft focus, contemporary bench seating in background, bright neutral 4500K daylight, sense of openness and travel. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with narrow wall-mounted bar-height work surface with a single tall stool faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-class-a-lobby",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium six-person acoustic office pod placed in a Class A office building lobby with travertine floor, double-height ceiling, recessed cove lighting, modern reception desk in soft-focus background, large abstract painting on stone-clad accent wall, neutral 4500K interior daylight. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with large bench seat on left wall, integrated desk on right faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-open-plan-startup",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium two-person acoustic office pod placed in a modern startup loft office with white-painted exposed concrete ceiling, light wood plank flooring, rows of standing desks with monitors and orange accent chairs in soft focus, ping-pong table in deep background, ample warm 4000K daylight from skylights. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with one slim wall-mounted work surface with a single ergonomic chair faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-industrial-flex",
+    "ref": "assets/images/pod-quad.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium four-person meeting acoustic office pod placed in an industrial warehouse-converted office space with polished concrete floor, exposed red steel I-beams overhead, factory-style metal-frame windows on tall walls letting in cool grey 5000K natural light, modern minimalist desk furniture in soft focus. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with round white meeting table with four ergonomic charcoal swivel chairs faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-retail-plaza",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium single-person phone-booth acoustic office pod placed in a modern multi-tenant retail plaza common area with terrazzo floor, white perforated metal ceiling panels, soft 4000K LED lighting, planters with greenery, glass storefronts in soft-focus background showing boutique retail. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with narrow wall-mounted bar-height work surface with a single tall stool faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-boutique-hotel",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium six-person acoustic office pod placed in a boutique hotel lounge with herringbone wood flooring, deep emerald velvet lounge chairs in soft focus, brass-and-glass pendant lighting, panelled ivory walls, warm 2700K mood lighting, intimate and sophisticated. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with large bench seat on left wall, integrated desk on right faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-healthcare-admin",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium two-person acoustic office pod placed in a modern healthcare administrative office floor with light grey vinyl plank flooring, soft white walls, recessed even 4000K LED panels, clean uncluttered desks in soft-focus background, gentle clinical-modern aesthetic. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with one slim wall-mounted work surface with a single ergonomic chair faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-law-firm",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium six-person acoustic office pod placed in a corporate law firm corridor with rich walnut wood-panelled walls, dark wool carpet, recessed warm 3000K downlighting, brass picture frames in soft focus on the walls, leather wingback chair partially visible, traditional yet modern. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with large bench seat on left wall, integrated desk on right faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-university-library",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium single-person phone-booth acoustic office pod placed in a modern university library quiet study zone with light oak parquet flooring, tall white-stained wood bookshelves in soft focus, large arched windows with cool 5500K daylight, warm reading lamps casting warm pools of 2700K light. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with narrow wall-mounted bar-height work surface with a single tall stool faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-real-estate-brokerage",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium two-person acoustic office pod placed in a modern commercial real estate brokerage floor with light grey carpet tiles, glass-partitioned offices in soft focus, modern white desks with dual monitors, large city-skyline photograph on a feature wall, neutral 4500K daylight. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with one slim wall-mounted work surface with a single ergonomic chair faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-wework-style",
+    "ref": "assets/images/pod-quad.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium four-person meeting acoustic office pod placed in a modern members-only coworking floor with polished poured concrete, hanging globe pendant lights, biophilic accent wall of live moss panels in soft focus, plush jewel-tone lounge chairs in deep background, warm 3000K mood lighting. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with round white meeting table with four ergonomic charcoal swivel chairs faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-investment-floor",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium two-person acoustic office pod placed in a modern investment firm office with dark hardwood floors, sleek black-framed glass partition walls in soft focus, multiple flat-screen displays mounted on a far wall, cool 5000K colour temperature, sophisticated and quiet. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with one slim wall-mounted work surface with a single ergonomic chair faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-golden-hour-coworking",
+    "ref": "assets/images/pod-studio.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium single-person phone-booth acoustic office pod placed in an urban coworking floor at golden hour, warm 2200K orange sunlight streaming through tall west-facing windows casting long shadows across hardwood floors, plants silhouetted in soft focus, warm intimate atmosphere. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with narrow wall-mounted bar-height work surface with a single tall stool faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-corner-office",
+    "ref": "assets/images/pod-suite.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium six-person acoustic office pod placed in a modern multi-tenant building's corner office with double-aspect floor-to-ceiling windows showing a city skyline in soft focus, light wide-plank wood flooring, minimal mid-century furniture, even 4500K daylight. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with large bench seat on left wall, integrated desk on right faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-conference-center",
+    "ref": "assets/images/pod-quad.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium four-person meeting acoustic office pod placed in a contemporary conference center pre-function area with light marble floor, soaring double-height ceiling with cove lighting, abstract sculpture on a feature wall in soft focus, warm 3500K ambient lighting, polished and corporate. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with round white meeting table with four ergonomic charcoal swivel chairs faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
+  },
+  {
+    "name": "lifestyle-flex-loft",
+    "ref": "assets/images/pod-duo.jpg",
+    "model": "gpt-image-2",
+    "size": "1536x1024",
+    "quality": "high",
+    "prompt": "Photorealistic environmental product placement: a premium two-person acoustic office pod placed in a creative agency loft office with whitewashed brick walls, light hardwood floors, hanging Edison-bulb fixtures at warm 2700K, eclectic colourful furniture in soft focus, large abstract canvas on one wall, casual creative energy. The pod is sharp in foreground showing satin-finish charcoal aluminum frame with brushed-edge metal corners, full-height frameless 6mm tempered glass front with subtle anti-reflective coating, faint vertical seam where the door meets the panel (with one slim wall-mounted work surface with a single ergonomic chair faintly visible inside through the glass), high-density woven charcoal acoustic felt walls with realistic textile micro-texture. The surrounding environment is in gentle background bokeh. Editorial commercial architectural photography, premium, contemporary, balanced composition (rule of thirds with the pod off-centre). Shot on 35mm full-frame, f/2.8 aperture, premium architectural photography, ultra-sharp foreground, cinematic colour grading, no people, no text, no logos, no watermarks, no signage."
   }
 ]
