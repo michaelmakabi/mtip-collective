@@ -505,6 +505,32 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
   });
 })();
 
+
+// STEP-INSIDE scene switcher
+(function(){
+  const stage = document.getElementById('stepinImage');
+  const eyeb = document.getElementById('stepinCaptionEyebrow');
+  const ttl = document.getElementById('stepinCaptionTitle');
+  const spec = document.getElementById('stepinCaptionSpec');
+  const tabs = document.querySelectorAll('.stepin-tab');
+  if (!stage || !tabs.length) return;
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      t.classList.add('active');
+      stage.classList.add('swapping');
+      setTimeout(() => {
+        stage.src = t.dataset.img;
+        stage.alt = t.dataset.title;
+        if (eyeb) eyeb.textContent = t.dataset.eyebrow;
+        if (ttl) ttl.textContent = t.dataset.title;
+        if (spec) spec.textContent = t.dataset.spec;
+        requestAnimationFrame(() => stage.classList.remove('swapping'));
+      }, 220);
+    });
+  });
+})();
+
 } // end __initInteractive
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', __initInteractive);
@@ -1094,18 +1120,23 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .podshow-btn{background:white;border:2px solid var(--border);color:var(--text-mid);font-family:inherit;font-size:0.92rem;font-weight:700;padding:11px 22px;border-radius:999px;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em}
 .podshow-btn:hover{border-color:var(--text);color:var(--text)}
 .podshow-btn.active{background:var(--red);border-color:var(--red);color:white;box-shadow:var(--shadow-red)}
-.pano-wrap{max-width:1200px;margin:48px auto 0}
-.pano-stage{position:relative;width:100%;aspect-ratio:16/9;border-radius:24px;overflow:hidden;background:#0A0B0D;cursor:grab;touch-action:none;border:1px solid rgba(255,255,255,0.08);box-shadow:0 30px 80px rgba(0,0,0,0.4)}
-.pano-stage.grabbing{cursor:grabbing}
-#panoCanvas{display:block;width:100%;height:100%}
-.pano-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:18px 22px;pointer-events:none}
-.pano-hint{align-self:flex-start;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);color:white;padding:8px 14px;border-radius:999px;font-size:0.82rem;font-weight:600;letter-spacing:-0.01em;border:1px solid rgba(255,255,255,0.12);pointer-events:none}
-.pano-controls{align-self:center;display:flex;gap:10px;margin-top:auto;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);padding:8px;border-radius:999px;border:1px solid rgba(255,255,255,0.1);pointer-events:auto}
-.pano-ctrl-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s}
-.pano-ctrl-btn:hover{background:var(--red);border-color:var(--red)}
-.pano-ctrl-btn i{width:18px;height:18px}
-.pano-caption{text-align:center;font-size:0.86rem;color:rgba(255,255,255,0.55);margin-top:18px;letter-spacing:-0.005em}
-@media(max-width:768px){.pano-wrap{margin-top:32px}}
+.stepin-wrap{max-width:1200px;margin:48px auto 0}
+.stepin-stage{position:relative;width:100%;aspect-ratio:3/2;border-radius:24px;overflow:hidden;background:#0A0B0D;box-shadow:0 30px 80px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08)}
+#stepinImage{display:block;width:100%;height:100%;object-fit:cover;animation:stepinKenBurns 24s ease-in-out infinite alternate;transition:opacity 0.45s cubic-bezier(0.4,0,0.2,1)}
+#stepinImage.swapping{opacity:0}
+@keyframes stepinKenBurns{from{transform:scale(1)}to{transform:scale(1.06)}}
+.stepin-fade{position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.65) 70%,rgba(0,0,0,0.85) 100%);pointer-events:none}
+.stepin-caption{position:absolute;left:32px;bottom:30px;right:32px;color:white;pointer-events:none}
+.stepin-caption-eyebrow{font-size:0.7rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:var(--red-light);margin-bottom:6px}
+.stepin-caption-title{font-size:1.5rem;font-weight:800;letter-spacing:-0.025em;margin-bottom:6px}
+.stepin-caption-spec{font-size:0.86rem;font-weight:500;color:rgba(255,255,255,0.75);max-width:600px}
+.stepin-controls{display:flex;gap:8px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.stepin-tab{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.75);font-family:inherit;font-size:0.92rem;font-weight:700;padding:11px 22px;border-radius:999px;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em}
+.stepin-tab:hover{background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.25)}
+.stepin-tab.active{background:var(--red);border-color:var(--red);color:white;box-shadow:var(--shadow-red)}
+@media(max-width:640px){.stepin-caption{left:18px;right:18px;bottom:18px}.stepin-caption-title{font-size:1.15rem}.stepin-caption-spec{font-size:0.78rem}}
+
+@media(max-width:768px){}
 
 @media(max-width:640px){.podshow-wrap{padding:20px}.podshow-meta{position:static;max-width:100%;margin-top:14px}}
 
@@ -1455,22 +1486,23 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   <div class="container">
     <div class="section-header center">
       <div class="eyebrow" style="color:var(--red-light)">Step inside</div>
-      <h2 style="color:white">A 360° look inside the pod.</h2>
-      <p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">Drag to look around. This is the Suite interior — desk, lighting, ventilation, glass front. Same view your tenant will get the day it lands on your floor plate.</p>
+      <h2 style="color:white">A look inside the pod.</h2>
+      <p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">Two photoreal renders of The Suite interior — first the wide view through the open door, then a first-person seat at the desk. Same view your tenant gets the day it lands on your floor plate.</p>
     </div>
-    <div class="pano-wrap">
-      <div class="pano-stage" id="panoStage">
-        <canvas id="panoCanvas"></canvas>
-        <div class="pano-overlay">
-          <div class="pano-hint"><i data-lucide="move" style="width:16px;height:16px;display:inline-block;vertical-align:-3px"></i> Drag to look around</div>
-          <div class="pano-controls">
-            <button class="pano-ctrl-btn" id="panoLeft" type="button" aria-label="Pan left"><i data-lucide="chevron-left"></i></button>
-            <button class="pano-ctrl-btn" id="panoReset" type="button" aria-label="Reset view"><i data-lucide="refresh-ccw"></i></button>
-            <button class="pano-ctrl-btn" id="panoRight" type="button" aria-label="Pan right"><i data-lucide="chevron-right"></i></button>
-          </div>
+    <div class="stepin-wrap">
+      <div class="stepin-stage" id="stepinStage">
+        <img id="stepinImage" src="assets/images/ai-suite-int-wide.jpg" alt="Inside the MTIP Suite — wide interior view" />
+        <div class="stepin-fade"></div>
+        <div class="stepin-caption" id="stepinCaption">
+          <div class="stepin-caption-eyebrow" id="stepinCaptionEyebrow">Scene 1 of 2</div>
+          <div class="stepin-caption-title" id="stepinCaptionTitle">The Suite — wide interior</div>
+          <div class="stepin-caption-spec" id="stepinCaptionSpec">49 sq ft · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · silent fresh-air ventilation</div>
         </div>
       </div>
-      <p class="pano-caption">Suite · 49 sq ft · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · silent fresh-air ventilation</p>
+      <div class="stepin-controls">
+        <button type="button" class="stepin-tab active" data-scene="wide" data-img="assets/images/ai-suite-int-wide.jpg" data-eyebrow="Scene 1 of 2" data-title="The Suite — wide interior" data-spec="49 sq ft · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · silent fresh-air ventilation">Wide view</button>
+        <button type="button" class="stepin-tab" data-scene="pov" data-img="assets/images/ai-suite-pov.jpg" data-eyebrow="Scene 2 of 2" data-title="At the desk — first-person POV" data-spec="Integrated work desk · charcoal acoustic felt walls · ventilation grille · 30 ± 3 dB ISO certified">At the desk</button>
+      </div>
     </div>
   </div>
 </section>
@@ -1825,102 +1857,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 
 <!-- 360 panorama viewer (Three.js) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-(function(){
-  function initPano(){
-    const canvas = document.getElementById('panoCanvas');
-    const stage = document.getElementById('panoStage');
-    if (!canvas || !stage || typeof THREE === 'undefined') return;
 
-    const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:false});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    function sizeRenderer(){
-      const r = stage.getBoundingClientRect();
-      renderer.setSize(r.width, r.height, false);
-    }
-    sizeRenderer();
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(72, stage.clientWidth/stage.clientHeight, 0.1, 100);
-    camera.position.set(0, 0, 0.1);
-
-    const geo = new THREE.SphereGeometry(50, 64, 48);
-    geo.scale(-1, 1, 1);   // invert so we see inside
-
-    const tex = new THREE.TextureLoader().load('assets/images/pod-360-placeholder.jpg');
-    tex.minFilter = THREE.LinearFilter;
-    tex.generateMipmaps = false;
-    const mat = new THREE.MeshBasicMaterial({map:tex});
-    const sphere = new THREE.Mesh(geo, mat);
-    scene.add(sphere);
-
-    let lon = 0, lat = 0;          // degrees
-    let targetLon = 0, targetLat = 0;
-    let dragging = false, lastX = 0, lastY = 0;
-
-    function onPointerDown(e){
-      dragging = true;
-      stage.classList.add('grabbing');
-      const t = e.touches ? e.touches[0] : e;
-      lastX = t.clientX; lastY = t.clientY;
-    }
-    function onPointerMove(e){
-      if (!dragging) return;
-      const t = e.touches ? e.touches[0] : e;
-      const dx = t.clientX - lastX;
-      const dy = t.clientY - lastY;
-      targetLon -= dx * 0.18;
-      targetLat += dy * 0.18;
-      targetLat = Math.max(-80, Math.min(80, targetLat));
-      lastX = t.clientX; lastY = t.clientY;
-    }
-    function onPointerUp(){
-      dragging = false;
-      stage.classList.remove('grabbing');
-    }
-    stage.addEventListener('mousedown', onPointerDown);
-    window.addEventListener('mousemove', onPointerMove);
-    window.addEventListener('mouseup', onPointerUp);
-    stage.addEventListener('touchstart', onPointerDown, {passive:true});
-    window.addEventListener('touchmove', onPointerMove, {passive:false});
-    window.addEventListener('touchend', onPointerUp);
-
-    const leftBtn = document.getElementById('panoLeft');
-    const rightBtn = document.getElementById('panoRight');
-    const resetBtn = document.getElementById('panoReset');
-    if (leftBtn) leftBtn.addEventListener('click', () => { targetLon -= 30; });
-    if (rightBtn) rightBtn.addEventListener('click', () => { targetLon += 30; });
-    if (resetBtn) resetBtn.addEventListener('click', () => { targetLon = 0; targetLat = 0; });
-
-    function animate(){
-      requestAnimationFrame(animate);
-      // ease toward target
-      lon += (targetLon - lon) * 0.085;
-      lat += (targetLat - lat) * 0.085;
-      // gentle auto-rotation when idle
-      if (!dragging) targetLon += 0.04;
-      const phi = THREE.MathUtils.degToRad(90 - lat);
-      const theta = THREE.MathUtils.degToRad(lon);
-      const target = new THREE.Vector3(
-        Math.sin(phi) * Math.cos(theta),
-        Math.cos(phi),
-        Math.sin(phi) * Math.sin(theta)
-      );
-      camera.lookAt(target);
-      renderer.render(scene, camera);
-    }
-    animate();
-    window.addEventListener('resize', () => { sizeRenderer(); camera.aspect = stage.clientWidth / stage.clientHeight; camera.updateProjectionMatrix(); });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPano);
-  } else {
-    initPano();
-  }
-})();
-</script>
 
 </body>
 </html>
