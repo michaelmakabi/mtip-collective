@@ -21,11 +21,12 @@
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <script>
 // ============================================================
-// JV WIZARD
+// JV WIZARD + CAROUSEL + NOISE DEMO (gated on DOM ready)
 // ============================================================
 
 window.__GHL_PIT = 'pit-b1c8e50d-9629-415e-8209-f71956488e5b';
 window.__wizardLoadedAt = Date.now();
+function __initInteractive(){
 (function() {
   const wState = {
     step: 1,
@@ -439,6 +440,12 @@ if (nBtnI) nBtnI.addEventListener('click', () => {
   }
 });
 if (nBtnS) nBtnS.addEventListener('click', nStop);
+} // end __initInteractive
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', __initInteractive);
+} else {
+  __initInteractive();
+}
 </script>
 <style>
 :root{
