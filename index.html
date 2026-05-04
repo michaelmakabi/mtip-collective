@@ -531,29 +531,74 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
 })();
 
 
-// STEP-INSIDE scene switcher
+// STEP-INSIDE scene switcher (pod × scene)
 (function(){
   const stage = document.getElementById('stepinImage');
   const eyeb = document.getElementById('stepinCaptionEyebrow');
   const ttl = document.getElementById('stepinCaptionTitle');
   const spec = document.getElementById('stepinCaptionSpec');
-  const tabs = document.querySelectorAll('.stepin-tab');
-  if (!stage || !tabs.length) return;
-  tabs.forEach(t => {
-    t.addEventListener('click', () => {
-      tabs.forEach(b => b.classList.remove('active'));
-      t.classList.add('active');
-      stage.classList.add('swapping');
-      setTimeout(() => {
-        stage.src = t.dataset.img;
-        stage.alt = t.dataset.title;
-        if (eyeb) eyeb.textContent = t.dataset.eyebrow;
-        if (ttl) ttl.textContent = t.dataset.title;
-        if (spec) spec.textContent = t.dataset.spec;
-        requestAnimationFrame(() => stage.classList.remove('swapping'));
-      }, 220);
-    });
+  const podTabs = document.querySelectorAll('.stepin-pod');
+  const sceneTabs = document.querySelectorAll('.stepin-tab');
+  if (!stage || !podTabs.length) return;
+
+  const POD_LABEL = {
+    suite:  'The Suite · 6P · 49 sq ft',
+    quad:   'The Quad · 4P · 31 sq ft',
+    duo:    'The Duo · 2P · 23 sq ft',
+    studio: 'The Studio · 1P · 10 sq ft'
+  };
+  const SCENE_LABEL = {
+    'orbit':       ['Exterior orbit',     'Three-quarter view from front-right'],
+    'orbit-left':  ['Exterior orbit',     'Three-quarter view from front-left'],
+    'side':        ['Side profile',       'Right-side elevation'],
+    'rear':        ['Rear three-quarter', 'Back panel and right side'],
+    'aerial':      ['Top-down aerial',    'Top panel and footprint'],
+    'int-wide':    ['Interior · wide',    'Looking forward from the back of the pod'],
+    'pov':         ['Interior · POV',     'First-person view from the desk']
+  };
+  const SPEC_BY_POD = {
+    suite:  'Charcoal aluminum frame · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · silent fresh-air ventilation · bench + integrated desk',
+    quad:   'Charcoal aluminum frame · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · round meeting table + 4 ergonomic swivel chairs',
+    duo:    'Charcoal aluminum frame · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · wall-mounted work surface + ergonomic chair',
+    studio: 'Charcoal aluminum frame · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · bar-height work surface + tall stool'
+  };
+
+  let curPod = 'suite';
+  let curScene = 'orbit';
+
+  function update(){
+    const src = `assets/images/ai-${curPod}-${curScene}.jpg`;
+    stage.classList.add('swapping');
+    setTimeout(() => {
+      stage.src = src;
+      stage.alt = `${POD_LABEL[curPod]} — ${SCENE_LABEL[curScene][0]}`;
+      if (eyeb) eyeb.textContent = `${POD_LABEL[curPod]} · ${SCENE_LABEL[curScene][0]}`;
+      if (ttl)  ttl.textContent  = SCENE_LABEL[curScene][1];
+      if (spec) spec.textContent = SPEC_BY_POD[curPod];
+      requestAnimationFrame(() => stage.classList.remove('swapping'));
+    }, 220);
+  }
+
+  // Graceful fallback: if a render isn't generated yet (404), fall back to the
+  // existing pod-*.jpg manufacturer photo so we never show a broken image.
+  stage.addEventListener('error', () => {
+    if (stage.src.includes('/ai-')) {
+      stage.src = `assets/images/pod-${curPod}.jpg`;
+    }
   });
+
+  podTabs.forEach(b => b.addEventListener('click', () => {
+    podTabs.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    curPod = b.dataset.pod;
+    update();
+  }));
+  sceneTabs.forEach(b => b.addEventListener('click', () => {
+    sceneTabs.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    curScene = b.dataset.scene;
+    update();
+  }));
 })();
 
 } // end __initInteractive
@@ -1156,6 +1201,11 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .stepin-caption-title{font-size:1.5rem;font-weight:800;letter-spacing:-0.025em;margin-bottom:6px}
 .stepin-caption-spec{font-size:0.86rem;font-weight:500;color:rgba(255,255,255,0.75);max-width:600px}
 .stepin-controls{display:flex;gap:8px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.stepin-podpicker{display:flex;gap:8px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+.stepin-pod{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-family:inherit;font-size:0.95rem;font-weight:700;padding:13px 22px;border-radius:14px;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em;min-width:160px}
+.stepin-pod:hover{background:rgba(255,255,255,0.08);color:white;border-color:rgba(255,255,255,0.25)}
+.stepin-pod.active{background:white;color:var(--text);border-color:white;box-shadow:0 8px 24px rgba(255,255,255,0.15)}
+
 .stepin-tab{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.75);font-family:inherit;font-size:0.92rem;font-weight:700;padding:11px 22px;border-radius:999px;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em}
 .stepin-tab:hover{background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.25)}
 .stepin-tab.active{background:var(--red);border-color:var(--red);color:white;box-shadow:var(--shadow-red)}
@@ -1472,9 +1522,9 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="tier-toggle-wrap"><div class="tier-toggle" id="tierToggle"><button class="active" data-mode="cash">Pay Once</button><button data-mode="install">12-Month · $0 Down</button></div></div>
 
 <div class="tier-grid">
-<div class="tier-card"><div class="tier-img"><img src="assets/images/tier-studio.jpg" alt="The Studio — solo private workspace"></div><div class="tier-body"><div class="tier-rank">Solo · Phone booth</div><h3>The Studio</h3><p class="tier-tagline">A private studio in 10 sq ft. For recording, AI command, focus, sales floor.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1 person</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~10 sq ft</strong> (0.96 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>28 ± 3 dB</strong></span></li><li><i data-lucide="zap"></i><span>24W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$2,997" data-install="$299">$2,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
-<div class="tier-card"><div class="tier-img"><img src="assets/images/tier-duo.jpg" alt="The Duo — 2-person pod in office"></div><div class="tier-body"><div class="tier-rank">Private · 1-2 person office</div><h3>The Duo</h3><p class="tier-tagline">The smart 1-person office. Or take real 2-person calls. Either works.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–2 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~23 sq ft</strong> (2.1 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>30W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$4,497" data-install="$449">$4,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
-<div class="tier-card"><div class="tier-img"><img src="assets/images/tier-quad.jpg" alt="The Quad — 4-person meeting room"></div><div class="tier-body"><div class="tier-rank">Best seller · Meeting room</div><h3>The Quad</h3><p class="tier-tagline">A real meeting room. Without the build-out. Workshops, sales rooms, pitches.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>4 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~31 sq ft</strong> (2.9 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>54W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$5,497" data-install="$549">$5,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card"><div class="tier-img"><img src="assets/images/ai-studio-orbit.jpg" onerror="this.src='assets/images/tier-studio.jpg'" alt="The Studio — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Solo · Phone booth</div><h3>The Studio</h3><p class="tier-tagline">A private studio in 10 sq ft. For recording, AI command, focus, sales floor.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1 person</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~10 sq ft</strong> (0.96 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>28 ± 3 dB</strong></span></li><li><i data-lucide="zap"></i><span>24W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$2,997" data-install="$299">$2,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card"><div class="tier-img"><img src="assets/images/ai-duo-orbit.jpg" onerror="this.src='assets/images/tier-duo.jpg'" alt="The Duo — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Private · 1-2 person office</div><h3>The Duo</h3><p class="tier-tagline">The smart 1-person office. Or take real 2-person calls. Either works.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–2 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~23 sq ft</strong> (2.1 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>30W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$4,497" data-install="$449">$4,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card"><div class="tier-img"><img src="assets/images/ai-quad-orbit.jpg" onerror="this.src='assets/images/tier-quad.jpg'" alt="The Quad — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Best seller · Meeting room</div><h3>The Quad</h3><p class="tier-tagline">A real meeting room. Without the build-out. Workshops, sales rooms, pitches.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>4 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~31 sq ft</strong> (2.9 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>54W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$5,497" data-install="$549">$5,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
 <div class="tier-card featured"><div class="tier-img"><img src="assets/images/ai-suite-orbit.jpg" alt="The Suite — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Flagship · Highest revenue per pod</div><h3>The Suite</h3><p class="tier-tagline">Highest-margin 49 sq ft on your floor plate. Rents at $800–$1,000/mo. Pays back in 8 months.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–6 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> (4.5 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>90W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$6,997" data-install="$699">$6,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-red">Reserve The Suite</a></div></div>
 </div>
 
@@ -1510,24 +1560,34 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <section class="section section-dark" id="step-inside">
   <div class="container">
     <div class="section-header center">
-      <div class="eyebrow" style="color:var(--red-light)">Step inside</div>
-      <h2 style="color:white">A look inside the pod.</h2>
-      <p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">Three photoreal renders of The Suite — wide interior, first-person at the desk, and isolated exterior. Same view your tenant gets the day it lands on your floor plate.</p>
+      <div class="eyebrow" style="color:var(--red-light)">Step inside · 3D experience</div>
+      <h2 style="color:white">Pick a pod. Walk every angle.</h2>
+      <p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">Studio · Duo · Quad · Suite. Five angles each: front-right orbit, front-left orbit, profile, back, top-down aerial. Plus interior wide and a seated POV. Same view your tenant gets the day it lands.</p>
     </div>
     <div class="stepin-wrap">
+      <div class="stepin-podpicker" role="tablist" aria-label="Pod size">
+        <button type="button" class="stepin-pod active" data-pod="suite">The Suite · 6P</button>
+        <button type="button" class="stepin-pod" data-pod="quad">The Quad · 4P</button>
+        <button type="button" class="stepin-pod" data-pod="duo">The Duo · 2P</button>
+        <button type="button" class="stepin-pod" data-pod="studio">The Studio · 1P</button>
+      </div>
       <div class="stepin-stage" id="stepinStage">
-        <img id="stepinImage" src="assets/images/ai-suite-int-wide.jpg" alt="Inside the MTIP Suite — wide interior view" />
+        <img id="stepinImage" src="assets/images/ai-suite-orbit.jpg" alt="The Suite — three-quarter exterior view" />
         <div class="stepin-fade"></div>
         <div class="stepin-caption" id="stepinCaption">
-          <div class="stepin-caption-eyebrow" id="stepinCaptionEyebrow">Scene 1 of 2</div>
-          <div class="stepin-caption-title" id="stepinCaptionTitle">The Suite — wide interior</div>
-          <div class="stepin-caption-spec" id="stepinCaptionSpec">49 sq ft · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · silent fresh-air ventilation</div>
+          <div class="stepin-caption-eyebrow" id="stepinCaptionEyebrow">The Suite · Exterior orbit</div>
+          <div class="stepin-caption-title" id="stepinCaptionTitle">Three-quarter view · 49 sq ft</div>
+          <div class="stepin-caption-spec" id="stepinCaptionSpec">Charcoal aluminum frame · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · silent fresh-air ventilation</div>
         </div>
       </div>
-      <div class="stepin-controls">
-        <button type="button" class="stepin-tab active" data-scene="wide" data-img="assets/images/ai-suite-int-wide.jpg" data-eyebrow="Scene 1 of 3" data-title="The Suite — wide interior" data-spec="49 sq ft · ISO 23351-1 acoustic walls · 6mm tempered glass · LED ceiling · silent fresh-air ventilation">Wide interior</button>
-        <button type="button" class="stepin-tab" data-scene="pov" data-img="assets/images/ai-suite-pov.jpg" data-eyebrow="Scene 2 of 3" data-title="At the desk — first-person POV" data-spec="Integrated work desk · charcoal acoustic felt walls · ventilation grille · 30 ± 3 dB ISO certified">At the desk</button>
-        <button type="button" class="stepin-tab" data-scene="orbit" data-img="assets/images/ai-suite-orbit.jpg" data-eyebrow="Scene 3 of 3" data-title="The Suite — exterior" data-spec="Three-quarter view · charcoal aluminum frame · tempered glass front · footprint 49 sq ft on your floor plate">Exterior</button>
+      <div class="stepin-controls" id="stepinSceneTabs">
+        <button type="button" class="stepin-tab active" data-scene="orbit">Front-right orbit</button>
+        <button type="button" class="stepin-tab" data-scene="orbit-left">Front-left orbit</button>
+        <button type="button" class="stepin-tab" data-scene="side">Side profile</button>
+        <button type="button" class="stepin-tab" data-scene="rear">Rear three-quarter</button>
+        <button type="button" class="stepin-tab" data-scene="aerial">Top-down aerial</button>
+        <button type="button" class="stepin-tab" data-scene="int-wide">Wide interior</button>
+        <button type="button" class="stepin-tab" data-scene="pov">At the desk</button>
       </div>
     </div>
   </div>
