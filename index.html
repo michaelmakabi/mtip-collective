@@ -681,11 +681,8 @@ p{color:var(--text-mid)}
 .material i{width:22px;height:22px;color:var(--red);flex-shrink:0;margin-top:4px}
 .material strong{color:var(--text);font-weight:700;display:block;margin-bottom:4px;font-size:0.95rem}
 .material span{color:var(--text-mid);font-size:0.88rem;line-height:1.5}
-.edge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
-@media(max-width:768px){.edge-grid{grid-template-columns:1fr}}
-.edge-card{background:white;border:1px solid var(--border);border-radius:20px;padding:40px 32px;text-align:center;transition:all 0.3s}
+@media(max-width:768px){}
 .edge-card:hover{transform:translateY(-4px);border-color:var(--red)}
-.edge-card svg{width:96px;height:96px;margin:0 auto 24px;color:var(--text)}
 .edge-card:hover svg{color:var(--red)}
 .edge-card h4{margin-bottom:8px}
 .fullbleed{position:relative;overflow:hidden;height:80vh;min-height:600px;max-height:800px}
@@ -984,6 +981,34 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .wizard-calendar-divider span{background:white;padding:0 16px;display:inline-block}
 .wizard-calendar-frame{background:var(--bg-soft);border:1px solid var(--border);border-radius:16px;padding:8px;overflow:hidden}
 .wizard-calendar-frame iframe{display:block}
+
+
+.wall-viz{display:grid;grid-template-columns:1fr 2fr 1fr;gap:0;background:linear-gradient(180deg,#FAFBFC 0%,#F1F2F4 100%);border-radius:20px;overflow:hidden;border:1px solid var(--border);min-height:340px;align-items:stretch}
+.wall-side{padding:36px 28px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:8px;position:relative}
+.wall-side-out{background:linear-gradient(135deg,#FFF6F4 0%,#FFEAE5 100%)}
+.wall-side-in{background:linear-gradient(135deg,#0E1014 0%,#1A1D24 100%);align-items:flex-end;text-align:right}
+.wall-side-label{font-size:0.68rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-mid)}
+.wall-side-in .wall-side-label{color:rgba(255,255,255,0.55)}
+.wall-side-db{font-size:5.4rem;font-weight:900;letter-spacing:-0.04em;line-height:0.95;display:flex;align-items:flex-start;gap:6px}
+.wall-side-db span{font-size:1.05rem;font-weight:700;letter-spacing:0.04em;margin-top:14px;text-transform:lowercase;opacity:0.85}
+.wall-side-db.red{color:var(--red)}
+.wall-side-db.green{color:#22C55E}
+.wall-side-mood{font-size:0.86rem;color:var(--text-mid);font-weight:500;margin-top:4px}
+.wall-side-in .wall-side-mood{color:rgba(255,255,255,0.55)}
+.wall-stack{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#FAFBFC;padding:36px 0}
+.wall-stack-arrow{position:absolute;left:0;right:0;top:50%;height:3px;background:linear-gradient(90deg,#E53B3B 0%,#F0B14A 33%,#A8B0BA 66%,#22C55E 100%);transform:translateY(-50%);box-shadow:0 0 28px rgba(229,59,59,0.18);z-index:1;border-radius:999px;margin:0 14px}
+.wall-stack-arrow::after{content:'';position:absolute;right:-2px;top:50%;width:0;height:0;border-left:10px solid #22C55E;border-top:7px solid transparent;border-bottom:7px solid transparent;transform:translateY(-50%)}
+.wall-layer{background:linear-gradient(180deg,var(--lc) 0%,var(--ls) 100%);position:relative;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:14px 6px;text-align:center;min-height:268px;border-right:1px solid rgba(0,0,0,0.04);box-shadow:inset 0 0 22px rgba(0,0,0,0.05);z-index:0}
+.wall-layer:last-child{border-right:none}
+.wall-layer-tag{font-size:0.75rem;font-weight:800;letter-spacing:0.04em;color:white;text-shadow:0 1px 4px rgba(0,0,0,0.4);padding:4px 10px;background:rgba(0,0,0,0.45);border-radius:999px;backdrop-filter:blur(4px)}
+.wall-layer-tag.dark{color:var(--text);text-shadow:none;background:rgba(255,255,255,0.78);border:1px solid rgba(0,0,0,0.06)}
+.wall-layer-spec{font-size:0.68rem;font-weight:600;color:white;text-shadow:0 1px 3px rgba(0,0,0,0.5);letter-spacing:-0.005em;line-height:1.3}
+.wall-layer-spec.dark{color:var(--text-mid);text-shadow:none}
+.wall-stack-drop{position:absolute;left:50%;bottom:-18px;transform:translateX(-50%);background:var(--red);color:white;padding:8px 18px;border-radius:999px;font-size:0.78rem;font-weight:800;letter-spacing:0.02em;box-shadow:0 8px 22px rgba(229,59,59,0.35);white-space:nowrap;z-index:3}
+.wall-iso-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:36px;padding:14px 22px;background:#FAFBFC;border:1px solid var(--border);border-radius:999px;flex-wrap:wrap}
+.wall-iso-pill{background:var(--text);color:white;padding:6px 14px;border-radius:999px;font-size:0.74rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase}
+.wall-iso-text{font-size:0.85rem;color:var(--text-mid);font-weight:500}
+@media(max-width:900px){.wall-viz{grid-template-columns:1fr}.wall-side-in{align-items:flex-start;text-align:left}.wall-stack{padding:28px 14px}.wall-stack-arrow{display:none}.wall-layer{min-height:120px}.wall-stack-drop{position:static;transform:none;display:inline-block;margin-top:18px}}
 
 .acoustic-diagram-wrap{margin:96px 0 56px;background:white;border:1px solid var(--border);border-radius:24px;padding:48px;box-shadow:var(--shadow-md)}
 .acoustic-diagram-header{margin-bottom:32px;text-align:center}
@@ -1430,136 +1455,46 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   <div class="acoustic-diagram-header">
     <div class="eyebrow">How the wall actually works</div>
     <h3 style="font-family:'Inter',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-0.025em;margin-bottom:8px">Steel · felt · foam · PET. <span style="color:var(--red)">Four layers, 30 dB drop.</span></h3>
-    <p style="color:var(--text-mid);max-width:680px">A normal drywall partition gives you about 10 dB of attenuation. Our pod wall is engineered with four sound-absorbing layers in a steel-and-aluminum frame — same construction premium acoustic booth manufacturers use, ISO-23351-1 certified.</p>
+    <p style="color:var(--text-mid);max-width:680px;margin:0 auto">A normal drywall partition gives you about 10 dB of attenuation. Our pod wall is engineered with four sound-absorbing layers in a steel-and-aluminum frame — same construction premium acoustic booth manufacturers use, ISO-23351-1 certified.</p>
   </div>
-  <div class="acoustic-svg-container">
-    <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" class="acoustic-svg" aria-label="Acoustic wall cross-section">
-      <!-- Outside (loud office) -->
-      <rect x="0" y="0" width="100" height="480" fill="#FAFAFA"/>
-      <text x="50" y="40" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#4B4F58" letter-spacing="2">OUTSIDE</text>
-      <text x="50" y="62" text-anchor="middle" font-family="Inter" font-size="11" fill="#9CA3AF">Open office</text>
-      <text x="50" y="220" text-anchor="middle" font-family="Inter" font-size="42" font-weight="900" fill="#E53B3B" letter-spacing="-2">68</text>
-      <text x="50" y="248" text-anchor="middle" font-family="Inter" font-size="14" font-weight="600" fill="#E53B3B">dB</text>
-      <!-- Sound waves outside (jagged) -->
-      <g stroke="#E53B3B" stroke-width="1.8" fill="none" opacity="0.8">
-        <path d="M 60 320 Q 75 310 85 320 T 95 320"/>
-        <path d="M 60 340 Q 75 326 85 340 T 95 340"/>
-        <path d="M 60 360 Q 75 348 85 360 T 95 360"/>
-        <path d="M 60 380 Q 75 372 85 380 T 95 380"/>
-        <path d="M 60 400 Q 75 392 85 400 T 95 400"/>
-      </g>
+  <div class="wall-viz">
+    <div class="wall-side wall-side-out">
+      <div class="wall-side-label">Outside · open office</div>
+      <div class="wall-side-db red">68<span>dB</span></div>
+      <div class="wall-side-mood">Calls · keyboards · meetings</div>
+    </div>
 
-      <!-- Steel layer (outer) -->
-      <rect x="100" y="60" width="60" height="380" fill="#9CA3AF"/>
-      <pattern id="steelHatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
-        <line x1="0" y1="0" x2="0" y2="6" stroke="#6B7280" stroke-width="2"/>
-      </pattern>
-      <rect x="100" y="60" width="60" height="380" fill="url(#steelHatch)"/>
-      <text x="130" y="35" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#1A1D24">STEEL</text>
-      <text x="130" y="465" text-anchor="middle" font-family="Inter" font-size="11" fill="#4B4F58">1.0 mm</text>
-      <text x="130" y="455" text-anchor="middle" font-family="Inter" font-size="9" fill="#9CA3AF">powder-coated</text>
+    <div class="wall-stack">
+      <div class="wall-stack-arrow"></div>
+      <div class="wall-layer" style="--lc:#A8B0BA;--ls:#6B7280">
+        <div class="wall-layer-tag">01 · Steel</div>
+        <div class="wall-layer-spec">1.0 mm · powder-coated</div>
+      </div>
+      <div class="wall-layer" style="--lc:#EFE7D5;--ls:#C9A961">
+        <div class="wall-layer-tag dark">02 · Acoustic Felt</div>
+        <div class="wall-layer-spec dark">Absorbs mid-frequency</div>
+      </div>
+      <div class="wall-layer" style="--lc:#1A1D24;--ls:#0A0B0D">
+        <div class="wall-layer-tag">03 · Foam Core</div>
+        <div class="wall-layer-spec">Acoustic damping</div>
+      </div>
+      <div class="wall-layer" style="--lc:#DEE1E6;--ls:#9CA3AF">
+        <div class="wall-layer-tag dark">04 · PET Panel</div>
+        <div class="wall-layer-spec dark">12 mm interior</div>
+      </div>
+      <div class="wall-stack-drop">−30 dB across the assembly</div>
+    </div>
 
-      <!-- Acoustic Felt -->
-      <rect x="160" y="60" width="80" height="380" fill="#F5F1EA"/>
-      <g opacity="0.8">
-        <circle cx="180" cy="100" r="3" fill="#C9A961"/>
-        <circle cx="220" cy="130" r="3" fill="#C9A961"/>
-        <circle cx="200" cy="160" r="3" fill="#C9A961"/>
-        <circle cx="175" cy="190" r="3" fill="#C9A961"/>
-        <circle cx="225" cy="210" r="3" fill="#C9A961"/>
-        <circle cx="195" cy="240" r="3" fill="#C9A961"/>
-        <circle cx="215" cy="270" r="3" fill="#C9A961"/>
-        <circle cx="180" cy="300" r="3" fill="#C9A961"/>
-        <circle cx="220" cy="330" r="3" fill="#C9A961"/>
-        <circle cx="200" cy="360" r="3" fill="#C9A961"/>
-        <circle cx="180" cy="390" r="3" fill="#C9A961"/>
-        <circle cx="220" cy="420" r="3" fill="#C9A961"/>
-      </g>
-      <text x="200" y="35" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#1A1D24">ACOUSTIC FELT</text>
-      <text x="200" y="465" text-anchor="middle" font-family="Inter" font-size="11" fill="#4B4F58">absorbs mid-freq</text>
-
-      <!-- Air gap / foam core -->
-      <rect x="240" y="60" width="120" height="380" fill="#0A0B0D"/>
-      <g stroke="#4B4F58" stroke-width="0.8" opacity="0.6">
-        <line x1="260" y1="80" x2="340" y2="80"/>
-        <line x1="260" y1="100" x2="340" y2="100"/>
-        <line x1="260" y1="120" x2="340" y2="120"/>
-        <line x1="260" y1="140" x2="340" y2="140"/>
-        <line x1="260" y1="160" x2="340" y2="160"/>
-        <line x1="260" y1="180" x2="340" y2="180"/>
-        <line x1="260" y1="200" x2="340" y2="200"/>
-        <line x1="260" y1="220" x2="340" y2="220"/>
-        <line x1="260" y1="240" x2="340" y2="240"/>
-        <line x1="260" y1="260" x2="340" y2="260"/>
-        <line x1="260" y1="280" x2="340" y2="280"/>
-        <line x1="260" y1="300" x2="340" y2="300"/>
-        <line x1="260" y1="320" x2="340" y2="320"/>
-        <line x1="260" y1="340" x2="340" y2="340"/>
-        <line x1="260" y1="360" x2="340" y2="360"/>
-        <line x1="260" y1="380" x2="340" y2="380"/>
-        <line x1="260" y1="400" x2="340" y2="400"/>
-        <line x1="260" y1="420" x2="340" y2="420"/>
-      </g>
-      <text x="300" y="35" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#1A1D24">FOAM CORE</text>
-      <text x="300" y="465" text-anchor="middle" font-family="Inter" font-size="11" fill="#4B4F58">acoustic damping</text>
-
-      <!-- PET acoustic panel (interior) -->
-      <rect x="360" y="60" width="100" height="380" fill="#DEE1E6"/>
-      <pattern id="petHatch" patternUnits="userSpaceOnUse" width="8" height="8">
-        <circle cx="4" cy="4" r="1" fill="#9CA3AF"/>
-      </pattern>
-      <rect x="360" y="60" width="100" height="380" fill="url(#petHatch)"/>
-      <text x="410" y="35" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#1A1D24">PET PANEL</text>
-      <text x="410" y="465" text-anchor="middle" font-family="Inter" font-size="11" fill="#4B4F58">12 mm interior</text>
-
-      <!-- Frame edge -->
-      <rect x="460" y="60" width="20" height="380" fill="#1A1D24"/>
-      <text x="470" y="35" text-anchor="middle" font-family="Inter" font-size="10" font-weight="600" fill="#9CA3AF">ALU</text>
-
-      <!-- Inside (quiet) -->
-      <rect x="480" y="0" width="420" height="480" fill="#16181C"/>
-      <text x="690" y="40" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#F5F1EA" letter-spacing="2">INSIDE THE POD</text>
-      <text x="690" y="62" text-anchor="middle" font-family="Inter" font-size="11" fill="#A39E94">Conversation-private</text>
-      <text x="690" y="220" text-anchor="middle" font-family="Inter" font-size="42" font-weight="900" fill="#22C55E" letter-spacing="-2">38</text>
-      <text x="690" y="248" text-anchor="middle" font-family="Inter" font-size="14" font-weight="600" fill="#22C55E">dB</text>
-
-      <!-- Quiet wave inside -->
-      <g stroke="#22C55E" stroke-width="1.5" fill="none" opacity="0.5">
-        <path d="M 510 360 Q 540 358 580 360 T 660 360"/>
-      </g>
-
-      <!-- Sound arrows showing attenuation through layers -->
-      <defs>
-        <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#E53B3B"/>
-        </marker>
-      </defs>
-      <g stroke="#E53B3B" stroke-width="2.5" fill="none" marker-end="url(#arrowR)">
-        <line x1="95" y1="240" x2="155" y2="240" opacity="0.95"/>
-      </g>
-      <g stroke="#F0B14A" stroke-width="2" fill="none" marker-end="url(#arrowR)">
-        <line x1="240" y1="240" x2="295" y2="240" opacity="0.7"/>
-      </g>
-      <g stroke="#9CA3AF" stroke-width="1.6" fill="none" marker-end="url(#arrowR)">
-        <line x1="360" y1="240" x2="405" y2="240" opacity="0.5"/>
-      </g>
-      <g stroke="#22C55E" stroke-width="1.2" fill="none" marker-end="url(#arrowR)">
-        <line x1="460" y1="240" x2="510" y2="240" opacity="0.45"/>
-      </g>
-
-      <!-- Drop arrow indicator -->
-      <text x="280" y="455" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#E53B3B">−30 dB attenuation across the assembly</text>
-    </svg>
+    <div class="wall-side wall-side-in">
+      <div class="wall-side-label">Inside the pod · private</div>
+      <div class="wall-side-db green">38<span>dB</span></div>
+      <div class="wall-side-mood">Quiet enough for a recording</div>
+    </div>
   </div>
-</div>
-
-
-<h3 style="margin-top:96px;margin-bottom:8px;font-size:1.5rem">Three edge styles, three moods.</h3>
-<p style="color:var(--text-mid)">Pick the silhouette that matches the room you're putting it in.</p>
-<div class="edge-grid">
-<div class="edge-card"><svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="2"><rect x="14" y="14" width="68" height="68"/></svg><h4>Straight Edge</h4><p style="color:var(--text-mid);font-size:0.92rem">Clean. Minimal. Maximizes floor plan.<br>Default for offices and showrooms.</p></div>
-<div class="edge-card"><svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="2"><polygon points="48,12 84,48 48,84 12,48"/></svg><h4>Diamond Edge</h4><p style="color:var(--text-mid);font-size:0.92rem">Bold. Sculptural. Fits tight corners.<br>Statement piece for studios and lobbies.</p></div>
-<div class="edge-card"><svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="2"><rect x="14" y="14" width="68" height="68" rx="18"/></svg><h4>Curved Edge</h4><p style="color:var(--text-mid);font-size:0.92rem">Soft. Warm. Family-friendly.<br>Reduces sharpness in homes and clinics.</p></div>
+  <div class="wall-iso-row">
+    <span class="wall-iso-pill">ISO 23351-1 certified</span>
+    <span class="wall-iso-text">Verified attenuation across 100–8,000 Hz · independent third-party lab</span>
+  </div>
 </div>
 </div></section>
 
