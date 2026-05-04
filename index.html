@@ -197,10 +197,35 @@ function __initInteractive(){
     return reportData;
   }
 
+  // Pre-fill the GHL calendar iframe with the user's wizard data so they
+  // don't have to retype name/email/phone on the booking form.
+  function prefillCalendar(){
+    const iframe = document.getElementById('mtip-pods-calendar-widget');
+    if (!iframe) return;
+    const base = 'https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU';
+    const fullName = ((wState.firstName||'') + ' ' + (wState.lastName||'')).trim();
+    const notesParts = [];
+    if (wState.propertyType) notesParts.push('Property: ' + wState.propertyType);
+    if (wState.city || wState.state) notesParts.push('Location: ' + [wState.city, wState.state].filter(Boolean).join(', '));
+    if (wState.podCount) notesParts.push('Pods modeled: ' + wState.podCount);
+    if (wState.dealStructure) notesParts.push('Deal structure: ' + wState.dealStructure);
+    if (wState.company) notesParts.push('Company: ' + wState.company);
+    const params = new URLSearchParams();
+    if (wState.firstName) params.set('first_name', wState.firstName);
+    if (wState.lastName) params.set('last_name', wState.lastName);
+    if (fullName) params.set('full_name', fullName);
+    if (wState.email) params.set('email', wState.email);
+    if (wState.phone) params.set('phone', wState.phone);
+    if (notesParts.length) params.set('notes', notesParts.join(' · '));
+    const qs = params.toString();
+    iframe.src = qs ? base + '?' + qs : base;
+  }
+
   // Submit handler — multi-channel capture
   $submit.addEventListener('click', () => {
     if (!validateStep(5)) return;
     generateReport();
+    prefillCalendar();
     showStep(6);
     // Send the data
     submitWizardData();
