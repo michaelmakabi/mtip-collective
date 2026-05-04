@@ -42,8 +42,10 @@ jobs:
           FILTER: ${{ inputs.filter }}
           FORCE: ${{ inputs.force }}
         run: python scripts/generate_renders.py
+      continue-on-error: true
 
       - name: Commit + push new images
+        if: always()
         run: |
           if [ -n "$(git status --porcelain assets/images/)" ]; then
             git config user.name "github-actions[bot]"
