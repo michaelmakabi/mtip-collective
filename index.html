@@ -792,6 +792,20 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) shut(); });
 })();
 
+
+// Resource card "Walk-Through Video" → open hero video modal
+(function(){
+  const resBtn = document.getElementById('resourceWatchVideo');
+  const modal = document.getElementById('videoModal');
+  const vid = document.getElementById('videoModalEl');
+  if (!resBtn || !modal) return;
+  resBtn.addEventListener('click', () => {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (vid) { vid.currentTime = 0; vid.play().catch(()=>{}); }
+  });
+})();
+
 } // end __initInteractive
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', __initInteractive);
@@ -1366,8 +1380,8 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .ship-step{background:white;border:1px solid var(--border);border-radius:16px;padding:32px 28px;position:relative;transition:all 0.3s}
 .ship-step:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--text)}
 .ship-step-num{font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:0.16em;color:var(--red);margin-bottom:18px}
-.ship-step-icon{width:56px;height:56px;background:linear-gradient(135deg,#1A1D24 0%,#0A0B0D 100%);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
-.ship-step-icon i{width:26px;height:26px;color:var(--red-light)}
+.ship-step-icon{width:64px;height:64px;background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%);border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 8px 24px rgba(229,59,59,0.3)}
+.ship-step-icon i{width:32px;height:32px;color:white;stroke-width:2.4}
 .ship-step h4{margin-bottom:10px;font-size:1.2rem;letter-spacing:-0.015em}
 .ship-step p{color:var(--text-mid);font-size:0.93rem;line-height:1.55}
 .ship-step strong{color:var(--text);font-weight:700}
@@ -2061,14 +2075,6 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 <div class="carousel-slide"><img src="assets/images/carousel-17-pod-working.jpg" alt="Pod working"><div class="carousel-caption"><strong>Inside The Suite, working</strong><span>Real desk, real chair, real focus.</span></div></div>
 <div class="carousel-slide"><img src="assets/images/carousel-18-pod-accessible-context.jpg" alt="Accessible pod"><div class="carousel-caption"><strong>Accessible Pod</strong><span>Wide entry · auto-open door · multi-modal access</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-01-studio-front.jpg" alt="Studio front"><div class="carousel-caption"><strong>The Studio · Solo</strong><span>~10 sq ft · for recording, AI command, focus</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-02-duo-side.jpg" alt="Duo side"><div class="carousel-caption"><strong>The Duo · 1–2 person</strong><span>~23 sq ft · the smart 1-person office</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-03-quad-with-people.jpg" alt="Quad with people"><div class="carousel-caption"><strong>The Quad · 4-person</strong><span>~31 sq ft · drop-in meeting room</span></div></div>
-<div class="carousel-slide"><img src="assets/images/carousel-04-suite-interior.jpg" alt="Suite interior"><div class="carousel-caption"><strong>The Suite · 1–6 person</strong><span>~49 sq ft · replace your $1,500–$2,500/mo office</span></div></div>
-
-
-
-
 <div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-modern-office.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Modern open office"><div class="carousel-caption"><strong>Modern open office</strong><span>Polished concrete · industrial track lighting · 5500K daylight</span></div></div>
 <div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-coworking.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Industrial coworking"><div class="carousel-caption"><strong>Industrial coworking</strong><span>Exposed brick · Edison-bulb pendants · 2700K warm</span></div></div>
 <div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-lobby.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Luxury hotel lobby"><div class="carousel-caption"><strong>Luxury hotel lobby</strong><span>Marble floor · 3000K ambient · oversized art</span></div></div>
@@ -2191,9 +2197,9 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="section-header center"><div class="eyebrow">Brochure &amp; resources</div><h2>Everything you need<br>to decide.</h2></div>
 <div class="resource-grid">
 <a href="assets/brochure/mtip-collective-pods-brochure.pdf" class="resource-card" download><div class="icon-box"><i data-lucide="file-text"></i></div><div class="text"><strong>MTIP Collective Pods Brochure</strong><span>Full PDF · all four pods · specs &amp; finishes</span></div></a>
-<a href="assets/brochure/mtip-collective-pods-brochure.pdf" class="resource-card" download><div class="icon-box"><i data-lucide="ruler"></i></div><div class="text"><strong>Spec Sheets — All Models</strong><span>Dimensions, materials, electrical, certifications</span></div></a>
+<a href="#lineup" class="resource-card"><div class="icon-box"><i data-lucide="ruler"></i></div><div class="text"><strong>Spec Sheets — All Models</strong><span>Dimensions · materials · electrical · acoustic ratings · in-line below</span></div></a>
 <a href="#showroom" class="resource-card"><div class="icon-box"><i data-lucide="map-pin"></i></div><div class="text"><strong>Visit the Florida Showroom</strong><span>See all four sizes in person · book by appointment</span></div></a>
-<a href="#suite" class="resource-card"><div class="icon-box"><i data-lucide="play-circle"></i></div><div class="text"><strong>Walk-Through Video</strong><span>Inside an MTIP Collective Pod · 60 seconds</span></div></a>
+<button type="button" class="resource-card" id="resourceWatchVideo" style="border:1px solid var(--border);background:white;width:100%;text-align:left;cursor:pointer;font-family:inherit"><div class="icon-box"><i data-lucide="play-circle"></i></div><div class="text"><strong>Walk-Through Video</strong><span>Inside an MTIP Collective Pod · 60 seconds</span></div></button>
 </div>
 </div></section>
 
