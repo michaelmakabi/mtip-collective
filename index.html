@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script>
 // ============================================================
 // JV WIZARD + CAROUSEL + NOISE DEMO (gated on DOM ready)
@@ -347,6 +348,7 @@ function __initInteractive(){
 
   // Init
   showStep(1);
+  window.__wState = function(){ return wState; };
 })();
 
 
@@ -806,6 +808,303 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
   });
 })();
 
+
+// JV LEGAL DOCUMENT GENERATOR — builds a multi-page PDF based on wState.dealStructure
+(function(){
+  const btn = document.getElementById('btnGenerateLegalDocs');
+  const section = document.getElementById('wizardLegalSection');
+  if (!btn || !section) return;
+
+  // Show the section on submit success (after wizardSuccess shows)
+  const submitBtn = document.getElementById('wizardSubmit');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+      // delay so generateReport + showStep(6) settle
+      setTimeout(() => { section.style.display = 'block'; }, 400);
+    });
+  }
+
+  function todayStr(){
+    const d = new Date();
+    return d.toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+  }
+
+  function formatMoney(n){ return '$' + Math.round(n).toLocaleString(); }
+
+  function legalText(deal, w){
+    const today = todayStr();
+    const customerName = ((w.firstName||'[Counterparty Name]') + ' ' + (w.lastName||'')).trim();
+    const company = w.company || '[Counterparty Company / LLC]';
+    const propLoc = (w.city && w.state) ? `${w.city}, ${w.state}` : '[Property Location]';
+    const propType = w.propertyType || '[property type]';
+    const podCount = w.podCount || 6;
+    const POD_RENT = 900;
+    const RETAIL_PER_POD = 7500;
+    const monthly = podCount * POD_RENT;
+    const annual = monthly * 12;
+    const totalRetail = podCount * RETAIL_PER_POD;
+    const recoupMonths = Math.ceil(totalRetail / monthly);
+    const annualToOperator75 = Math.round(annual * 0.75);
+    const annualToOperator50 = Math.round(annual * 0.50);
+
+    const docs = {};
+
+    docs.buy = {
+      title: 'BILL OF SALE & EQUIPMENT PURCHASE AGREEMENT',
+      sections: [
+        ['1. PARTIES', `This Bill of Sale and Equipment Purchase Agreement ("Agreement") is entered into on ${today} by and between:\n\nSELLER: MTIP Collective, a Florida corporation, with its principal place of business at 16137 Biscayne Blvd, North Miami Beach, FL 33160 ("MTIP" or "Seller").\n\nBUYER: ${customerName}, on behalf of ${company}, with property located at ${propLoc} ("Buyer").`],
+        ['2. EQUIPMENT', `Seller agrees to sell, and Buyer agrees to purchase, ${podCount} (${numToWord(podCount)}) MTIP Collective acoustic office pods, configuration to be specified in Schedule A attached hereto (collectively, the "Equipment"). Each pod includes ISO-23351-1 certified acoustic walls, 6mm tempered glass, integrated lighting, ventilation, and electrical fittings as detailed on the manufacturer specification sheet.`],
+        ['3. PURCHASE PRICE', `Total purchase price: ${formatMoney(totalRetail)} USD ("Purchase Price"), based on the published retail price per pod listed on Schedule A. Payment terms: 50% non-refundable deposit upon execution; balance due upon delivery confirmation. Wire instructions provided separately.`],
+        ['4. DELIVERY', `Seller shall deliver the Equipment to the Property within ninety (90) calendar days following receipt of the deposit and execution of this Agreement, FOB Buyer's loading dock. Title to and risk of loss for the Equipment passes to Buyer upon delivery. Buyer is responsible for on-site assembly outside of South Florida; on-site assembly within South Florida is included at no additional charge.`],
+        ['5. WARRANTY', `Seller warrants the Equipment to be free from defects in materials and workmanship for a period of one (1) year from the date of delivery. Buyer's exclusive remedy under this warranty shall be repair or replacement of defective components, at Seller's option. EXCEPT AS EXPRESSLY PROVIDED HEREIN, SELLER DISCLAIMS ALL OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.`],
+        ['6. OWNERSHIP & USE', `Upon delivery and final payment, Buyer owns 100% of the Equipment outright. Buyer may use, sublease, sublicense, relocate, or sell the Equipment without further obligation to Seller. No revenue share, royalty, or override is owed to Seller.`],
+        ['7. INDEMNIFICATION', `Each party shall indemnify and hold harmless the other from claims arising out of its own negligence, gross negligence, or willful misconduct in connection with the Equipment.`],
+        ['8. GOVERNING LAW', `This Agreement is governed by and construed in accordance with the laws of the State of Florida, without regard to its conflict-of-laws principles. Any dispute arising hereunder shall be brought exclusively in the state or federal courts located in Miami-Dade County, Florida.`],
+        ['9. ENTIRE AGREEMENT', `This Agreement, together with Schedule A, constitutes the entire agreement between the parties regarding the subject matter hereof and supersedes any prior or contemporaneous oral or written representations or agreements.`],
+      ],
+      schedules: [
+        ['SCHEDULE A — EQUIPMENT', `Property: ${propLoc}\nProperty Type: ${propType}\nPod Count: ${podCount}\nUnit Pricing (subject to confirmation):\n• The Studio (10 sq ft, single occupancy): $2,997 each\n• The Duo (23 sq ft, 1–2 person): $4,497 each\n• The Quad (31 sq ft, 4-person meeting): $5,497 each\n• The Suite (49 sq ft, 1–6 person): $6,997 each\n\nTotal estimated retail (mix tbd): ${formatMoney(totalRetail)}\n\nFinal pod allocation, finishes, and configurations to be confirmed in writing prior to factory production.`]
+      ]
+    };
+
+    docs['50-50'] = {
+      title: 'JOINT VENTURE & EQUIPMENT CO-OWNERSHIP AGREEMENT',
+      sections: [
+        ['1. PARTIES & RECITALS', `This Joint Venture Agreement ("Agreement") is entered into on ${today} by and between MTIP Collective ("MTIP"), a Florida corporation located at 16137 Biscayne Blvd, North Miami Beach, FL 33160, and ${customerName} on behalf of ${company} ("Operator"), with property located at ${propLoc} ("the Property").\n\nWHEREAS, MTIP designs and supplies acoustic office pods; and\nWHEREAS, Operator wishes to deploy such pods on the Property and share both the capital cost and the revenue resulting therefrom;\nNOW, THEREFORE, in consideration of the mutual covenants herein, the parties agree as follows:`],
+        ['2. SCOPE & EQUIPMENT', `MTIP and Operator shall deploy ${podCount} (${numToWord(podCount)}) acoustic office pods at the Property (the "Equipment"). Specifications, finishes, and configurations are detailed in Schedule A.`],
+        ['3. CAPITAL CONTRIBUTIONS', `The total capital cost for the Equipment is ${formatMoney(totalRetail)} ("Equipment Cost"). Each party shall contribute fifty percent (50%) of the Equipment Cost: ${formatMoney(totalRetail/2)} from MTIP and ${formatMoney(totalRetail/2)} from Operator. Operator's contribution is due within ten (10) business days of execution of this Agreement.`],
+        ['4. REVENUE SHARE', `All gross revenue derived from leasing, subletting, or charging tenants for use of the Equipment ("Pod Revenue") shall be allocated, after deducting agreed Operating Expenses, fifty percent (50%) to MTIP and fifty percent (50%) to Operator, in perpetuity.\n\nOperating Expenses are limited to: utility cost directly attributable to the Equipment, normal maintenance and consumable supplies, and applicable property insurance allocated pro-rata. Operator shall furnish MTIP with a quarterly statement of Pod Revenue and Operating Expenses, accompanied by source documentation.`],
+        ['5. MANAGEMENT', `Day-to-day management of bookings, billing, tenant communications, and routine cleaning shall be performed by [the party designated in Schedule B]. The managing party is entitled to a management fee of zero dollars ($0) — management is included in the 50/50 split. Maintenance, warranty repairs, and component replacement shall be coordinated by MTIP.`],
+        ['6. TERM & TERMINATION', `This Agreement shall remain in force for so long as the Equipment is in service. Either party may, at any time after the third (3rd) anniversary of execution, offer to purchase the other party's 50% interest for fair market value, determined by mutual agreement or, failing such agreement, by an independent third-party appraiser selected jointly.`],
+        ['7. REPRESENTATIONS & INDEMNIFICATION', `MTIP represents the Equipment is ISO-23351-1 certified, manufactured to spec, and free from material defects on delivery. Operator represents it has lawful authority to install the Equipment on the Property and that the Property is suitable for installation. Each party indemnifies the other against claims arising from its own negligence or willful misconduct.`],
+        ['8. INSURANCE', `Operator shall maintain commercial general liability insurance covering the Property (minimum $1,000,000 per occurrence). MTIP shall maintain product liability insurance covering the Equipment (minimum $1,000,000 per occurrence).`],
+        ['9. GOVERNING LAW & DISPUTE RESOLUTION', `This Agreement is governed by Florida law. Any dispute shall be referred first to non-binding mediation, and thereafter, if unresolved, to binding arbitration administered by the American Arbitration Association under its Commercial Arbitration Rules, seated in Miami-Dade County, Florida.`],
+        ['10. ENTIRE AGREEMENT', `This Agreement, together with Schedules A and B, constitutes the entire agreement of the parties regarding its subject matter and supersedes all prior negotiations.`]
+      ],
+      schedules: [
+        ['SCHEDULE A — EQUIPMENT', `Property: ${propLoc}\nProperty Type: ${propType}\nPod Count: ${podCount}\nTotal Equipment Cost: ${formatMoney(totalRetail)}\nMTIP Contribution (50%): ${formatMoney(totalRetail/2)}\nOperator Contribution (50%): ${formatMoney(totalRetail/2)}`],
+        ['SCHEDULE B — REVENUE PROJECTION', `Assumed average monthly rental per pod: ${formatMoney(POD_RENT)}\nProjected monthly Pod Revenue: ${formatMoney(monthly)}\nProjected annual Pod Revenue: ${formatMoney(annual)}\nMTIP share (50%): ${formatMoney(annual/2)} per year\nOperator share (50%): ${formatMoney(annual/2)} per year\nAssumed managing party: Operator (no management fee)`]
+      ]
+    };
+
+    docs['zero-capex'] = {
+      title: 'EQUIPMENT LICENSE & REVENUE-SHARE AGREEMENT (ZERO-CAPEX)',
+      sections: [
+        ['1. PARTIES & RECITALS', `This Equipment License & Revenue-Share Agreement ("Agreement") is entered into on ${today} by and between MTIP Collective ("Licensor"), a Florida corporation located at 16137 Biscayne Blvd, North Miami Beach, FL 33160, and ${customerName} on behalf of ${company} ("Licensee"), with property located at ${propLoc} ("the Property").\n\nWHEREAS, Licensor wishes to deploy ${podCount} acoustic office pods at the Property at its own capital expense; and\nWHEREAS, Licensee wishes to permit such deployment and to share in the resulting revenue without itself contributing capital;\nNOW, THEREFORE, the parties agree as follows:`],
+        ['2. EQUIPMENT & LICENSE', `Licensor shall, at its sole capital expense, supply and install ${podCount} (${numToWord(podCount)}) acoustic office pods (the "Equipment") at the Property. Licensor retains ownership and title to the Equipment at all times. Licensee receives a non-exclusive license to allow use of the Equipment by Licensee, its tenants, members, employees, and invitees, in accordance with this Agreement.`],
+        ['3. ZERO CAPITAL CONTRIBUTION', `Licensee makes no upfront capital contribution toward the Equipment. The full retail value of the Equipment, ${formatMoney(totalRetail)}, is funded entirely by Licensor.`],
+        ['4. REVENUE WATERFALL', `(a) ALL gross revenue derived from leasing, subletting, or charging users for use of the Equipment ("Pod Revenue"), net only of direct utility cost, shall be paid to Licensor each month until the cumulative Pod Revenue paid to Licensor equals the full Equipment retail value of ${formatMoney(totalRetail)} ("Recoupment").\n\nProjected Recoupment period (based on average ${formatMoney(POD_RENT)}/mo per pod): approximately ${recoupMonths} months.\n\n(b) AFTER Recoupment, Pod Revenue shall be allocated as follows:\n   (i) If Licensee performs day-to-day management (booking, billing, tenant communication, cleaning): seventy-five percent (75%) to Licensee and twenty-five percent (25%) to Licensor;\n   (ii) If Licensor performs day-to-day management: fifty percent (50%) to Licensee and fifty percent (50%) to Licensor.\n\nRevenue allocations under (b) continue in perpetuity for so long as the Equipment remains in service at the Property.`],
+        ['5. PROPERTY ACCESS', `Licensee grants Licensor reasonable access to the Property during normal business hours for installation, periodic maintenance, repairs, and removal of the Equipment, with at least twenty-four (24) hours' written notice (except in the case of emergency).`],
+        ['6. TERM & EARLY BUYOUT', `This Agreement remains in force while the Equipment is on the Property. Licensee may, at any time after twelve (12) months from installation, elect to purchase the Equipment at the then-undepreciated book value (calculated on a 7-year straight-line depreciation schedule), upon which all post-Recoupment revenue allocations cease and Licensee owns the Equipment outright.`],
+        ['7. RISK & INSURANCE', `Title and risk of loss to the Equipment remain with Licensor. Licensor maintains product liability insurance. Licensee maintains commercial general liability insurance covering the Property and the Equipment's use thereon, with Licensor named as additional insured.`],
+        ['8. REPORTING', `Licensee shall provide a monthly statement of Pod Revenue and direct utility costs, accompanied by reasonable source documentation, within fifteen (15) days following month-end. Licensor may audit upon reasonable notice not more than once per twelve (12)-month period.`],
+        ['9. REPRESENTATIONS', `Licensor represents the Equipment is ISO-23351-1 certified, factory-assembled, and free from material defects on delivery. Licensee represents it has lawful authority to allow installation at the Property.`],
+        ['10. GOVERNING LAW & DISPUTES', `This Agreement is governed by Florida law. Disputes shall first be referred to non-binding mediation, and thereafter to binding arbitration administered by the AAA under its Commercial Arbitration Rules, seated in Miami-Dade County, Florida.`],
+        ['11. ENTIRE AGREEMENT', `This Agreement, with Schedules A and B, constitutes the entire agreement between the parties and supersedes all prior negotiations.`]
+      ],
+      schedules: [
+        ['SCHEDULE A — EQUIPMENT', `Property: ${propLoc}\nProperty Type: ${propType}\nPod Count: ${podCount}\nFunded by: Licensor (MTIP Collective)\nFull Equipment Retail Value: ${formatMoney(totalRetail)}\nLicensee Capital Outlay: $0`],
+        ['SCHEDULE B — REVENUE WATERFALL PROJECTION', `Assumed average monthly rental per pod: ${formatMoney(POD_RENT)}\nProjected monthly Pod Revenue: ${formatMoney(monthly)}\nProjected annual Pod Revenue: ${formatMoney(annual)}\n\nPHASE 1 — Recoupment (months 1–${recoupMonths}):\n  100% of Pod Revenue → Licensor (MTIP) until ${formatMoney(totalRetail)} recovered.\n\nPHASE 2 — Post-Recoupment (month ${recoupMonths+1} onward, in perpetuity):\n  If Licensee manages: ${formatMoney(annualToOperator75)}/yr to Licensee + ${formatMoney(annual-annualToOperator75)}/yr to Licensor.\n  If Licensor manages: ${formatMoney(annualToOperator50)}/yr to Licensee + ${formatMoney(annualToOperator50)}/yr to Licensor.`]
+      ]
+    };
+
+    return docs[deal] || docs['zero-capex'];
+  }
+
+  function numToWord(n){
+    const w = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
+    return w[n] || String(n);
+  }
+
+  function buildPdf(deal, w){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const M = 56;          // margin
+    const lineH = 14;      // line height
+    let y = M;
+
+    function pageHeader(){
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(9);
+      doc.setTextColor(229, 59, 59);
+      doc.text('MTIP COLLECTIVE', M, M - 24);
+      doc.setTextColor(120, 120, 130);
+      doc.setFont('helvetica','normal');
+      doc.text('16137 Biscayne Blvd · North Miami Beach, FL · mtip@hey.com', pageW - M, M - 24, {align:'right'});
+      doc.setDrawColor(229, 59, 59);
+      doc.setLineWidth(0.8);
+      doc.line(M, M - 16, pageW - M, M - 16);
+      doc.setTextColor(20, 22, 30);
+    }
+
+    function pageFooter(pageNum){
+      doc.setDrawColor(220, 220, 226);
+      doc.setLineWidth(0.5);
+      doc.line(M, pageH - M + 8, pageW - M, pageH - M + 8);
+      doc.setFont('helvetica','italic');
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 160);
+      doc.text('DRAFT — non-binding until executed by both parties. Customer is responsible for independent legal review.', M, pageH - M + 22);
+      doc.text('Page ' + pageNum, pageW - M, pageH - M + 22, {align:'right'});
+      doc.setTextColor(20, 22, 30);
+    }
+
+    function newPage(){
+      pageFooter(doc.internal.getNumberOfPages());
+      doc.addPage();
+      y = M;
+      pageHeader();
+    }
+
+    function ensure(needed){
+      if (y + needed > pageH - M - 28) newPage();
+    }
+
+    function paragraph(txt, opts){
+      opts = opts || {};
+      const fontSize = opts.size || 10;
+      const isBold = opts.bold || false;
+      const indent = opts.indent || 0;
+      doc.setFont('helvetica', isBold ? 'bold' : 'normal');
+      doc.setFontSize(fontSize);
+      doc.setTextColor(20, 22, 30);
+      const maxW = pageW - 2*M - indent;
+      // split on \n then wrap each
+      const paragraphs = txt.split('\n');
+      paragraphs.forEach(par => {
+        const lines = doc.splitTextToSize(par, maxW);
+        lines.forEach(line => {
+          ensure(lineH);
+          doc.text(line, M + indent, y);
+          y += lineH;
+        });
+        y += 4;
+      });
+    }
+
+    function sectionHeading(title){
+      ensure(28);
+      y += 6;
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(11);
+      doc.setTextColor(229, 59, 59);
+      doc.text(title, M, y);
+      y += 18;
+      doc.setTextColor(20, 22, 30);
+    }
+
+    function coverPage(d){
+      doc.setFillColor(10, 11, 13);
+      doc.rect(0, 0, pageW, pageH, 'F');
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(34);
+      doc.setTextColor(255, 255, 255);
+      const titleLines = doc.splitTextToSize(d.title, pageW - 2*M);
+      let cy = pageH * 0.35;
+      titleLines.forEach(line => { doc.text(line, M, cy); cy += 40; });
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(11);
+      doc.setTextColor(229, 59, 59);
+      doc.text('MTIP COLLECTIVE', M, pageH * 0.7);
+      doc.setTextColor(220, 220, 226);
+      doc.text('16137 Biscayne Blvd · North Miami Beach, FL', M, pageH * 0.7 + 18);
+      doc.text('mtip@hey.com · pods.mtip.ai', M, pageH * 0.7 + 36);
+      doc.setTextColor(150, 150, 160);
+      doc.setFontSize(9);
+      doc.text(`Prepared on ${todayStr()} for: ${((w.firstName||'') + ' ' + (w.lastName||'')).trim() || '[Counterparty]'}`, M, pageH - M);
+      doc.text('DRAFT — for review only. Non-binding until executed.', M, pageH - M + 14);
+      doc.addPage();
+      y = M;
+      pageHeader();
+    }
+
+    function signatureBlock(){
+      ensure(160);
+      y += 16;
+      sectionHeading('SIGNATURES');
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(10);
+      doc.setTextColor(20, 22, 30);
+      paragraph('Each party, by its authorized signatory below, agrees to be bound by the terms of this Agreement upon full execution.');
+      y += 10;
+      // MTIP block
+      doc.setDrawColor(20, 22, 30);
+      doc.setLineWidth(0.5);
+      doc.line(M, y + 26, M + 220, y + 26);
+      doc.setFont('helvetica','bold');
+      doc.text('MTIP Collective', M, y + 40);
+      doc.setFont('helvetica','normal');
+      doc.text('Master Makabi · Founder', M, y + 54);
+      doc.text('Date: ____________________', M, y + 68);
+      // Counterparty block
+      doc.line(pageW - M - 220, y + 26, pageW - M, y + 26);
+      doc.setFont('helvetica','bold');
+      doc.text('Counterparty', pageW - M - 220, y + 40);
+      doc.setFont('helvetica','normal');
+      doc.text('Name: ____________________', pageW - M - 220, y + 54);
+      doc.text('Date: ____________________', pageW - M - 220, y + 68);
+    }
+
+    const d = legalText(deal, w);
+
+    // Cover page
+    coverPage(d);
+
+    // Sections
+    d.sections.forEach(([title, text]) => {
+      sectionHeading(title);
+      paragraph(text);
+    });
+
+    // Schedules on a new page
+    if (d.schedules && d.schedules.length){
+      newPage();
+      d.schedules.forEach(([title, text]) => {
+        sectionHeading(title);
+        paragraph(text);
+      });
+    }
+
+    // Signatures
+    signatureBlock();
+
+    // Final footer for last page
+    pageFooter(doc.internal.getNumberOfPages());
+
+    return doc;
+  }
+
+  btn.addEventListener('click', () => {
+    if (!window.jspdf) {
+      alert('PDF library still loading — please try again in a moment.');
+      return;
+    }
+    // wState exists in closure of the wizard module; pull from window if exposed
+    const w = (window.__wState && window.__wState()) || {firstName:'',lastName:'',email:'',company:'',city:'',state:'',propertyType:'',podCount:6,dealStructure:'zero-capex'};
+    const deal = w.dealStructure || 'zero-capex';
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader" style="width:18px;height:18px;animation:spin 1s linear infinite"></i> Generating…';
+    if (window.lucide) window.lucide.createIcons();
+    setTimeout(() => {
+      try {
+        const doc = buildPdf(deal, w);
+        const filename = `MTIP-Collective-${(deal==='buy'?'Bill-of-Sale':deal==='50-50'?'JV-Agreement':'License-Revenue-Share')}-${(w.lastName||'Draft')}.pdf`;
+        doc.save(filename);
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="check"></i> Downloaded — generate again';
+        if (window.lucide) window.lucide.createIcons();
+      } catch (e) {
+        console.error(e);
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="alert-circle"></i> Error — try again';
+        if (window.lucide) window.lucide.createIcons();
+      }
+    }, 60);
+  });
+})();
+
 } // end __initInteractive
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', __initInteractive);
@@ -1249,7 +1548,8 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 @media(max-width:640px){.deploy-callout{grid-template-columns:1fr;padding:28px}}
 .deploy-callout-icon{width:64px;height:64px;background:rgba(255,255,255,0.15);border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .deploy-callout-icon i{width:28px;height:28px;color:white}
-.deploy-callout strong{display:block;font-size:1.2rem;color:white;margin-bottom:8px;font-weight:700;letter-spacing:-0.015em;line-height:1.3}
+.deploy-callout > div > strong{display:block;font-size:1.2rem;color:white;margin-bottom:8px;font-weight:700;letter-spacing:-0.015em;line-height:1.3}
+.deploy-callout p strong{display:inline;color:white;font-weight:700}
 .deploy-callout p{color:rgba(255,255,255,0.92);font-size:1rem;line-height:1.6;margin-top:6px}
 
 /* === JV WIZARD === */
@@ -1770,6 +2070,17 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
           <div class="wizard-success-msg" id="wizardSuccess">
             <strong>✓ Your opportunity report is on the way.</strong>
             We've also added you to our pipeline. We'll reach out within 24 hours.
+          </div>
+          <div class="wizard-legal-doc-section" id="wizardLegalSection" style="display:none;margin-top:24px;padding:24px;background:white;border:1px solid var(--border);border-radius:14px">
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <div style="width:44px;height:44px;background:var(--red-glow);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="file-text" style="width:22px;height:22px;color:var(--red)"></i></div>
+              <div style="flex:1">
+                <strong style="display:block;font-size:1.05rem;color:var(--text);margin-bottom:4px">Generate your JV legal documents</strong>
+                <p style="color:var(--text-mid);font-size:0.92rem;margin-bottom:14px">A draft term sheet + the right legal document for your selected deal structure. Multi-page, customized to your inputs, ready for your counsel's review before execution.</p>
+                <button type="button" id="btnGenerateLegalDocs" class="btn btn-red" style="font-size:0.95rem"><i data-lucide="download"></i> Generate &amp; download legal docs</button>
+                <p style="color:var(--text-light);font-size:0.78rem;margin-top:10px;font-style:italic">Draft documents — non-binding until both parties execute. Customer is responsible for independent legal review before signing.</p>
+              </div>
+            </div>
           </div>
           <div class="wizard-calendar-section">
             <div class="wizard-calendar-divider">
