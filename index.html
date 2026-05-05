@@ -1849,7 +1849,13 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
     <p class="hero-sub">A 49 sq ft TI build-out runs <strong>$10,000–$15,000</strong>, takes 6 months, and walks out with the tenant. <strong>Model 06 by MTIP Collective ships fully assembled in 90 days for $9,497.</strong> Or — let us fund 100%, recover from rental revenue, and override-split with you in perpetuity.</p>
     <div class="hero-ctas">
       <a href="#wizard" class="btn btn-red btn-lg">Run the math on your property <i data-lucide="arrow-right"></i></a>
+      <a href="brochure/" target="_blank" rel="noopener" class="btn btn-glass btn-lg"><i data-lucide="file-text"></i> View the brochure</a>
       <button type="button" class="btn btn-glass btn-lg" id="heroWatchBtn"><i data-lucide="play-circle"></i> Watch the walkthrough</button>
+    </div>
+    <div class="hero-brochure-meta" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:14px;font-size:0.78rem;color:rgba(255,255,255,0.65);font-weight:500;letter-spacing:0.01em">
+      <span><i data-lucide="external-link" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:3px"></i> opens in a new tab</span>
+      <span style="opacity:0.5">·</span>
+      <a href="brochure/" download class="hero-brochure-download" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-underline-offset:3px"><i data-lucide="download" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:3px"></i> download brochure</a>
     </div>
       </div>
   <div class="hero-scroll-hint" aria-hidden="true">
@@ -2507,7 +2513,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <section class="section section-soft"><div class="container">
 <div class="section-header center"><div class="eyebrow">Brochure &amp; resources</div><h2>Everything you need<br>to decide.</h2></div>
 <div class="resource-grid">
-<a href="assets/brochure/mtip-collective-pods-brochure.pdf" class="resource-card" download><div class="icon-box"><i data-lucide="file-text"></i></div><div class="text"><strong>MTIP Collective Pods Brochure</strong><span>Full PDF · all four pods · specs &amp; finishes</span></div></a>
+<a href="brochure/" target="_blank" rel="noopener" class="resource-card"><div class="icon-box"><i data-lucide="file-text"></i></div><div class="text"><strong>MTIP Collective Pods Brochure</strong><span>Full deck · all four pods · interactive · opens in new tab</span></div></a>
 <a href="#lineup" class="resource-card"><div class="icon-box"><i data-lucide="ruler"></i></div><div class="text"><strong>Spec Sheets — All Models</strong><span>Dimensions · materials · electrical · acoustic ratings · in-line below</span></div></a>
 <a href="#showroom" class="resource-card"><div class="icon-box"><i data-lucide="map-pin"></i></div><div class="text"><strong>Visit the Florida Showroom</strong><span>See all four sizes in person · book by appointment</span></div></a>
 <button type="button" class="resource-card" id="resourceWatchVideo" style="border:1px solid var(--border);background:white;width:100%;text-align:left;cursor:pointer;font-family:inherit"><div class="icon-box"><i data-lucide="play-circle"></i></div><div class="text"><strong>Walk-Through Video</strong><span>Inside an MTIP Collective Pod · 60 seconds</span></div></button>
@@ -2607,22 +2613,4 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       <span id="lbTitle">View</span>
     </div>
     <div class="lb-counter" id="lbCounter">1 / 8</div>
-    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
-    <button class="lb-arrow lb-next" id="lbNext" aria-label="Next"><i data-lucide="chevron-right"></i></button>
-    <div class="lb-thumbs" id="lbThumbs"></div>
-  </div>
-</div>
-
-
-<!-- Hero walkthrough video popup -->
-<div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-label="Walkthrough video">
-  <button class="video-modal-close" id="videoModalClose" aria-label="Close">×</button>
-  <div class="video-modal-stage">
-    <video id="videoModalEl" controls preload="none">
-      <source src="assets/video/walkthrough.mp4" type="video/mp4">
-    </video>
-  </div>
-</div>
-
-</body>
-</html>
+    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous"><i da
