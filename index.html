@@ -712,6 +712,86 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
   window.addEventListener('scroll', onScroll, {passive:true});
 })();
 
+
+
+// CAROUSEL — auto-scroll + click-to-enlarge lightbox
+(function(){
+  const track = document.getElementById('carouselTrack');
+  if (!track) return;
+  let auto = null;
+  let pausedByUser = false;
+  function tick(){
+    if (pausedByUser) return;
+    const max = track.scrollWidth - track.clientWidth;
+    if (track.scrollLeft >= max - 4) {
+      track.scrollTo({left:0, behavior:'smooth'});
+    } else {
+      track.scrollBy({left:280, behavior:'smooth'});
+    }
+  }
+  function start(){ stop(); auto = setInterval(tick, 4000); }
+  function stop(){ if (auto) { clearInterval(auto); auto = null; } }
+  start();
+  track.addEventListener('mouseenter', () => { pausedByUser = true; });
+  track.addEventListener('mouseleave', () => { pausedByUser = false; });
+  // Pause on touch (mobile users scrolling manually)
+  track.addEventListener('touchstart', () => { pausedByUser = true; });
+
+  // Click any slide image → open in lightbox
+  const ilb = document.getElementById('imgLightbox');
+  const ilbImg = document.getElementById('ilbImg');
+  const ilbClose = document.getElementById('ilbClose');
+  const ilbDownload = document.getElementById('ilbDownload');
+  const ilbEyebrow = document.getElementById('ilbEyebrow');
+  const ilbTitle = document.getElementById('ilbTitle');
+  if (!ilb) return;
+  function close(){ ilb.classList.remove('open'); document.body.style.overflow = ''; }
+  ilbClose.addEventListener('click', close);
+  ilb.addEventListener('click', e => { if (e.target === ilb) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && ilb.classList.contains('open')) close(); });
+
+  document.querySelectorAll('.carousel-slide').forEach(slide => {
+    const img = slide.querySelector('img');
+    if (!img) return;
+    slide.addEventListener('click', e => {
+      const cap = slide.querySelector('.carousel-caption');
+      ilbImg.src = img.src;
+      ilbImg.alt = img.alt;
+      const fname = img.src.split('/').pop();
+      ilbDownload.href = img.src;
+      ilbDownload.download = fname;
+      const strong = cap?.querySelector('strong')?.textContent || 'MTIP Pods';
+      const span = cap?.querySelector('span')?.textContent || 'In the wild';
+      ilbEyebrow.textContent = strong;
+      ilbTitle.textContent = span;
+      ilb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+})();
+
+// HERO Watch video popup
+(function(){
+  const btn = document.getElementById('heroWatchBtn');
+  const modal = document.getElementById('videoModal');
+  const close = document.getElementById('videoModalClose');
+  const vid = document.getElementById('videoModalEl');
+  if (!btn || !modal) return;
+  btn.addEventListener('click', () => {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (vid) { vid.currentTime = 0; vid.play().catch(()=>{}); }
+  });
+  function shut(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    if (vid) vid.pause();
+  }
+  close.addEventListener('click', shut);
+  modal.addEventListener('click', e => { if (e.target === modal) shut(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) shut(); });
+})();
+
 } // end __initInteractive
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', __initInteractive);
@@ -760,7 +840,7 @@ h4{font-size:clamp(1.125rem,1.6vw,1.5rem);font-weight:600;letter-spacing:-0.02em
 .text-red{color:var(--red)}
 p{color:var(--text-mid)}
 .lead{font-size:clamp(1.125rem,1.5vw,1.35rem);color:var(--text-mid);max-width:720px;line-height:1.55}
-.container{max-width:1380px;margin:0 auto;padding:0 32px}
+.container{max-width:1480px;margin:0 auto;padding:0 32px}
 .container-tight{max-width:1040px;margin:0 auto;padding:0 32px}
 @media(max-width:640px){.container,.container-tight{padding:0 20px}}
 .section{padding:84px 0}
@@ -936,7 +1016,7 @@ p{color:var(--text-mid)}
 .fullbleed{position:relative;overflow:hidden;height:80vh;min-height:600px;max-height:800px}
 .fullbleed img{width:100%;height:100%;object-fit:cover}
 .fullbleed-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.55) 30%,rgba(0,0,0,0.2) 60%,transparent 100%);display:flex;align-items:center}
-.fullbleed-content{max-width:1380px;margin:0 auto;padding:0 32px;width:100%;color:white}
+.fullbleed-content{max-width:1480px;margin:0 auto;padding:0 32px;width:100%;color:white}
 .fullbleed-content>div{max-width:600px}
 .fullbleed h2{color:white;margin-bottom:24px}
 .fullbleed p{color:rgba(255,255,255,0.85);font-size:1.2rem;margin-bottom:32px}
@@ -1270,7 +1350,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .wall-iso-text{font-size:0.85rem;color:var(--text-mid);font-weight:500}
 @media(max-width:900px){.wall-viz{grid-template-columns:1fr}.wall-side-in{align-items:flex-start;text-align:left}.wall-stack{padding:28px 14px}.wall-stack-arrow{display:none}.wall-layer{min-height:120px}.wall-stack-drop{position:static;transform:none;display:inline-block;margin-top:18px}}
 
-.acoustic-diagram-wrap{margin:96px 0 56px;background:white;border:1px solid var(--border);border-radius:24px;padding:48px;box-shadow:var(--shadow-md)}
+.acoustic-diagram-wrap{margin:64px 0 32px;background:white;border:1px solid var(--border);border-radius:24px;padding:48px 48px 64px;box-shadow:var(--shadow-md);overflow:visible}
 .acoustic-diagram-header{margin-bottom:32px;text-align:center}
 .acoustic-diagram-header h3{margin-top:8px}
 .acoustic-svg-container{background:linear-gradient(180deg,#FAFAFA 0%,white 100%);border-radius:16px;padding:24px;border:1px solid var(--border)}
@@ -1378,6 +1458,19 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 @keyframes heroScroll{0%,100%{transform:translateX(-50%) translateY(0);opacity:.6}50%{transform:translateX(-50%) translateY(6px);opacity:1}}
 @media(max-width:640px){.hero-content{padding:0 22px;gap:22px}.hero-scroll-hint{display:none}}
 
+/* Hero translucent card frame around the content */
+.hero-content{background:rgba(8,10,15,0.55);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border:1px solid rgba(255,255,255,0.12);border-radius:28px;padding:56px 64px;box-shadow:0 30px 80px rgba(0,0,0,0.45);max-width:900px}
+@media(max-width:760px){.hero-content{padding:36px 28px;border-radius:22px}}
+
+/* Watch video popup */
+.video-modal{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.92);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:32px;animation:lbFade 0.32s ease}
+.video-modal.open{display:flex}
+.video-modal-stage{position:relative;width:100%;max-width:1200px;aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden;box-shadow:0 30px 100px rgba(0,0,0,0.6)}
+.video-modal-stage video{width:100%;height:100%;object-fit:contain;display:block}
+.video-modal-close{position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;line-height:1;transition:all 0.2s;z-index:2}
+.video-modal-close:hover{background:rgba(255,255,255,0.2);transform:rotate(90deg)}
+
+
 /* ===== AI image watermark — applied to any .ai-watermarked container ===== */
 .ai-watermarked{position:relative}
 .ai-watermarked::after{content:'';position:absolute;bottom:14px;right:14px;width:46px;height:46px;background-image:url('assets/images/mtip-logo-white.png');background-size:contain;background-repeat:no-repeat;background-position:center;opacity:0.6;pointer-events:none;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5))}
@@ -1413,6 +1506,10 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .tier-card:hover::before{opacity:1}
 .tier-card .tier-img{cursor:zoom-in}
 
+
+.carousel-slide{cursor:zoom-in;position:relative}
+.carousel-slide::after{content:'\2715';position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.6);color:white;display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:0;transition:opacity 0.2s;backdrop-filter:blur(6px);transform:rotate(45deg)}
+.carousel-slide:hover::after{opacity:1}
 </style>
 </head>
 <body>
@@ -1435,7 +1532,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
     <p class="hero-sub">A 49 sq ft TI build-out runs <strong>$10,000–$15,000</strong>, takes 6 months, and walks out with the tenant. <strong>The Suite by MTIP Collective ships fully assembled in 90 days for $6,997.</strong> Or — let us fund 100%, recover from rental revenue, and override-split with you in perpetuity.</p>
     <div class="hero-ctas">
       <a href="#wizard" class="btn btn-red btn-lg">Run the math on your property <i data-lucide="arrow-right"></i></a>
-      <a href="#deploy" class="btn btn-glass btn-lg">See deal structures</a>
+      <button type="button" class="btn btn-glass btn-lg" id="heroWatchBtn"><i data-lucide="play-circle"></i> Watch the walkthrough</button>
     </div>
     <div class="hero-scroll-hint" aria-hidden="true">
       <span>Scroll</span>
@@ -1482,7 +1579,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
           <li><i data-lucide="check"></i><span>Lower capital exposure with shared upside.</span></li>
         </ul>
         <div class="deploy-best">Best for: Landlords who want shared risk and shared income on a partnership basis.</div>
-        <a href="mailto:mtip@hey.com?subject=50/50%20JV%20Term%20Sheet%20Request" class="btn btn-outline" style="border-color:rgba(255,255,255,0.25);color:white;width:100%;justify-content:center">Request term sheet</a>
+        <a href="mailto:mtip@hey.com?subject=MTIP%20Pods%20-%20JV%20term%20sheet%20request&body=Hi%20MTIP%20team%2C%0A%0AMy%20name%20is%20%5Byour%20name%5D%20and%20I%27m%20interested%20in%20learning%20more%20about%20the%20MTIP%20Collective%20Pods.%0A%0AMy%20property%20is%20located%20at%3A%20%5Bcity%2C%20state%5D%0AProperty%20type%3A%20%5Bwarehouse%20%2F%20retail%20plaza%20%2F%20office%20%2F%20coworking%20%2F%20other%5D%0AAvailable%20square%20footage%20for%20pods%3A%20%5Bsq%20ft%5D%0ANumber%20of%20pods%20I%27m%20considering%3A%20%5B2-20%5D%0APreferred%20deal%20structure%3A%20%5Bbuy%20outright%20%2F%2050-50%20JV%20%2F%20zero-capex%20JV%5D%0A%0AAnything%20else%20to%20know%3A%20%5Bnotes%5D%0A%0AThanks%2C%0A%5Byour%20name%5D" class="btn btn-outline" style="border-color:rgba(255,255,255,0.25);color:white;width:100%;justify-content:center">Request term sheet</a>
       </div>
 
       <div class="deploy-card deploy-card-hero">
@@ -1728,7 +1825,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="tier-card featured"><div class="tier-img ai-watermarked"><img src="assets/images/ai-suite-orbit.jpg" alt="The Suite — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Flagship · Highest revenue per pod</div><h3>The Suite</h3><p class="tier-tagline">Highest-margin 49 sq ft on your floor plate. Rents at $800–$1,000/mo. Pays back in 8 months.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–6 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> (4.5 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>90W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$6,997" data-install="$699">$6,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-red">Reserve The Suite</a></div></div>
 </div>
 
-<div style="text-align:center;margin-top:48px"><p style="color:var(--text-mid)">Need <strong style="color:var(--text)">accessibility configuration</strong>? The Accessible Pod is engineered for users with reduced mobility — wide entry, auto-opening door, multi-modal access. <strong style="color:var(--text)">Pricing on request.</strong></p><a href="mailto:mtip@hey.com?subject=Accessible%20Pod%20Inquiry" class="btn btn-ghost" style="margin-top:12px">Talk to us about accessibility <i data-lucide="arrow-right"></i></a></div>
+<div style="text-align:center;margin-top:48px"><p style="color:var(--text-mid)">Need <strong style="color:var(--text)">accessibility configuration</strong>? The Accessible Pod is engineered for users with reduced mobility — wide entry, auto-opening door, multi-modal access. <strong style="color:var(--text)">Pricing on request.</strong></p><a href="mailto:mtip@hey.com?subject=Accessible%20Pod%20Inquiry&body=Hi%20MTIP%20team%2C%0A%0AI%27m%20interested%20in%20the%20Accessible%20Pod%20configuration.%0A%0AName%3A%20%5Byour%20name%5D%0AProperty%3A%20%5Bcity%2C%20state%5D%0ANumber%20of%20pods%3A%20%5B1-20%5D%0AAccessibility%20notes%3A%20%5BADA%2C%20wide%20entry%2C%20auto-door%2C%20etc.%5D%0A%0AThanks%2C%0A%5Byour%20name%5D" class="btn btn-ghost" style="margin-top:12px">Talk to us about accessibility <i data-lucide="arrow-right"></i></a></div>
 </div></section>
 
 
@@ -2000,7 +2097,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
     <div class="section-header center">
       <div class="eyebrow">From order to first call</div>
       <h2>How it ships.</h2>
-      <p class="lead" style="margin-left:auto;margin-right:auto">Four steps. 90 days. No contractors. No permits.</p>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Four steps. 90 days. No contractors. No permits. <strong>South Florida gets white-glove on-site assembly. Outside Florida ships with a vetted-technician referral or detailed self-build kit.</strong></p>
     </div>
 
     <div class="ship-grid">
@@ -2025,8 +2122,8 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       <div class="ship-step">
         <div class="ship-step-num">04</div>
         <div class="ship-step-icon"><i data-lucide="check-circle-2"></i></div>
-        <h4>On-site assembly</h4>
-        <p>Our team assembles in your space. Studio: 40 min. Suite: 90 min. Plug into one outlet. You're on the next call. <strong>Same day.</strong></p>
+        <h4>Final-mile assembly</h4>
+        <p><strong>South Florida:</strong> our team assembles on-site, Studio 40 min / Suite 90 min. <strong>Outside FL:</strong> vetted-technician referral or self-build kit (6 modules, no contractor needed). Plug into one outlet. <strong>Same day.</strong></p>
       </div>
     </div>
 
@@ -2041,9 +2138,9 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <section class="section"><div class="container">
 <div class="section-header center"><div class="eyebrow">In the wild</div><h2>Drop one anywhere.<br>It works.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Coworking floors. Hotel lobbies. Airport terminals. Libraries. Warehouses. Home offices. The pod doesn't care where it lands.</p></div>
 <div class="usecase-grid">
-<div class="usecase-card"><img src="assets/images/usecase-airport.jpg" alt="Pods in airport terminal"><div class="usecase-card-content"><h4>Airport Terminals</h4><p>A quiet corner in a busy terminal — for travelers who need to take the call before boarding.</p></div></div>
-<div class="usecase-card"><img src="assets/images/showroom-1.jpg" alt="Pods in office space"><div class="usecase-card-content"><h4>Retail &amp; coworking</h4><p>Shopping plazas, coworking floors, flex space — pods slot in next to existing tenants.</p></div></div>
-<div class="usecase-card"><img src="assets/images/usecase-home.jpg" alt="MTIP Pod in home office setting"><div class="usecase-card-content"><h4>Home Offices</h4><p>The room your spouse will thank you for.</p></div></div>
+<div class="usecase-card"><img src="assets/images/lifestyle-airport.jpg" alt="MTIP Suite pod in airport terminal lounge"><div class="usecase-card-content"><h4>Airport Terminals</h4><p>A quiet corner in a busy terminal — for travelers who need to take the call before boarding.</p></div></div>
+<div class="usecase-card"><img src="assets/images/lifestyle-coworking.jpg" alt="MTIP Quad pod on industrial coworking floor"><div class="usecase-card-content"><h4>Retail &amp; coworking</h4><p>Shopping plazas, coworking floors, flex space — pods slot in next to existing tenants.</p></div></div>
+<div class="usecase-card"><img src="assets/images/lifestyle-class-a-lobby.jpg" alt="MTIP Suite pod in Class A office lobby"><div class="usecase-card-content"><h4>Class A Office Lobby</h4><p>Travertine, double-height ceiling, cove lighting — the pod slots in like it was designed for the building.</p></div></div>
 </div>
 </div></section>
 
@@ -2072,7 +2169,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="order-table"><div class="order-table-wrap"><table><thead><tr><th>Pod</th><th>Capacity</th><th>Footprint</th><th>Pay Once</th><th>$0 Down · 12-mo</th></tr></thead><tbody><tr><td class="name"><strong>The Studio</strong></td><td>1</td><td>~10 sq ft</td><td class="price">$2,997</td><td class="price price-red">$299/mo</td></tr><tr><td class="name"><strong>The Duo</strong></td><td>2</td><td>~23 sq ft</td><td class="price">$4,497</td><td class="price price-red">$449/mo</td></tr><tr><td class="name"><strong>The Quad</strong></td><td>4</td><td>~31 sq ft</td><td class="price">$5,497</td><td class="price price-red">$549/mo</td></tr><tr class="featured"><td class="name"><strong>The Suite ★</strong></td><td>1–6</td><td>~49 sq ft</td><td class="price">$6,997</td><td class="price price-red">$699/mo</td></tr><tr><td><strong>Accessible Pod</strong></td><td>2 / 4</td><td>varies</td><td colspan="2" style="color:var(--text-mid)">On request</td></tr></tbody></table></div></div>
 <p class="compare-foot">Prices are landed delivery to continental US. International, custom finishes, and bulk orders quoted separately. Installment plan adds 20% to total price, divided into 12 equal payments, no down payment required.</p>
 
-<div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap"><a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a 15-min call <i data-lucide="arrow-right"></i></a><a href="mailto:mtip@hey.com?subject=MTIP%20Pod%20Inquiry" class="btn btn-outline btn-lg">Talk to the Team <i data-lucide="phone"></i></a></div>
+<div style="display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap"><a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red btn-lg">Book a 15-min call <i data-lucide="arrow-right"></i></a><a href="mailto:mtip@hey.com?subject=MTIP%20Pods%20Inquiry&body=Hi%20MTIP%20team%2C%0A%0AMy%20name%20is%20%5Byour%20name%5D%20and%20I%27m%20interested%20in%20learning%20more%20about%20the%20MTIP%20Collective%20Pods.%0A%0AMy%20property%20is%20located%20at%3A%20%5Bcity%2C%20state%5D%0AProperty%20type%3A%20%5Bwarehouse%20%2F%20retail%20plaza%20%2F%20office%20%2F%20coworking%20%2F%20other%5D%0AAvailable%20sq%20ft%3A%20%5Bsq%20ft%5D%0AInterest%3A%20%5Bpurchase%20%2F%20rent%20%2F%20JV%20%2F%20just%20curious%5D%0A%0AThanks%2C%0A%5Byour%20name%5D" class="btn btn-outline btn-lg">Talk to the Team <i data-lucide="phone"></i></a></div>
 </div></section>
 
 
@@ -2083,7 +2180,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   </div>
   <div class="actions">
     <a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red">Book a 15-min call <i data-lucide="calendar"></i></a>
-    <a href="mailto:mtip@hey.com?subject=Question%20about%20MTIP%20Pods" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:white">Email the team <i data-lucide="mail"></i></a>
+    <a href="mailto:mtip@hey.com?subject=MTIP%20Pods%20Inquiry&body=Hi%20MTIP%20team%2C%0A%0AMy%20name%20is%20%5Byour%20name%5D%20and%20I%27m%20interested%20in%20learning%20more%20about%20the%20MTIP%20Collective%20Pods.%0A%0AMy%20property%20is%20located%20at%3A%20%5Bcity%2C%20state%5D%0AProperty%20type%3A%20%5Bwarehouse%20%2F%20retail%20plaza%20%2F%20office%20%2F%20coworking%20%2F%20other%5D%0AAvailable%20sq%20ft%3A%20%5Bsq%20ft%5D%0AInterest%3A%20%5Bpurchase%20%2F%20rent%20%2F%20JV%20%2F%20just%20curious%5D%0A%0AThanks%2C%0A%5Byour%20name%5D" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:white">Email the team <i data-lucide="mail"></i></a>
   </div>
 </div>
 
@@ -2166,6 +2263,20 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 
 
+
+<!-- Generic image lightbox for carousel -->
+<div class="lightbox" id="imgLightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button class="lb-close" id="ilbClose" aria-label="Close">×</button>
+  <div class="lb-stage">
+    <img class="lb-img" id="ilbImg" src="" alt="">
+    <div class="lb-meta">
+      <span class="lb-meta-eyebrow" id="ilbEyebrow">Scene</span>
+      <span id="ilbTitle"></span>
+    </div>
+    <a id="ilbDownload" href="" download class="g-btn" style="position:absolute;right:0;bottom:-72px;background:#E53B3B;color:white;padding:8px 16px;border-radius:999px;font-size:0.82rem;font-weight:700;text-decoration:none">Download</a>
+  </div>
+</div>
+
 <!-- Pod tier lightbox carousel -->
 <div class="lightbox" id="podLightbox" role="dialog" aria-modal="true" aria-label="Pod gallery">
   <button class="lb-close" id="lbClose" aria-label="Close">×</button>
@@ -2179,6 +2290,17 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
     <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
     <button class="lb-arrow lb-next" id="lbNext" aria-label="Next"><i data-lucide="chevron-right"></i></button>
     <div class="lb-thumbs" id="lbThumbs"></div>
+  </div>
+</div>
+
+
+<!-- Hero walkthrough video popup -->
+<div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-label="Walkthrough video">
+  <button class="video-modal-close" id="videoModalClose" aria-label="Close">×</button>
+  <div class="video-modal-stage">
+    <video id="videoModalEl" controls preload="none">
+      <source src="assets/video/walkthrough.mp4" type="video/mp4">
+    </video>
   </div>
 </div>
 
