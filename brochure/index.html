@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>MTIP Collective Pods — Brochure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* MTIP palette — distilled from pods.mtip.ai (charcoal/white, warm accents) */
+    --ink:      #0E1116;
+    --ink-2:    #1B2027;
+    --paper:    #FAF8F4;
+    --paper-2:  #F1ECE3;
+    --line:     #2A2F38;
+    --line-2:   #E2DCD0;
+    --mute:     #6B7280;
+    --accent:   #C9A36A;   /* warm brass */
+    --accent-2: #B8884F;
+    --signal:   #D7572B;   /* signal red — sparing */
+    --green:    #2E5D3A;
+
+    /* Type scale (1920×1080 projection) */
+    --type-display: 132px;
+    --type-title:   76px;
+    --type-subtitle:48px;
+    --type-body:    34px;
+    --type-small:   26px;
+    --type-eyebrow: 22px;
+
+    /* Spacing */
+    --pad-top: 110px;
+    --pad-bottom: 130px;
+    --pad-x: 110px;
+    --gap-title: 56px;
+    --gap-item: 28px;
+
+    --serif: "Instrument Serif", "Times New Roman", serif;
+    --sans:  "Inter", system-ui, sans-serif;
+  }
+
+  html, body { background: #000; margin: 0; }
+  body { font-family: var(--sans); color: var(--ink); }
+
+  /* ---------- Slide base ---------- */
+  deck-stage section {
+    background: var(--paper);
+    color: var(--ink);
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+    box-sizing: border-box;
+    font-size: var(--type-body);
+    line-height: 1.4;
+    position: relative;
+    overflow: hidden;
+  }
+  deck-stage section.dark { background: var(--ink); color: var(--paper); }
+  deck-stage section.cream { background: var(--paper-2); }
+
+  h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -0.02em; }
+  h1 { font-size: var(--type-display); line-height: 1.02; font-weight: 700; letter-spacing: -0.035em; }
+  h2 { font-size: var(--type-title); line-height: 1.05; letter-spacing: -0.03em; }
+  h3 { font-size: var(--type-subtitle); line-height: 1.1; letter-spacing: -0.02em; }
+  h4 { font-size: 36px; line-height: 1.15; letter-spacing: -0.015em; }
+  p  { margin: 0; }
+  .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.005em; }
+  .serif-italic { font-family: var(--serif); font-style: italic; font-weight: 400; }
+
+  .eyebrow {
+    font-size: var(--type-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    color: var(--mute);
+  }
+  .dark .eyebrow { color: var(--accent); }
+
+  /* ---------- Header / footer chrome ---------- */
+  .chrome-top, .chrome-bot {
+    position: absolute;
+    left: var(--pad-x);
+    right: var(--pad-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    color: var(--mute);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .chrome-top { top: 48px; }
+  .chrome-bot { bottom: 48px; }
+  .dark .chrome-top, .dark .chrome-bot { color: rgba(250,248,244,0.5); }
+
+  .logo-mark {
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: inherit;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.18em;
+  }
+  .logo-mark img { height: 30px; width: auto; display: block; }
+
+  /* ---------- Layout helpers ---------- */
+  .stack { display: flex; flex-direction: column; gap: var(--gap-item); }
+  .row { display: flex; gap: 48px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+  .full-bleed {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+  }
+
+  /* ---------- Components ---------- */
+  .num {
+    font-family: var(--serif);
+    font-size: 90px;
+    line-height: 1;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .rule { height: 1px; background: var(--line-2); width: 100%; }
+  .dark .rule { background: rgba(250,248,244,0.18); }
+  .vrule { width: 1px; background: var(--line-2); align-self: stretch; }
+  .dark .vrule { background: rgba(250,248,244,0.18); }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    font-size: 22px;
+    color: var(--ink-2);
+    background: rgba(255,255,255,0.6);
+  }
+  .dark .pill { border-color: rgba(250,248,244,0.25); color: var(--paper); background: transparent; }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  .chip {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .stat .num-l {
+    font-family: var(--serif);
+    font-size: 110px;
+    line-height: 0.95;
+    font-weight: 400;
+  }
+  .stat .lbl {
+    font-size: var(--type-small);
+    color: var(--mute);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+  }
+  .dark .stat .lbl { color: rgba(250,248,244,0.6); }
+
+  .benefit {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 24px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line-2);
+  }
+  .dark .benefit { border-top-color: rgba(250,248,244,0.15); }
+  .benefit .n { font-family: var(--serif); font-size: 52px; line-height: 1; color: var(--accent); }
+  .benefit h4 { font-size: 28px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 10px; }
+  .benefit p { font-size: 22px; color: var(--mute); line-height: 1.45; }
+  .dark .benefit p { color: rgba(250,248,244,0.7); }
+
+  /* Spec-table style */
+  .spec {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    row-gap: 18px;
+    column-gap: 32px;
+    font-size: 22px;
+  }
+  .spec dt {
+    color: var(--mute);
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    font-size: 18px;
+    font-weight: 500;
+    padding-top: 4px;
+  }
+  .spec dd { margin: 0; color: var(--ink); }
+  .dark .spec dt { color: rgba(250,248,244,0.55); }
+  .dark .spec dd { color: var(--paper); }
+
+  /* Pod hero */
+  .pod-hero {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 70px;
+    align-items: center;
+    height: 100%;
+    padding-bottom: 60px;
+  }
+  .units {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .units .a { font-size: 22px; }
+  .units .b { font-size: 18px; color: var(--mute); }
+  .dark .units .b { color: rgba(250,248,244,0.55); }
+  .price-row {
+    display: flex; gap: 40px; align-items: stretch;
+    margin-top: 8px;
+  }
+  .pod-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .kv-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    border-top: 1px solid var(--line-2);
+    padding-top: 32px;
+  }
+  .dark .kv-row { border-top-color: rgba(250,248,244,0.18); }
+  .kv .k { font-size: 16px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--mute); margin-bottom: 6px; }
+  .dark .kv .k { color: rgba(250,248,244,0.55); }
+  .kv .v { font-family: var(--serif); font-size: 44px; line-height: 1; }
+
+  /* Section divider slide */
+  .divider-eyebrow {
+    font-size: 24px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-weight: 500;
+    margin-bottom: 40px;
+  }
+
+  /* Cover */
+  .cover {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+  }
+  .cover-title { font-size: 168px; line-height: 0.95; letter-spacing: -0.04em; font-weight: 700; }
+  .cover-title .it { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em; }
+
+  /* Wall diagram */
+  .wall-stack { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; height: 100%; }
+  .wall-layers { display: flex; flex-direction: column; gap: 14px; }
+  .wall-layer {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 28px;
+    border: 1px solid rgba(250,248,244,0.18);
+    border-radius: 6px;
+    background: rgba(250,248,244,0.04);
+  }
+  .wall-layer .ix { font-family: var(--serif); font-size: 36px; color: var(--accent); }
+  .wall-layer .ttl { font-size: 24px; font-weight: 600; }
+  .wall-layer .desc { font-size: 18px; color: rgba(250,248,244,0.6); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .wall-layer .meta { font-family: var(--serif); font-size: 24px; color: var(--paper); }
+
+  /* Comparison table */
+  table.cmp {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 24px;
+  }
+  table.cmp th, table.cmp td {
+    text-align: left;
+    padding: 22px 18px;
+    border-bottom: 1px solid var(--line-2);
+    vertical-align: top;
+  }
+  .dark table.cmp th, .dark table.cmp td { border-bottom-color: rgba(250,248,244,0.15); }
+  table.cmp thead th {
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 500;
+    color: var(--mute);
+    border-bottom: 1px solid var(--ink);
+  }
+  .dark table.cmp thead th { color: rgba(250,248,244,0.6); border-bottom-color: var(--paper); }
+  table.cmp .first { font-weight: 600; }
+  .ck { color: var(--green); font-weight: 600; }
+  .x  { color: var(--signal); font-weight: 600; }
+  .dark .ck { color: #6FB47B; }
+  .dark .x { color: #E07A52; }
+
+  /* Lineup card */
+  .lineup-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .lineup-card .imgwrap {
+    aspect-ratio: 4/3;
+    background: var(--paper-2);
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lineup-card .name { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; }
+  .lineup-card .price { font-family: var(--serif); font-size: 38px; color: var(--ink); }
+  .lineup-card .tag { font-size: 18px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); font-weight: 600; }
+  .lineup-card.flag .tag { color: var(--signal); }
+
+  /* Edge style cards */
+  .edge-card {
+    background: var(--paper-2);
+    border-radius: 4px;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 540px;
+    justify-content: space-between;
+  }
+  .edge-card .label { font-size: 20px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--mute); font-weight: 500; }
+  .edge-card .name { font-size: 44px; font-weight: 600; letter-spacing: -0.02em; }
+  .edge-card .desc { font-size: 22px; color: var(--ink-2); line-height: 1.45; }
+  .edge-shape svg { display: block; width: 100%; height: auto; }
+
+  /* Material grid */
+  .mat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .mat {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .mat .swatch {
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+    border: 1px solid var(--line-2);
+  }
+  .mat .name { font-size: 18px; font-weight: 500; }
+  .mat .meta { font-size: 14px; color: var(--mute); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* Quote */
+  .pull { font-family: var(--serif); font-weight: 400; font-size: 84px; line-height: 1.1; letter-spacing: -0.015em; }
+  .pull em { font-style: italic; color: var(--accent); }
+
+  /* Bg image slide */
+  .bg-slide {
+    color: var(--paper);
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  }
+  .bg-slide .scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(14,17,22,0.15) 0%, rgba(14,17,22,0.55) 60%, rgba(14,17,22,0.85) 100%);
+  }
+  .bg-slide .body { position: relative; z-index: 2; }
+
+  /* Section header */
+  .section-cover {
+    display: flex; flex-direction: column; justify-content: space-between;
+    height: 100%;
+  }
+  .section-num {
+    font-family: var(--serif);
+    font-size: 220px;
+    line-height: 0.9;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  /* utility */
+  .max-680 { max-width: 680px; }
+  .max-900 { max-width: 900px; }
+  .max-1100 { max-width: 1100px; }
+  .max-1300 { max-width: 1300px; }
+  .mt-a { margin-top: auto; }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ===================== 01 · COVER ===================== -->
+<section data-label="01 Cover" class="dark">
+  <div class="full-bleed" style="background-image: linear-gradient(180deg, rgba(14,17,22,0.55) 0%, rgba(14,17,22,0.75) 60%, rgba(14,17,22,0.95) 100%), url('assets/hero-interior.jpg'); background-size: cover; background-position: center;"></div>
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP Collective" /></span>
+    <span style="font-size: 24px;">2026 · Brochure</span>
+  </div>
+  <div class="cover" style="position: relative; z-index: 2;">
+    <div></div>
+    <div class="stack" style="gap: 48px; justify-content: center;">
+      <span class="eyebrow" style="color: var(--accent); font-size: 26px;">MTIP Collective Pods</span>
+      <h1 class="cover-title">Office <span class="it">pods,</span><br/>delivered.</h1>
+      <p class="serif" style="font-size: 38px; max-width: 900px; color: rgba(250,248,244,0.85);">Sound-insulated, plug-and-play executive offices. Fully assembled in 90 days. From The MTIP Collective.</p>
+    </div>
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="row" style="gap: 16px; flex-wrap: wrap;">
+        <span class="pill" style="font-size: 24px;"><span class="dot"></span>~30 dB sound insulation</span>
+        <span class="pill" style="font-size: 24px;"><span class="dot"></span>90-day delivery</span>
+        <span class="pill" style="font-size: 24px;"><span class="dot"></span>Fully assembled</span>
+      </div>
+      <p class="serif-italic" style="font-size: 24px; color: rgba(250,248,244,0.6);">pods.mtip.ai</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 · WHY PODS ===================== -->
+<section data-label="02 Why Pods" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Case · 01</span>
+  </div>
+  <div class="grid-2" style="height: 100%; align-items: center; gap: 100px;">
+    <div class="stack" style="gap: 44px;">
+      <span class="eyebrow">Why office pods</span>
+      <h2>Open offices  break focus. <span class="serif-italic" style="color: var(--accent-2);">Pods give it back.</span></h2>
+      <p class="max-680" style="color: var(--ink-2); font-size: 30px; line-height: 1.45;">From solo work to team brainstorming, distractions are everywhere. Employees shift between tasks all day — meetings, calls, deep work, recovery. An office pod offers not only sound insulation, but the comfort and convenience to switch modes without leaving the floor.</p>
+    </div>
+    <div class="stack" style="gap: 36px;">
+      <div class="rule"></div>
+      <div class="row" style="justify-content: space-between;">
+        <div class="stat"><div class="num-l">68<span style="font-size: 40px;">dB</span></div><div class="lbl">Open office baseline</div></div>
+        <div class="stat" style="text-align: right;"><div class="num-l" style="color: var(--accent-2);">38<span style="font-size: 40px;">dB</span></div><div class="lbl">Inside the pod</div></div>
+      </div>
+      <div class="rule"></div>
+      <p class="serif" style="font-size: 28px; color: var(--mute);">Calls, keyboards, meetings — left at the door.</p>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>MTIP Collective Pods</span>
+    <span>02 · Why pods</span>
+  </div>
+</section>
+
+<!-- ===================== 03 · MISSION & VISION ===================== -->
+<section data-label="03 Mission & Vision">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Case · 02</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 72px; justify-content: center;">
+    <span class="eyebrow">Built by operators, for operators</span>
+    <h2 class="max-1300">Private, professional,  plug-and-play workspaces — at <span class="serif-italic" style="color: var(--accent-2);">half the price of premium.</span></h2>
+    <div class="grid-2" style="gap: 100px; margin-top: 24px;">
+      <div class="stack" style="gap: 20px;">
+        <div class="chip" style="color: var(--accent-2); width: max-content;">Mission</div>
+        <p style="font-size: 28px; line-height: 1.45; color: var(--ink-2);">Change the way people work — by offering quiet, private, and comfortable spaces with our innovative pods. Same ISO-certified acoustic spec as premium booths. Factory-direct pricing. Operator-to-operator.</p>
+      </div>
+      <div class="stack" style="gap: 20px;">
+        <div class="chip" style="color: var(--accent-2); width: max-content;">Vision</div>
+        <p style="font-size: 28px; line-height: 1.45; color: var(--ink-2);">Become a global leader in office pod solutions — setting the industry standard for quality, affordability, and sustainability. Serviceable for life. Re-deployable across portfolios. Built to age well.</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>MTIP Collective · North Miami Beach, FL</span>
+    <span>03 · Mission & vision</span>
+  </div>
+</section>
+
+<!-- ===================== 04 · 8 BENEFITS ===================== -->
+<section data-label="04 Eight Benefits" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Offer</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 56px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 16px; max-width: 900px;">
+        <span class="eyebrow">Eight reasons partners choose us</span>
+        <h2>Why MTIP Collective.</h2>
+      </div>
+      <p class="serif" style="font-size: 26px; color: var(--mute); max-width: 420px; text-align: right;">A short list of operator-grade reasons — designed against real real-estate constraints.</p>
+    </div>
+    <div class="grid-4" style="gap: 0 60px; row-gap: 0;">
+      <div class="benefit"><div class="n">01</div><div><h4>Patent design</h4><p>Design-patent protection ensures exclusive benefits and win-win cooperation for our partners.</p></div></div>
+      <div class="benefit"><div class="n">02</div><div><h4>OEM services</h4><p>A leading global OEM manufacturer — helping partners create their own branded programs.</p></div></div>
+      <div class="benefit"><div class="n">03</div><div><h4>Exclusive distributor</h4><p>Sign exclusive agency agreements for full market protection in your defined geography.</p></div></div>
+      <div class="benefit"><div class="n">04</div><div><h4>Custom-ready</h4><p>Pods are fully customizable — colors, finishes, and sizes — to fit every property and tenant.</p></div></div>
+      <div class="benefit"><div class="n">05</div><div><h4>Low MOQ</h4><p>Minimum order quantity is just one. Reduce inventory pressure, scale at your own pace.</p></div></div>
+      <div class="benefit"><div class="n">06</div><div><h4>1-year warranty</h4><p>All products covered for one year — free replacement of any damaged parts, full coverage.</p></div></div>
+      <div class="benefit"><div class="n">07</div><div><h4>Factory-direct pricing</h4><p>The most competitive prices in the category — letting partners run higher-margin programs.</p></div></div>
+      <div class="benefit"><div class="n">08</div><div><h4>Logistics flexibility</h4><p>EXW, FOB, CIF, DDP — pick the freight model that fits your finance and operations stack.</p></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Eight benefits</span>
+    <span>04 · Why MTIP</span>
+  </div>
+</section>
+
+<!-- ===================== 05 · DETAIL — 7 SYSTEMS ===================== -->
+<section data-label="05 Engineered Detail" class="dark">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>The Product · 01</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 56px;">
+    <div class="grid-2" style="align-items: end; gap: 80px;">
+      <div class="stack" style="gap: 20px;">
+        <span class="eyebrow">Designed for focus, built for comfort</span>
+        <h2>Engineered down to the millimeter.</h2>
+      </div>
+      <p class="serif" style="font-size: 28px; color: rgba(250,248,244,0.75);">Seven systems work together to make every pod feel like a much bigger, much quieter room than its footprint suggests.</p>
+    </div>
+    <div class="grid-4" style="gap: 0 60px;">
+      <div class="benefit"><div class="n">01</div><div><h4>LED Lighting</h4><p>4000K natural light, dimmable, anti-glare, flicker-free. Ra92 color accuracy for a 10-hour day.</p></div></div>
+      <div class="benefit"><div class="n">02</div><div><h4>Smart Control Panel</h4><p>Light, fan, and outlets at your fingertips. Universal socket, USB-A, USB-C — global plug types.</p></div></div>
+      <div class="benefit"><div class="n">03</div><div><h4>Multi-Layer Insulation</h4><p>Steel + acoustic felt + foam + 12mm PET panel. ISO 23351-1 certified — the wall does the work.</p></div></div>
+      <div class="benefit"><div class="n">04</div><div><h4>Safety Acoustic Glass</h4><p>6mm shatter-resistant tempered glass. Optional 10mm rear panel for added acoustic depth.</p></div></div>
+      <div class="benefit"><div class="n">05</div><div><h4>Eco Wood Handles</h4><p>Solid wood with magnetic close. Smart lock or electronic lock optional. A handle worth touching.</p></div></div>
+      <div class="benefit"><div class="n">06</div><div><h4>Furniture Mounts</h4><p>Pre-engineered mounting points for desk, bench, lounge configurations. Reconfigure forever.</p></div></div>
+      <div class="benefit"><div class="n">07</div><div><h4>Motion Sensor</h4><p>Lights and fans auto-on when you enter, auto-off when you leave. Energy-aware by design.</p></div></div>
+      <div class="benefit"><div class="n">08</div><div><h4>Fresh-Air System</h4><p>Top-in, top-out airflow. Full air change every 1.5–2 minutes. No external ventilation needed.</p></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Seven engineered systems</span>
+    <span>05 · Inside the pod</span>
+  </div>
+</section>
+
+<!-- ===================== 06 · WALL CROSS-SECTION ===================== -->
+<section data-label="06 Wall Construction" class="dark">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>The Product · 02</span>
+  </div>
+  <div class="wall-stack">
+    <div class="stack" style="gap: 36px;">
+      <span class="eyebrow">How the wall actually works</span>
+      <h2>Steel · felt · foam · PET. <br/><span class="serif-italic" style="color: var(--accent);">A 30 dB drop.</span></h2>
+      <p style="font-size: 28px; color: rgba(250,248,244,0.75); max-width: 680px; line-height: 1.4;">A normal drywall partition gives about 10 dB of attenuation. Our pod wall is engineered with four sound-absorbing layers in a steel-and-aluminum frame — the same construction premium acoustic booth manufacturers use, ISO 23351-1 certified.</p>
+      <div class="kv-row" style="border-top-color: rgba(250,248,244,0.18);">
+        <div class="kv"><div class="k">Outside</div><div class="v">68 dB</div></div>
+        <div class="kv"><div class="k">Through wall</div><div class="v" style="color: var(--accent);">−30 dB</div></div>
+        <div class="kv"><div class="k">Inside</div><div class="v">38 dB</div></div>
+        <div class="kv"><div class="k">Standard</div><div class="v">ISO 23351-1</div></div>
+      </div>
+    </div>
+    <div class="wall-layers">
+      <div class="wall-layer"><span class="ix">01</span><div><div class="ttl">Steel</div><div class="desc">1.0 mm · powder-coated</div></div><div class="meta">Outer skin</div></div>
+      <div class="wall-layer"><span class="ix">02</span><div><div class="ttl">Acoustic Felt</div><div class="desc">Mid-frequency absorption</div></div><div class="meta">Layer 2</div></div>
+      <div class="wall-layer"><span class="ix">03</span><div><div class="ttl">Foam Core</div><div class="desc">Acoustic damping</div></div><div class="meta">Layer 3</div></div>
+      <div class="wall-layer"><span class="ix">04</span><div><div class="ttl">PET Panel</div><div class="desc">12 mm · interior finish</div></div><div class="meta">Layer 4</div></div>
+      <div class="wall-layer" style="background: rgba(201,163,106,0.12); border-color: rgba(201,163,106,0.45);"><span class="ix" style="color: var(--paper);">∑</span><div><div class="ttl">Verified attenuation</div><div class="desc">100 – 8,000 Hz · third-party lab</div></div><div class="meta" style="color: var(--accent);">−30 dB</div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Multi-layer sound insulation</span>
+    <span>06 · Acoustic construction</span>
+  </div>
+</section>
+
+<!-- ===================== 07 · EDGE STYLES ===================== -->
+<section data-label="07 Edge Styles" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Product · 03</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 48px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 16px;">
+        <span class="eyebrow">Fits any space, matches any style</span>
+        <h2>Three edges.  <span class="serif-italic" style="color: var(--accent-2);">One standard.</span></h2>
+      </div>
+      <p class="serif" style="font-size: 26px; color: var(--mute); max-width: 460px; text-align: right;">Every pod ships in flexible sizes and three edge profiles, so it lands like the building was designed for it.</p>
+    </div>
+
+    <div class="grid-3" style="gap: 40px;">
+      <!-- Straight -->
+      <div class="edge-card">
+        <div class="stack" style="gap: 12px;">
+          <span class="label">01 · Straight Edge</span>
+          <div class="name">Clean & rectilinear</div>
+        </div>
+        <div class="edge-shape">
+          <svg viewBox="0 0 320 220" fill="none" stroke="var(--ink)" stroke-width="2">
+            <rect x="20" y="20" width="280" height="180" />
+            <line x1="80" y1="20" x2="80" y2="200" stroke-opacity="0.25" />
+            <line x1="240" y1="20" x2="240" y2="200" stroke-opacity="0.25" />
+          </svg>
+        </div>
+        <p class="desc">Maximizes interior space, keeps floor layouts neat, sits flush against existing walls and column lines.</p>
+      </div>
+      <!-- Diamond -->
+      <div class="edge-card">
+        <div class="stack" style="gap: 12px;">
+          <span class="label">02 · Diamond Edge</span>
+          <div class="name">Bold & sculptural</div>
+        </div>
+        <div class="edge-shape">
+          <svg viewBox="0 0 320 220" fill="none" stroke="var(--ink)" stroke-width="2">
+            <polygon points="40,20 280,20 300,110 280,200 40,200 20,110" />
+            <line x1="80" y1="20" x2="80" y2="200" stroke-opacity="0.25" />
+            <line x1="240" y1="20" x2="240" y2="200" stroke-opacity="0.25" />
+          </svg>
+        </div>
+        <p class="desc">Adds depth and architectural interest. Saves room in tight corners while signaling design intent.</p>
+      </div>
+      <!-- Curved -->
+      <div class="edge-card">
+        <div class="stack" style="gap: 12px;">
+          <span class="label">03 · Curved Edge</span>
+          <div class="name">Soft & flowing</div>
+        </div>
+        <div class="edge-shape">
+          <svg viewBox="0 0 320 220" fill="none" stroke="var(--ink)" stroke-width="2">
+            <path d="M40 20 H280 Q300 110 280 200 H40 Q20 110 40 20 Z" />
+            <line x1="80" y1="20" x2="80" y2="200" stroke-opacity="0.25" />
+            <line x1="240" y1="20" x2="240" y2="200" stroke-opacity="0.25" />
+          </svg>
+        </div>
+        <p class="desc">Reduces sharpness and visual noise. Makes lobbies and lounges feel warmer, calmer, and safer.</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>One design · many looks</span>
+    <span>07 · Edge styles</span>
+  </div>
+</section>
+
+<!-- ===================== 08 · MODULAR ASSEMBLY ===================== -->
+<section data-label="08 Modular Assembly">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Product · 04</span>
+  </div>
+  <div class="grid-2" style="height: 100%; gap: 100px; align-items: center;">
+    <div class="stack" style="gap: 36px;">
+      <span class="eyebrow">Fast setup, long-term value</span>
+      <h2>Set up in hours.  <span class="serif-italic" style="color: var(--accent-2);">Enjoy for years.</span></h2>
+      <p style="font-size: 28px; line-height: 1.45; color: var(--ink-2); max-width: 680px;">Modular design — six prefabricated parts: roof, floor, two walls, front glass, back glass. Model One (01) installs in about 40 minutes. Model Six (06), in 90. No special tools or training. Just smart design and easy setup.</p>
+      <div class="kv-row" style="border-top: 1px solid var(--line-2);">
+        <div class="kv"><div class="k">Model One (01)</div><div class="v">~40 min</div></div>
+        <div class="kv"><div class="k">Model Two (02) / Quad</div><div class="v">~75 min</div></div>
+        <div class="kv"><div class="k">Model Six (06)</div><div class="v">~90 min</div></div>
+        <div class="kv"><div class="k">Modules</div><div class="v">6 parts</div></div>
+      </div>
+    </div>
+    <div class="stack" style="gap: 16px;">
+      <div style="background: var(--paper-2); border-radius: 4px; padding: 36px; aspect-ratio: 4/3; display: flex; flex-direction: column; gap: 16px;">
+        <div class="eyebrow" style="color: var(--accent-2);">Six modular components</div>
+        <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 14px; font-size: 19px;">
+          <div style="background: white; border: 1px solid var(--line-2); border-radius: 4px; padding: 16px; display: flex; align-items: center; justify-content: space-between;"><span><strong>01</strong> Roof Panel</span><span class="serif-italic" style="color: var(--mute);">aluminum + LED</span></div>
+          <div style="background: white; border: 1px solid var(--line-2); border-radius: 4px; padding: 16px; display: flex; align-items: center; justify-content: space-between;"><span><strong>02</strong> Floor Panel</span><span class="serif-italic" style="color: var(--mute);">8mm carpet</span></div>
+          <div style="background: white; border: 1px solid var(--line-2); border-radius: 4px; padding: 16px; display: flex; align-items: center; justify-content: space-between;"><span><strong>03</strong> Wall Panel L</span><span class="serif-italic" style="color: var(--mute);">multi-layer</span></div>
+          <div style="background: white; border: 1px solid var(--line-2); border-radius: 4px; padding: 16px; display: flex; align-items: center; justify-content: space-between;"><span><strong>04</strong> Wall Panel R</span><span class="serif-italic" style="color: var(--mute);">multi-layer</span></div>
+          <div style="background: white; border: 1px solid var(--line-2); border-radius: 4px; padding: 16px; display: flex; align-items: center; justify-content: space-between;"><span><strong>05</strong> Front Glass</span><span class="serif-italic" style="color: var(--mute);">6mm tempered</span></div>
+          <div style="background: white; border: 1px solid var(--line-2); border-radius: 4px; padding: 16px; display: flex; align-items: center; justify-content: space-between;"><span><strong>06</strong> Rear Glass</span><span class="serif-italic" style="color: var(--mute);">6 / 10mm</span></div>
+        </div>
+      </div>
+      <p class="serif-italic" style="font-size: 22px; color: var(--mute); text-align: right;">Plus: stainless steel step plate · wooden handle · fresh-air system · acoustic panels.</p>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Six prefabricated parts</span>
+    <span>08 · Assembly</span>
+  </div>
+</section>
+
+<!-- ===================== 09 · DIVIDER : THE LINEUP ===================== -->
+<section data-label="09 Lineup Divider" class="dark">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>Section II</span>
+  </div>
+  <div class="section-cover">
+    <div class="section-num">II</div>
+    <div class="stack" style="gap: 32px;">
+      <span class="divider-eyebrow">The Lineup</span>
+      <h2 style="font-size: 132px; max-width: 1400px;">Acoustic phone booths  &amp; <span class="serif-italic">small meeting pods.</span></h2>
+      <p class="serif" style="font-size: 32px; color: rgba(250,248,244,0.7); max-width: 1100px;">Dedicated spaces that foster a positive work environment. Fully customizable to fit any space and need. Designed to unlock focus and productivity.</p>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Four sizes · one standard of quality</span>
+    <span>09 · Lineup</span>
+  </div>
+</section>
+
+<!-- ===================== 10 · LINEUP OVERVIEW ===================== -->
+<section data-label="10 Lineup Overview" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Lineup · Overview</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 32px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 14px;">
+        <span class="eyebrow">Four sizes, one standard</span>
+        <h2>Model One (01) · Duo · Quad · Suite.</h2>
+      </div>
+      <p class="serif" style="font-size: 24px; color: var(--mute); max-width: 480px; text-align: right;">Same aluminum frame. Same ISO-certified walls. Same 6mm tempered glass. Same fresh-air system.</p>
+    </div>
+
+    <div class="grid-4" style="gap: 28px;">
+      <div class="lineup-card">
+        <div class="imgwrap" style="background-image: url('assets/studio-orbit.jpg');"></div>
+        <span class="tag">Solo · Phone booth</span>
+        <div class="name">Model One (01)</div>
+        <p style="font-size: 20px; color: var(--mute); line-height: 1.4;">A private studio in 10 sq ft. For recording, AI command, focus, sales floor.</p>
+        <div class="stack" style="gap: 6px; margin-top: 4px;">
+          <div style="font-size: 18px; color: var(--ink-2);">1 person · 0.96 m² / 10.3 ft² · 28 ± 3 dB</div>
+          <div class="price">$3,997</div>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="imgwrap" style="background-image: url('assets/duo-orbit.jpg');"></div>
+        <span class="tag">Private · 1–2 person</span>
+        <div class="name">Model Two (02)</div>
+        <p style="font-size: 20px; color: var(--mute); line-height: 1.4;">The smart 1-person office. Or take real 2-person calls. Either works.</p>
+        <div class="stack" style="gap: 6px; margin-top: 4px;">
+          <div style="font-size: 18px; color: var(--ink-2);">1–2 people · 2.1 m² / 22.6 ft² · 30 ± 3 dB</div>
+          <div class="price">$5,997</div>
+        </div>
+      </div>
+      <div class="lineup-card">
+        <div class="imgwrap" style="background-image: url('assets/quad-orbit.jpg');"></div>
+        <span class="tag">Best seller · Meeting</span>
+        <div class="name">Model Four (04)</div>
+        <p style="font-size: 20px; color: var(--mute); line-height: 1.4;">A real meeting room. Without the build-out. Workshops, sales rooms, pitches.</p>
+        <div class="stack" style="gap: 6px; margin-top: 4px;">
+          <div style="font-size: 18px; color: var(--ink-2);">4 people · 2.9 m² / 31.2 ft² · 30 ± 3 dB</div>
+          <div class="price">$7,497</div>
+        </div>
+      </div>
+      <div class="lineup-card flag">
+        <div class="imgwrap" style="background-image: url('assets/suite-orbit.jpg'); outline: 2px solid var(--accent);"></div>
+        <span class="tag">★ Flagship</span>
+        <div class="name">Model Six (06)</div>
+        <p style="font-size: 20px; color: var(--mute); line-height: 1.4;">Highest-margin 49 sq ft. Rents at $800–$1,000/mo. Pays back in 8 months.</p>
+        <div class="stack" style="gap: 6px; margin-top: 4px;">
+          <div style="font-size: 18px; color: var(--ink-2);">1–6 people · 4.5 m² / 48.4 ft² · 30 ± 3 dB</div>
+          <div class="price">$9,497</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Prices exclude sales tax &amp; shipping</span>
+    <span>10 · Lineup overview</span>
+  </div>
+</section>
+
+<!-- ===================== 10b · PRICE COMPARISON ===================== -->
+<section data-label="10b Price Comparison" class="dark">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>The Lineup · Price comparison</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 40px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 14px;">
+        <span class="eyebrow" style="color: var(--accent);">Price list · all four models</span>
+        <h2 style="color: var(--ink-on-dark, #FAF8F4);">One page. <span class="serif-italic" style="color: var(--accent-2, #C9A86A);">Every number.</span></h2>
+      </div>
+      <p class="serif" style="font-size: 22px; color: rgba(250,248,244,0.65); max-width: 460px; text-align: right;">Pay once. Or 12 months at 0% with $0 down. Prices exclude sales tax &amp; shipping.</p>
+    </div>
+
+    <div style="flex: 1; display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr 1.1fr; gap: 0; border-top: 1px solid rgba(250,248,244,0.18); border-bottom: 1px solid rgba(250,248,244,0.18); font-size: 19px;">
+      <!-- header row -->
+      <div style="padding: 22px 18px; border-right: 1px solid rgba(250,248,244,0.10); display: flex; align-items: end;">
+        <span style="text-transform: uppercase; letter-spacing: 0.12em; color: rgba(250,248,244,0.55); font-size: 14px;">Spec</span>
+      </div>
+      <div style="padding: 22px 18px; border-right: 1px solid rgba(250,248,244,0.10); display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,248,244,0.55);">Solo · phone booth</span>
+        <strong style="font-size: 26px; color: #FAF8F4; font-weight: 600;">Model One <span style="color: rgba(250,248,244,0.45); font-weight: 400;">(01)</span></strong>
+      </div>
+      <div style="padding: 22px 18px; border-right: 1px solid rgba(250,248,244,0.10); display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,248,244,0.55);">Private · 1–2 person</span>
+        <strong style="font-size: 26px; color: #FAF8F4; font-weight: 600;">Model Two <span style="color: rgba(250,248,244,0.45); font-weight: 400;">(02)</span></strong>
+      </div>
+      <div style="padding: 22px 18px; border-right: 1px solid rgba(250,248,244,0.10); display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,248,244,0.55);">Best seller · meeting</span>
+        <strong style="font-size: 26px; color: #FAF8F4; font-weight: 600;">Model Four <span style="color: rgba(250,248,244,0.45); font-weight: 400;">(04)</span></strong>
+      </div>
+      <div style="padding: 22px 18px; background: rgba(201,168,106,0.08); display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent, #C9A86A);">★ Flagship</span>
+        <strong style="font-size: 26px; color: #FAF8F4; font-weight: 600;">Model Six <span style="color: rgba(250,248,244,0.45); font-weight: 400;">(06)</span></strong>
+      </div>
+
+      <!-- pay once row -->
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: rgba(250,248,244,0.65); text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px; display: flex; align-items: center;">Pay once</div>
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10);"><span style="font-size: 36px; font-weight: 600; color: #FAF8F4;">$3,997</span></div>
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10);"><span style="font-size: 36px; font-weight: 600; color: #FAF8F4;">$5,997</span></div>
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10);"><span style="font-size: 36px; font-weight: 600; color: #FAF8F4;">$7,497</span></div>
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); background: rgba(201,168,106,0.08);"><span style="font-size: 36px; font-weight: 600; color: var(--accent, #C9A86A);">$9,497</span></div>
+
+      <!-- monthly row -->
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: rgba(250,248,244,0.65); text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px; display: flex; flex-direction: column; gap: 4px; justify-content: center;"><span>Or per month</span><span style="text-transform: none; letter-spacing: 0; font-size: 13px; color: rgba(250,248,244,0.45);">12 mo · 0% · $0 down</span></div>
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10);"><span style="font-size: 30px; font-weight: 600; color: #FAF8F4;">$397</span><span style="font-size: 16px; color: rgba(250,248,244,0.55);">/mo</span></div>
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10);"><span style="font-size: 30px; font-weight: 600; color: #FAF8F4;">$597</span><span style="font-size: 16px; color: rgba(250,248,244,0.55);">/mo</span></div>
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10);"><span style="font-size: 30px; font-weight: 600; color: #FAF8F4;">$799</span><span style="font-size: 16px; color: rgba(250,248,244,0.55);">/mo</span></div>
+      <div style="padding: 24px 18px; border-top: 1px solid rgba(250,248,244,0.10); background: rgba(201,168,106,0.08);"><span style="font-size: 30px; font-weight: 600; color: var(--accent, #C9A86A);">$999</span><span style="font-size: 16px; color: rgba(250,248,244,0.55);">/mo</span></div>
+
+      <!-- capacity -->
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: rgba(250,248,244,0.65); text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px; display: flex; align-items: center;">Capacity</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">1 person</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">1–2 people</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">4 people</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); background: rgba(201,168,106,0.08); color: #FAF8F4; font-size: 19px;">1–6 people</div>
+
+      <!-- floor area -->
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: rgba(250,248,244,0.65); text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px; display: flex; align-items: center;">Floor area</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">10.3 sq ft<span style="color: rgba(250,248,244,0.5);"> · 0.96 m²</span></div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">22.6 sq ft<span style="color: rgba(250,248,244,0.5);"> · 2.1 m²</span></div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">31.2 sq ft<span style="color: rgba(250,248,244,0.5);"> · 2.9 m²</span></div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); background: rgba(201,168,106,0.08); color: #FAF8F4; font-size: 19px;">48.4 sq ft<span style="color: rgba(250,248,244,0.5);"> · 4.5 m²</span></div>
+
+      <!-- soundproof -->
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: rgba(250,248,244,0.65); text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px; display: flex; align-items: center;">Soundproof</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">28 ± 3 dB</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">30 ± 3 dB <span style="color: rgba(250,248,244,0.45); font-size: 14px;">ISO</span></div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">30 ± 3 dB <span style="color: rgba(250,248,244,0.45); font-size: 14px;">ISO</span></div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); background: rgba(201,168,106,0.08); color: #FAF8F4; font-size: 19px;">30 ± 3 dB <span style="color: rgba(250,248,244,0.45); font-size: 14px;">ISO</span></div>
+
+      <!-- power -->
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: rgba(250,248,244,0.65); text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px; display: flex; align-items: center;">Power draw</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">24W</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">30W</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 19px;">54W</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); background: rgba(201,168,106,0.08); color: #FAF8F4; font-size: 19px;">90W</div>
+
+      <!-- best for -->
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: rgba(250,248,244,0.65); text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px; display: flex; align-items: center;">Best for</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 17px; line-height: 1.4;">Recording · focus · sales floor</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 17px; line-height: 1.4;">Solo office · 1–2 person calls</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); border-right: 1px solid rgba(250,248,244,0.10); color: #FAF8F4; font-size: 17px; line-height: 1.4;">Workshops · sales rooms · pitches</div>
+      <div style="padding: 22px 18px; border-top: 1px solid rgba(250,248,244,0.10); background: rgba(201,168,106,0.08); color: #FAF8F4; font-size: 17px; line-height: 1.4;">Highest-margin meetings · 6P</div>
+    </div>
+  </div>
+  <div class="chrome-bot" style="color: rgba(250,248,244,0.55);">
+    <span>All prices exclude sales tax &amp; shipping</span>
+    <span>10b · Price comparison</span>
+  </div>
+</section>
+
+<!-- ===================== 11 · THE STUDIO (Booth S) ===================== -->
+<section data-label="11 Model One (01)">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Lineup · Model One (01)</span>
+  </div>
+  <div class="pod-hero">
+    <div class="stack" style="gap: 36px;">
+      <span class="eyebrow">Solo · phone booth</span>
+      <h2>Model One (01)</h2>
+      <p style="font-size: 24px; color: var(--ink-2); max-width: 580px; line-height: 1.4;">Recording-grade quiet on a 10.3 sq ft footprint. 28 ± 3 dB. 24W. One outlet, one person, total focus.</p>
+      <dl class="spec" style="font-size: 20px;">
+        <dt>Outside</dt><dd class="units"><span class="a">W960 × D1000 × H2185 mm</span><span class="b">W37.8 × D39.4 × H86.0 in</span></dd>
+        <dt>Inside</dt><dd class="units"><span class="a">W813 × D989 × H2005 mm</span><span class="b">W32.0 × D38.9 × H78.9 in</span></dd>
+        <dt>Floor area</dt><dd class="units"><span class="a">0.96 m² · 10.3 sq ft</span><span class="b">1,488 sq in · 960,000 mm²</span></dd>
+        <dt>Weight</dt><dd class="units"><span class="a">243 kg · 535 lb</span></dd>
+        <dt>Capacity</dt><dd>1 person · 28 ± 3 dB</dd>
+        <dt>Ventilation</dt><dd>2 silent fans · 70 m³/h</dd>
+        <dt>Power</dt><dd>24W · 110–220V · USB-A + USB-C</dd>
+      </dl>
+      <div class="price-row">
+        <div class="stat"><div class="num-l" style="font-size: 52px;">$3,997</div><div class="lbl" style="font-size: 18px;">Pay once</div></div>
+        <div class="vrule"></div>
+        <div class="stat"><div class="num-l" style="font-size: 52px;">$397<span style="font-size: 22px; color: var(--mute);">/mo</span></div><div class="lbl" style="font-size: 18px;">12 mo · 0% · $0 down</div></div>
+      </div>
+    </div>
+    <div class="pod-img" style="background-image: url('assets/studio-orbit.jpg');"></div>
+  </div>
+  <div class="chrome-bot">
+    <span>Model One (01) · 1P</span>
+    <span>11 · Spec sheet</span>
+  </div>
+</section>
+
+<!-- ===================== 12 · THE DUO (M1-A) ===================== -->
+<section data-label="12 Model Two (02)" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Lineup · Model Two (02)</span>
+  </div>
+  <div class="pod-hero">
+    <div class="pod-img" style="background-image: url('assets/duo-orbit.jpg');"></div>
+    <div class="stack" style="gap: 36px;">
+      <span class="eyebrow">Private · 1–2 person office</span>
+      <h2>Model Two (02)</h2>
+      <p style="font-size: 24px; color: var(--ink-2); max-width: 580px; line-height: 1.4;">The smart 1-person office. Or take real 2-person calls. ISO-certified at 30 ± 3 dB. Adjustable-height desktop standard.</p>
+      <dl class="spec" style="font-size: 20px;">
+        <dt>Outside</dt><dd class="units"><span class="a">W1555 × D1350 × H2185 mm</span><span class="b">W61.2 × D53.1 × H86.0 in</span></dd>
+        <dt>Inside</dt><dd class="units"><span class="a">W1408 × D1202 × H2005 mm</span><span class="b">W55.4 × D47.3 × H78.9 in</span></dd>
+        <dt>Floor area</dt><dd class="units"><span class="a">2.1 m² · 22.6 sq ft</span><span class="b">3,255 sq in · 2,099,250 mm²</span></dd>
+        <dt>Weight</dt><dd class="units"><span class="a">362 kg · 796 lb</span></dd>
+        <dt>Capacity</dt><dd>1–2 people · 30 ± 3 dB · ISO 23351-1</dd>
+        <dt>Ventilation</dt><dd>4 silent fans · 140 m³/h</dd>
+        <dt>Power</dt><dd>30W · 110–220V · USB-A + USB-C</dd>
+      </dl>
+      <div class="price-row">
+        <div class="stat"><div class="num-l" style="font-size: 52px;">$5,997</div><div class="lbl" style="font-size: 18px;">Pay once</div></div>
+        <div class="vrule"></div>
+        <div class="stat"><div class="num-l" style="font-size: 52px;">$597<span style="font-size: 22px; color: var(--mute);">/mo</span></div><div class="lbl" style="font-size: 18px;">12 mo · 0% · $0 down</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Model Two (02) · 1–2P</span>
+    <span>12 · Spec sheet</span>
+  </div>
+</section>
+
+<!-- ===================== 13 · THE QUAD (L1-A/B) ===================== -->
+<section data-label="13 Model Four (04)">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Lineup · Model Four (04)</span>
+  </div>
+  <div class="pod-hero">
+    <div class="stack" style="gap: 36px;">
+      <span class="eyebrow">Best seller · meeting room</span>
+      <h2>Model Four (04)</h2>
+      <p style="font-size: 24px; color: var(--ink-2); max-width: 580px; line-height: 1.4;">A real meeting room without the build-out. 4-person workshops, sales rooms, and pitches. ISO-certified at 30 ± 3 dB.</p>
+      <dl class="spec" style="font-size: 20px;">
+        <dt>Outside</dt><dd class="units"><span class="a">W2150 × D1350 × H2185 mm</span><span class="b">W84.6 × D53.1 × H86.0 in</span></dd>
+        <dt>Inside</dt><dd class="units"><span class="a">W2003 × D1202–1260 × H2005 mm</span><span class="b">W78.9 × D47.3–49.6 × H78.9 in</span></dd>
+        <dt>Floor area</dt><dd class="units"><span class="a">2.9 m² · 31.2 sq ft</span><span class="b">4,495 sq in · 2,902,500 mm²</span></dd>
+        <dt>Weight</dt><dd class="units"><span class="a">480–512 kg · 1,056–1,127 lb</span></dd>
+        <dt>Capacity</dt><dd>4 people · 30 ± 3 dB · ISO 23351-1</dd>
+        <dt>Ventilation</dt><dd>8 silent fans · 280 m³/h</dd>
+        <dt>Power</dt><dd>54W · 110–220V · USB-C + Qi wireless</dd>
+      </dl>
+      <div class="price-row">
+        <div class="stat"><div class="num-l" style="font-size: 52px;">$7,497</div><div class="lbl" style="font-size: 18px;">Pay once</div></div>
+        <div class="vrule"></div>
+        <div class="stat"><div class="num-l" style="font-size: 52px;">$799<span style="font-size: 22px; color: var(--mute);">/mo</span></div><div class="lbl" style="font-size: 18px;">12 mo · 0% · $0 down</div></div>
+      </div>
+    </div>
+    <div class="pod-img" style="background-image: url('assets/quad-orbit.jpg');"></div>
+  </div>
+  <div class="chrome-bot">
+    <span>Model Four (04) · 4P</span>
+    <span>13 · Spec sheet</span>
+  </div>
+</section>
+
+<!-- ===================== 14 · THE SUITE (XL-A/B) — flagship ===================== -->
+<section data-label="14 Model Six (06)" class="dark">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>The Lineup · Model Six (06) ★</span>
+  </div>
+  <div class="pod-hero">
+    <div class="pod-img" style="background-image: url('assets/suite-orbit.jpg');"></div>
+    <div class="stack" style="gap: 36px;">
+      <span class="eyebrow" style="color: var(--accent);">★ Flagship · highest revenue per pod</span>
+      <h2>Model Six (06)</h2>
+      <p style="font-size: 24px; color: rgba(250,248,244,0.78); max-width: 580px; line-height: 1.4;">The highest-margin 48 sq ft on your floor plate. 1–6 people. ISO-certified at 30 ± 3 dB. 16 ultra-quiet fans.</p>
+      <dl class="spec" style="font-size: 20px;">
+        <dt>Outside</dt><dd class="units"><span class="a">W2150 × D2100 × H2250 mm</span><span class="b">W84.6 × D82.7 × H88.6 in</span></dd>
+        <dt>Inside</dt><dd class="units"><span class="a">W2003 × D1952–2010 × H2005 mm</span><span class="b">W78.9 × D76.9–79.1 × H78.9 in</span></dd>
+        <dt>Floor area</dt><dd class="units"><span class="a">4.5 m² · 48.4 sq ft</span><span class="b">6,975 sq in · 4,515,000 mm²</span></dd>
+        <dt>Weight</dt><dd class="units"><span class="a">634–667 kg · 1,395–1,468 lb</span></dd>
+        <dt>Capacity</dt><dd>1–6 people · 30 ± 3 dB · ISO 23351-1</dd>
+        <dt>Ventilation</dt><dd>16 ultra-quiet fans · 560 m³/h</dd>
+        <dt>Power</dt><dd>90W · 110–220V · USB-C + Qi wireless</dd>
+      </dl>
+      <div class="price-row">
+        <div class="stat"><div class="num-l" style="font-size: 52px; color: var(--accent);">$9,497</div><div class="lbl" style="font-size: 18px;">Pay once</div></div>
+        <div class="vrule"></div>
+        <div class="stat"><div class="num-l" style="font-size: 52px;">$999<span style="font-size: 22px; color: rgba(250,248,244,0.55);">/mo</span></div><div class="lbl" style="font-size: 18px;">12 mo · 0% · $0 down</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Model Six (06) · 1–6P · Flagship</span>
+    <span>14 · Spec sheet</span>
+  </div>
+</section>
+
+<!-- ===================== 15 · ACCESSIBLE POD ===================== -->
+<section data-label="15 Accessible Pod" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Lineup · Accessible</span>
+  </div>
+  <div class="grid-2" style="height: 100%; gap: 100px; align-items: center;">
+    <div class="stack" style="gap: 36px;">
+      <span class="eyebrow">Accessibility configuration</span>
+      <h2>Barrier-free,  by <span class="serif-italic" style="color: var(--accent-2);">design.</span></h2>
+      <p style="font-size: 28px; color: var(--ink-2); max-width: 600px; line-height: 1.45;">The Accessible Pod is engineered for users with reduced mobility — wide entry, auto-opening door, multi-modal access (facial recognition, QR code, password, card, manual). Smart, safe, and barrier-free private workspace.</p>
+      <p class="serif-italic" style="font-size: 24px; color: var(--mute); max-width: 600px;">Available in M2-A (1–2 person, 2.1 m² / 22.6 sq ft) and L2-A (4-person, 2.9 m² / 31.2 sq ft) configurations. Pricing on request.</p>
+    </div>
+    <div class="stack" style="gap: 22px;">
+      <div style="background: white; border: 1px solid var(--line-2); border-radius: 6px; padding: 36px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">M2-A · Accessible Duo</div>
+        <dl class="spec" style="grid-template-columns: 220px 1fr; row-gap: 14px; font-size: 20px;">
+          <dt>Footprint</dt><dd>1555 × 1350 × 2172 mm (61.2 × 53.1 × 85.5 in) · 2.1 m² / 22.6 sq ft</dd>
+          <dt>Weight</dt><dd>312 kg · 687 lb</dd>
+          <dt>Soundproof</dt><dd>30 ± 3 dB · ISO 23351-1</dd>
+          <dt>Ventilation</dt><dd>4 silent fans · 140 m³/h</dd>
+          <dt>Power</dt><dd>105W · 110–220V</dd>
+          <dt>Access</dt><dd>Face · QR · password · card · manual</dd>
+        </dl>
+      </div>
+      <div style="background: white; border: 1px solid var(--line-2); border-radius: 6px; padding: 36px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">L2-A · Accessible Quad</div>
+        <dl class="spec" style="grid-template-columns: 220px 1fr; row-gap: 14px; font-size: 20px;">
+          <dt>Footprint</dt><dd>2150 × 1350 × 2172 mm (84.6 × 53.1 × 85.5 in) · 2.9 m² / 31.2 sq ft</dd>
+          <dt>Weight</dt><dd>399 kg · 880 lb</dd>
+          <dt>Soundproof</dt><dd>30 ± 3 dB · ISO 23351-1</dd>
+          <dt>Ventilation</dt><dd>8 silent fans · 280 m³/h</dd>
+          <dt>Power</dt><dd>129W · 110–220V</dd>
+          <dt>Desktop</dt><dd>Foldable · easy entry & exit</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Wide entry · auto-open door · multi-modal access</span>
+    <span>15 · Accessible pod</span>
+  </div>
+</section>
+
+<!-- ===================== 16 · DIVIDER : IN THE WILD ===================== -->
+<section data-label="16 In The Wild Divider" class="dark">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>Section III</span>
+  </div>
+  <div class="section-cover">
+    <div class="section-num">III</div>
+    <div class="stack" style="gap: 32px;">
+      <span class="divider-eyebrow">In the wild</span>
+      <h2 style="font-size: 132px; max-width: 1500px;">Drop one anywhere.  <span class="serif-italic">It works.</span></h2>
+      <p class="serif" style="font-size: 32px; color: rgba(250,248,244,0.7); max-width: 1100px;">Coworking floors. Hotel lobbies. Airport terminals. Libraries. Warehouses. Home offices. The pod doesn't care where it lands.</p>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Real-world deployments</span>
+    <span>16 · Use cases</span>
+  </div>
+</section>
+
+<!-- ===================== 17 · TERMINAL ===================== -->
+<section data-label="17 Airport Terminal" class="dark">
+  <div class="full-bleed" style="background-image: url('assets/lifestyle-airport.jpg');"></div>
+  <div class="scrim" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,17,22,0.2) 0%, rgba(14,17,22,0.55) 60%, rgba(14,17,22,0.9) 100%);"></div>
+  <div class="chrome-top" style="z-index: 2;">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>In the wild · 01</span>
+  </div>
+  <div style="position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end;">
+    <span class="eyebrow" style="color: var(--accent); margin-bottom: 24px;">Airport terminals</span>
+    <h2 style="max-width: 1200px;">A quiet corner  in a busy <span class="serif-italic">terminal.</span></h2>
+    <p class="serif" style="font-size: 32px; color: rgba(250,248,244,0.85); max-width: 1100px; margin-top: 28px;">MTIP pods give travelers a private place to take calls, work, or rest — away from the noise and crowd of the gate.</p>
+  </div>
+  <div class="chrome-bot" style="z-index: 2;">
+    <span>Travel · transit · airside</span>
+    <span>17 · Airport terminals</span>
+  </div>
+</section>
+
+<!-- ===================== 18 · LIBRARY / FOCUS ===================== -->
+<section data-label="18 Library Focus" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>In the wild · 02</span>
+  </div>
+  <div class="grid-2" style="height: 100%; gap: 100px; align-items: center;">
+    <div class="stack" style="gap: 36px;">
+      <span class="eyebrow">Libraries · universities · campuses</span>
+      <h2>Focus  without <span class="serif-italic" style="color: var(--accent-2);">distraction.</span></h2>
+      <p style="font-size: 30px; color: var(--ink-2); max-width: 600px; line-height: 1.45;">MTIP pods create soundproof study and discussion space inside libraries — helping users stay concentrated while keeping the library quiet for everyone else.</p>
+      <div class="kv-row">
+        <div class="kv"><div class="k">Footprint</div><div class="v">10–49 sq ft</div></div>
+        <div class="kv"><div class="k">Sound floor</div><div class="v">38 dB</div></div>
+        <div class="kv"><div class="k">Permits</div><div class="v">None</div></div>
+        <div class="kv"><div class="k">Move</div><div class="v">Casters</div></div>
+      </div>
+    </div>
+    <div style="background-image: url('assets/lifestyle-coworking.jpg'); background-size: cover; background-position: center; aspect-ratio: 4/5; border-radius: 4px;"></div>
+  </div>
+  <div class="chrome-bot">
+    <span>Study · discussion · group work</span>
+    <span>18 · Libraries</span>
+  </div>
+</section>
+
+<!-- ===================== 19 · COWORKING / OFFICE ===================== -->
+<section data-label="19 Coworking Office">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>In the wild · 03</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 48px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 16px;">
+        <span class="eyebrow">Coworking · open offices · flex space</span>
+        <h2>Drop in next to existing tenants.</h2>
+      </div>
+      <p class="serif" style="font-size: 24px; color: var(--mute); max-width: 460px; text-align: right;">Members get private space without a private lease. Operators get a billable amenity.</p>
+    </div>
+    <div class="grid-3" style="gap: 28px; flex: 1;">
+      <div style="background-image: url('assets/real-quad-showroom.jpg'); background-size: cover; background-position: center; border-radius: 4px; min-height: 600px;"></div>
+      <div style="background-image: url('assets/real-quad-people.jpg'); background-size: cover; background-position: center; border-radius: 4px; min-height: 600px;"></div>
+      <div style="background-image: url('assets/lifestyle-class-a.jpg'); background-size: cover; background-position: center; border-radius: 4px; min-height: 480px;"></div>
+    </div>
+    <div class="grid-3" style="gap: 28px; padding-bottom: 30px;">
+      <p style="font-size: 22px; color: var(--ink-2); line-height: 1.45;"><strong>Model Four (04) in coworking.</strong> Real conversation, real privacy, real product.</p>
+      <p style="font-size: 22px; color: var(--ink-2); line-height: 1.45;"><strong>Two-person meetings.</strong> 38 dB inside. 68 dB outside. Calls don't bleed onto the floor.</p>
+      <p style="font-size: 22px; color: var(--ink-2); line-height: 1.45;"><strong>Class A lobbies.</strong> Travertine, double-height ceiling, cove lighting — it slots in.</p>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Office · coworking · plaza</span>
+    <span>19 · Workplace</span>
+  </div>
+</section>
+
+<!-- ===================== 20 · OPERATOR QUOTE ===================== -->
+<section data-label="20 Operator Quote" class="dark">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>From the operator</span>
+  </div>
+  <div class="stack" style="height: 100%; justify-content: center; gap: 64px; max-width: 1500px;">
+    <span class="eyebrow" style="color: var(--accent);">From the operator</span>
+    <p class="pull" style="font-size: 64px;">"I run real estate. I've written six-figure TI checks for build-outs that walked out the door with the tenant. So when I priced an acoustic pod from a premium brand at $26,400 retail and they wanted me to <em>assemble it on-site,</em> I called the factory direct. <em>MTIP Collective is what I built next</em> — same ISO acoustic spec, fully assembled, half the price."</p>
+    <div class="row" style="align-items: center; gap: 20px; margin-top: 12px;">
+      <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 30px;">M</div>
+      <div>
+        <div style="font-size: 26px; font-weight: 600;">Master Makabi</div>
+        <div style="font-size: 22px; color: rgba(250,248,244,0.6);">Founder · MTIP Collective · Florida</div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Built by operators, for operators</span>
+    <span>20 · Quote</span>
+  </div>
+</section>
+
+<!-- ===================== 21 · MATERIAL OPTIONS ===================== -->
+<section data-label="21 Material Options" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>Customization · 01</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 44px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 16px;">
+        <span class="eyebrow">Materials & finishes</span>
+        <h2>Configure once. <span class="serif-italic" style="color: var(--accent-2);">Reconfigure forever.</span></h2>
+      </div>
+      <p class="serif" style="font-size: 24px; color: var(--mute); max-width: 460px; text-align: right;">Custom paint, edge styles, glass tints, interior finishes. Minimum order: 1.</p>
+    </div>
+
+    <div class="grid-2" style="gap: 80px; flex: 1;">
+      <div class="stack" style="gap: 22px;">
+        <div class="chip" style="color: var(--ink); width: max-content;">Exterior colors</div>
+        <div class="mat-grid" style="grid-template-columns: repeat(5, 1fr);">
+          <div class="mat"><div class="swatch" style="background: #F4F2EE;"></div><div class="name">Textured White</div><div class="meta">Standard</div></div>
+          <div class="mat"><div class="swatch" style="background: #2C3A4A;"></div><div class="name">Textured Blue</div><div class="meta">Standard</div></div>
+          <div class="mat"><div class="swatch" style="background: #1B1D1F;"></div><div class="name">Textured Black</div><div class="meta">Flagship</div></div>
+          <div class="mat"><div class="swatch" style="background: #E8C547;"></div><div class="name">Lemon Yellow</div><div class="meta">Accent</div></div>
+          <div class="mat"><div class="swatch" style="background: #B23A2A;"></div><div class="name">Signal Red</div><div class="meta">Accent</div></div>
+        </div>
+
+        <div class="chip" style="color: var(--ink); width: max-content; margin-top: 24px;">Acoustic panels</div>
+        <div class="mat-grid" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="mat"><div class="swatch" style="background: #4F5862;"></div><div class="meta">XSY-34</div></div>
+          <div class="mat"><div class="swatch" style="background: #6E7682;"></div><div class="meta">XSY-28</div></div>
+          <div class="mat"><div class="swatch" style="background: #8C8275;"></div><div class="meta">XSY-14</div></div>
+          <div class="mat"><div class="swatch" style="background: #B5A89A;"></div><div class="meta">XSY-12</div></div>
+          <div class="mat"><div class="swatch" style="background: #D6C9B5;"></div><div class="meta">XSY-06</div></div>
+          <div class="mat"><div class="swatch" style="background: #EAE0CF;"></div><div class="meta">XSY-03</div></div>
+        </div>
+      </div>
+
+      <div class="stack" style="gap: 22px;">
+        <div class="chip" style="color: var(--ink); width: max-content;">Sofa fabric</div>
+        <div class="mat-grid" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="mat"><div class="swatch" style="background: #2A2E33;"></div><div class="meta">HY-23</div></div>
+          <div class="mat"><div class="swatch" style="background: #5A6B6E;"></div><div class="meta">HY-18</div></div>
+          <div class="mat"><div class="swatch" style="background: #8A8378;"></div><div class="meta">HY-08</div></div>
+          <div class="mat"><div class="swatch" style="background: #A89A7E;"></div><div class="meta">HY-05</div></div>
+          <div class="mat"><div class="swatch" style="background: #C2A98A;"></div><div class="meta">HY-04</div></div>
+          <div class="mat"><div class="swatch" style="background: #D8C7A6;"></div><div class="meta">HY-03</div></div>
+        </div>
+
+        <div class="chip" style="color: var(--ink); width: max-content; margin-top: 24px;">Bar-stool fabric (selection)</div>
+        <div class="mat-grid" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="mat"><div class="swatch" style="background: #1F2933;"></div><div class="meta">OTE-15</div></div>
+          <div class="mat"><div class="swatch" style="background: #3F2E2A;"></div><div class="meta">OTE-26</div></div>
+          <div class="mat"><div class="swatch" style="background: #6B5544;"></div><div class="meta">OTE-31</div></div>
+          <div class="mat"><div class="swatch" style="background: #8E6E50;"></div><div class="meta">OTE-39</div></div>
+          <div class="mat"><div class="swatch" style="background: #B59072;"></div><div class="meta">OTE-44</div></div>
+          <div class="mat"><div class="swatch" style="background: #D6B891;"></div><div class="meta">OTE-63</div></div>
+        </div>
+
+        <p class="serif-italic" style="font-size: 22px; color: var(--mute); margin-top: 18px;">Plus carpet (6682), and the full HY / XSY / OTE libraries on request.</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Custom-ready · MOQ 1</span>
+    <span>21 · Materials</span>
+  </div>
+</section>
+
+<!-- ===================== 22 · FURNITURE / ACCESSORIES ===================== -->
+<section data-label="22 Furniture & Accessories">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>Customization · 02</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 44px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 16px;">
+        <span class="eyebrow">Furniture · seating · accessories</span>
+        <h2>Built-in mounts.  <span class="serif-italic" style="color: var(--accent-2);">One pod, many lives.</span></h2>
+      </div>
+      <p class="serif" style="font-size: 24px; color: var(--mute); max-width: 460px; text-align: right;">Pre-engineered mounting points let you reconfigure the same pod from solo office, to meeting room, to lounge.<br /><span style="font-style: normal; font-family: inherit; font-size: 18px; color: var(--ink-2); display: inline-block; margin-top: 10px;">Accessories sold separately. Custom pieces designed per order, per request, for an additional fee.</span></p>
+    </div>
+
+    <div class="grid-3" style="gap: 56px; flex: 1;">
+      <div class="stack" style="gap: 18px;">
+        <div class="chip" style="color: var(--ink); width: max-content;">Tables &amp; desks</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 22px; color: var(--ink-2);">
+          <li>· Model One (01) pod desktop</li>
+          <li>· Model Two (02) · height-adjustable desk (M)</li>
+          <li>· Model Two (02) · M1 face-to-face bar table</li>
+          <li>· Model Two (02) · M1 double bar table</li>
+          <li>· Model Four (04) · L1-A / L1-B bar tables</li>
+          <li>· Model Six (06) · XL-A / XL-B bar tables</li>
+          <li>· Accessible · L2-A bar table · SL-A / SL-B</li>
+        </ul>
+      </div>
+      <div class="stack" style="gap: 18px;">
+        <div class="chip" style="color: var(--ink); width: max-content;">Seating</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 22px; color: var(--ink-2);">
+          <li>· SL · single sofa</li>
+          <li>· L · double sofa</li>
+          <li>· XL · triple sofa</li>
+          <li>· M · corner sofa</li>
+          <li>· Bar stool</li>
+          <li>· Chair · Sail-01</li>
+          <li>· Chair · Key-01</li>
+        </ul>
+      </div>
+      <div class="stack" style="gap: 18px;">
+        <div class="chip" style="color: var(--ink); width: max-content;">Hardware &amp; accessories</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 22px; color: var(--ink-2);">
+          <li>· Minimalist magnetic lock</li>
+          <li>· Standard magnetic lock</li>
+          <li>· Hidden door closer · electric closer</li>
+          <li>· Built-in smart socket · desktop power</li>
+          <li>· Wooden handle</li>
+          <li>· Access control panel · access control lock</li>
+          <li>· Fresh-air & light combo · indicator light · wheels</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Accessories sold separately · custom pieces designed per order</span>
+    <span>22 · Furniture &amp; accessories</span>
+  </div>
+</section>
+
+<!-- ===================== 23 · HOW IT SHIPS ===================== -->
+<section data-label="23 How It Ships" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Order</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 56px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 16px;">
+        <span class="eyebrow">From order to first call</span>
+        <h2>Four steps. 90 days.  <span class="serif-italic" style="color: var(--accent-2);">No contractors.</span></h2>
+      </div>
+      <p class="serif" style="font-size: 24px; color: var(--mute); max-width: 480px; text-align: right;">South Florida gets white-glove on-site assembly. Outside Florida ships with vetted-technician referral or a self-build kit.</p>
+    </div>
+
+    <div class="grid-4" style="gap: 32px; flex: 1;">
+      <div class="stack" style="gap: 16px;">
+        <div class="num" style="font-size: 96px;">01</div>
+        <div class="rule"></div>
+        <h4 style="font-size: 32px;">Order &amp; configure</h4>
+        <p style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">Pick size, edge, finish, and deal structure. Sign the term sheet. <strong>Day 0.</strong></p>
+      </div>
+      <div class="stack" style="gap: 16px;">
+        <div class="num" style="font-size: 96px;">02</div>
+        <div class="rule"></div>
+        <h4 style="font-size: 32px;">Factory production</h4>
+        <p style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">Aluminum frame, ISO acoustic walls, tempered glass, lighting, ventilation. <strong>~70 days.</strong></p>
+      </div>
+      <div class="stack" style="gap: 16px;">
+        <div class="num" style="font-size: 96px;">03</div>
+        <div class="rule"></div>
+        <h4 style="font-size: 32px;">White-glove freight</h4>
+        <p style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">Six modular components, climate-controlled freight, delivered to your loading dock. <strong>~14 days transit.</strong></p>
+      </div>
+      <div class="stack" style="gap: 16px;">
+        <div class="num" style="font-size: 96px;">04</div>
+        <div class="rule"></div>
+        <h4 style="font-size: 32px;">Final-mile assembly</h4>
+        <p style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">South Florida: our team assembles on-site. Outside FL: technician referral or self-build kit. Plug in. <strong>Same day.</strong></p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>90 days · zero permits · one outlet</span>
+    <span>23 · How it ships</span>
+  </div>
+</section>
+
+<!-- ===================== 24 · LANDLORD ECONOMICS ===================== -->
+<section data-label="24 Landlord Economics" class="dark">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>The Deal</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 48px;">
+    <div class="row" style="justify-content: space-between; align-items: end;">
+      <div class="stack" style="gap: 16px;">
+        <span class="eyebrow" style="color: var(--accent);">Three deal structures</span>
+        <h2>Buy. Split. Or  <span class="serif-italic" style="color: var(--accent);">put $0 down.</span></h2>
+      </div>
+      <p class="serif" style="font-size: 24px; color: rgba(250,248,244,0.7); max-width: 500px; text-align: right;">Pick the path that lines up with how you run your portfolio.</p>
+    </div>
+
+    <div class="grid-3" style="gap: 36px; flex: 1;">
+      <div style="border: 1px solid rgba(250,248,244,0.2); border-radius: 6px; padding: 36px; display: flex; flex-direction: column; gap: 20px;">
+        <span class="eyebrow" style="color: rgba(250,248,244,0.55);">Option A</span>
+        <h3 style="font-size: 42px;">Buy outright</h3>
+        <p style="font-size: 22px; color: rgba(250,248,244,0.7); line-height: 1.45;">100% capex · 100% revenue. Pods on your books, depreciable as commercial furniture (7-yr MACRS).</p>
+        <div class="mt-a" style="font-family: var(--serif); font-size: 38px;">100% / 100%</div>
+        <p style="font-size: 18px; color: rgba(250,248,244,0.55); text-transform: uppercase; letter-spacing: 0.12em;">For owner-operators wanting full upside</p>
+      </div>
+      <div style="border: 1px solid rgba(250,248,244,0.2); border-radius: 6px; padding: 36px; display: flex; flex-direction: column; gap: 20px;">
+        <span class="eyebrow" style="color: rgba(250,248,244,0.55);">Option B</span>
+        <h3 style="font-size: 42px;">50/50 JV</h3>
+        <p style="font-size: 22px; color: rgba(250,248,244,0.7); line-height: 1.45;">Split equipment cost 50/50. Rental revenue split 50/50 in perpetuity. Lower exposure, shared upside.</p>
+        <div class="mt-a" style="font-family: var(--serif); font-size: 38px;">50% / 50%</div>
+        <p style="font-size: 18px; color: rgba(250,248,244,0.55); text-transform: uppercase; letter-spacing: 0.12em;">For partnership-style risk-sharing</p>
+      </div>
+      <div style="border: 1px solid var(--accent); border-radius: 6px; padding: 36px; display: flex; flex-direction: column; gap: 20px; background: rgba(201,163,106,0.08);">
+        <span class="eyebrow" style="color: var(--accent);">★ Option C · Flagship</span>
+        <h3 style="font-size: 42px;">Zero-Capex JV</h3>
+        <p style="font-size: 22px; color: rgba(250,248,244,0.85); line-height: 1.45;">$0 down. MTIP funds 100%. Revenue → MTIP first to recoup, then 75/25 to you (you manage) or 50/50 (we manage).</p>
+        <div class="mt-a" style="font-family: var(--serif); font-size: 38px; color: var(--accent);">$0 / 75%+</div>
+        <p style="font-size: 18px; color: rgba(250,248,244,0.65); text-transform: uppercase; letter-spacing: 0.12em;">Pure upside · zero downside</p>
+      </div>
+    </div>
+
+    <div style="background: rgba(201,163,106,0.1); border-left: 3px solid var(--accent); padding: 28px 36px; border-radius: 4px;">
+      <p style="font-family: var(--serif); font-size: 30px; line-height: 1.4; color: var(--paper);">Option C example: 6 Quads &amp; Suites at $900/mo each = <strong style="color: var(--accent);">$64,800/yr.</strong> MTIP funds ~$45K retail. Cost recovers in <strong style="color: var(--accent);">~8 months.</strong> After recoupment: <strong style="color: var(--accent);">$48,600/yr to you</strong> if you manage. Perpetual upside, zero capital outlay.</p>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>The smartest CapEx is the one you don't write</span>
+    <span>24 · Deal structures</span>
+  </div>
+</section>
+
+<!-- ===================== 25 · TI vs MTIP COMPARISON ===================== -->
+<section data-label="25 TI Comparison" class="cream">
+  <div class="chrome-top">
+    <span class="logo-mark"><img src="assets/mtip-logo.png" alt="MTIP" /></span>
+    <span>The Math</span>
+  </div>
+  <div class="stack" style="height: 100%; gap: 40px;">
+    <div class="stack" style="gap: 16px;">
+      <span class="eyebrow">MTIP Model Six (06) vs. traditional TI build-out</span>
+      <h2>The math your contractor  <span class="serif-italic" style="color: var(--accent-2);">won't show you.</span></h2>
+    </div>
+    <table class="cmp">
+      <thead>
+        <tr>
+          <th></th>
+          <th style="color: var(--ink); font-weight: 600;">MTIP Model Six (06)</th>
+          <th>Traditional TI build-out (49 sq ft acoustic)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="first">Capital cost</td><td><strong>$9,497</strong> (or $0 with Option C)</td><td>$10,000 – $15,000</td></tr>
+        <tr><td class="first">Time to revenue</td><td><strong>90 days</strong></td><td>4 – 6 months</td></tr>
+        <tr><td class="first">Permits required</td><td class="ck">None</td><td class="x">Yes · 6–12 weeks variable</td></tr>
+        <tr><td class="first">Furniture &amp; ventilation</td><td class="ck">Included</td><td class="x">Add $5–10K extra</td></tr>
+        <tr><td class="first">Acoustic spec</td><td><strong>ISO 23351-1 certified</strong></td><td>Depends on contractor</td></tr>
+        <tr><td class="first">Tenant turnover</td><td class="ck">Asset stays · moves with portfolio</td><td class="x">Capital lost when walls demo'd</td></tr>
+        <tr><td class="first">Re-deployable</td><td class="ck">Yes · silent casters optional</td><td class="x">Never · it's framing</td></tr>
+        <tr><td class="first">Depreciation</td><td><strong>7-year MACRS</strong> (commercial furniture)</td><td>39-year (real property)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="chrome-bot">
+    <span>Same private workspace · half the capital · tenth the time</span>
+    <span>25 · Build vs. drop-in</span>
+  </div>
+</section>
+
+<!-- ===================== 26 · CLOSE / CONTACT ===================== -->
+<section data-label="26 Close" class="dark">
+  <div class="full-bleed" style="background-image: linear-gradient(180deg, rgba(14,17,22,0.5) 0%, rgba(14,17,22,0.85) 70%, rgba(14,17,22,0.95) 100%), url('assets/showroom.jpg'); background-size: cover; background-position: center;"></div>
+  <div class="chrome-top" style="z-index: 2;">
+    <span class="logo-mark"><img src="assets/mtip-logo-white.png" alt="MTIP" /></span>
+    <span>Get in touch</span>
+  </div>
+  <div style="position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+    <div></div>
+    <div class="stack" style="gap: 40px; max-width: 1500px;">
+      <span class="eyebrow" style="color: var(--accent);">Visit · book · order</span>
+      <h2 style="font-size: 132px;">Sit in one.  <span class="serif-italic">Then run the math.</span></h2>
+      <p class="serif" style="font-size: 32px; color: rgba(250,248,244,0.85); max-width: 1200px;">Walk through our North Miami Beach showroom — step inside any of the four sizes. Then we map the deal to your property.</p>
+    </div>
+    <div class="row" style="justify-content: space-between; align-items: end; padding-top: 40px; border-top: 1px solid rgba(250,248,244,0.18);">
+      <div class="stack" style="gap: 8px;">
+        <div class="eyebrow" style="color: rgba(250,248,244,0.55);">Showroom</div>
+        <p style="font-size: 26px; color: var(--paper);">16137 Biscayne Blvd · North Miami Beach, FL</p>
+      </div>
+      <div class="stack" style="gap: 8px;">
+        <div class="eyebrow" style="color: rgba(250,248,244,0.55);">Email</div>
+        <p style="font-size: 26px; color: var(--paper);">mtip@hey.com</p>
+      </div>
+      <div class="stack" style="gap: 8px;">
+        <div class="eyebrow" style="color: rgba(250,248,244,0.55);">Web</div>
+        <p style="font-size: 26px; color: var(--accent);">pods.mtip.ai</p>
+      </div>
+      <div class="stack" style="gap: 8px;">
+        <div class="eyebrow" style="color: rgba(250,248,244,0.55);">Coverage</div>
+        <p style="font-size: 26px; color: var(--paper);">South Florida → National</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot" style="z-index: 2;">
+    <span>© 2026 MTIP Collective. All rights reserved.</span>
+    <span>26 · Contact</span>
+  </div>
+</section>
+
+</deck-stage>
+
+<script src="deck-stage.js"></script>
+</body>
+</html>
