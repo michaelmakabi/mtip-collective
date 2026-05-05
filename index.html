@@ -601,6 +601,117 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
   }));
 })();
 
+
+// LIGHTBOX — pod tier carousel (8 angles per pod)
+(function(){
+  const lb = document.getElementById('podLightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbClose = document.getElementById('lbClose');
+  const lbPrev = document.getElementById('lbPrev');
+  const lbNext = document.getElementById('lbNext');
+  const lbCounter = document.getElementById('lbCounter');
+  const lbEyebrow = document.getElementById('lbEyebrow');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbThumbs = document.getElementById('lbThumbs');
+  if (!lb) return;
+
+  const ANGLES = [
+    {key:'orbit',     title:'Front-right orbit'},
+    {key:'orbit-left',title:'Front-left orbit'},
+    {key:'front',     title:'Direct front'},
+    {key:'side',      title:'Side profile'},
+    {key:'rear',      title:'Rear three-quarter'},
+    {key:'aerial',    title:'Top-down aerial'},
+    {key:'int-wide',  title:'Wide interior'},
+    {key:'pov',       title:'POV at desk'}
+  ];
+  const POD_LABEL = {
+    suite:'The Suite · 6P · 49 sq ft',
+    quad:'The Quad · 4P · 31 sq ft',
+    duo:'The Duo · 2P · 23 sq ft',
+    studio:'The Studio · 1P · 10 sq ft'
+  };
+
+  let curPod = 'suite';
+  let curIdx = 0;
+
+  function renderThumbs(){
+    lbThumbs.innerHTML = ANGLES.map((a,i) =>
+      `<button class="lb-thumb${i===curIdx?' active':''}" data-idx="${i}"><img src="assets/images/ai-${curPod}-${a.key}.jpg" alt="${a.title}"></button>`
+    ).join('');
+    lbThumbs.querySelectorAll('.lb-thumb').forEach(t => {
+      t.addEventListener('click', () => goTo(parseInt(t.dataset.idx, 10)));
+    });
+  }
+  function update(){
+    const a = ANGLES[curIdx];
+    lbImg.classList.add('swapping');
+    setTimeout(() => {
+      lbImg.src = `assets/images/ai-${curPod}-${a.key}.jpg`;
+      lbImg.alt = `${POD_LABEL[curPod]} — ${a.title}`;
+      lbEyebrow.textContent = POD_LABEL[curPod];
+      lbTitle.textContent = a.title;
+      lbCounter.textContent = `${curIdx+1} / ${ANGLES.length}`;
+      lbThumbs.querySelectorAll('.lb-thumb').forEach((t,i) => t.classList.toggle('active', i===curIdx));
+      requestAnimationFrame(() => lbImg.classList.remove('swapping'));
+    }, 160);
+  }
+  function goTo(i){
+    curIdx = (i + ANGLES.length) % ANGLES.length;
+    update();
+  }
+  function open(pod, startIdx){
+    curPod = pod;
+    curIdx = startIdx || 0;
+    renderThumbs();
+    update();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  lbClose.addEventListener('click', close);
+  lbPrev.addEventListener('click', () => goTo(curIdx - 1));
+  lbNext.addEventListener('click', () => goTo(curIdx + 1));
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') goTo(curIdx - 1);
+    else if (e.key === 'ArrowRight') goTo(curIdx + 1);
+  });
+
+  // Wire each tier card to open the lightbox for its pod
+  document.querySelectorAll('.tier-card').forEach(card => {
+    const img = card.querySelector('.tier-img img');
+    if (!img) return;
+    const m = img.src.match(/ai-(suite|quad|duo|studio)-/);
+    if (!m) return;
+    const pod = m[1];
+    card.addEventListener('click', e => {
+      // Don't trigger if user clicked a button or link inside the card
+      if (e.target.closest('a, button')) return;
+      open(pod, 0);
+    });
+  });
+})();
+
+
+// Make nav transparent over the (dark) hero, solid past it
+(function(){
+  const nav = document.querySelector('.nav');
+  const hero = document.getElementById('top');
+  if (!nav || !hero) return;
+  function onScroll(){
+    const past = window.scrollY > (hero.offsetHeight - 80);
+    nav.classList.toggle('over-hero', !past);
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+})();
+
 } // end __initInteractive
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', __initInteractive);
@@ -1237,12 +1348,101 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .lineup-tile.featured{border:2px solid var(--red);background:linear-gradient(180deg,#FFF8F8 0%,#FAFAFA 100%);box-shadow:0 4px 12px rgba(229,59,59,0.08),0 16px 48px rgba(229,59,59,0.18)}
 .lineup-tile.featured:hover{box-shadow:0 8px 20px rgba(229,59,59,0.12),0 24px 60px rgba(229,59,59,0.25)}
 .lineup-tile-badge{position:absolute;top:14px;right:14px;background:var(--red);color:white;padding:5px 12px;border-radius:999px;font-size:0.65rem;font-weight:800;letter-spacing:0.18em;z-index:2;box-shadow:0 4px 12px rgba(229,59,59,0.35)}
+
+/* ===== Hero — full-bleed cinematic, Apple/Tesla aesthetic ===== */
+.hero{position:relative;min-height:100vh;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;color:white;padding:0}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.hero-bg-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.25) 35%,rgba(0,0,0,0.55) 75%,rgba(0,0,0,0.85) 100%);pointer-events:none}
+.hero-sound{position:absolute;top:96px;right:32px;z-index:5;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.18);color:white;padding:10px 16px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:inherit;font-size:0.82rem;font-weight:600;letter-spacing:-0.01em;transition:all 0.2s}
+.hero-sound:hover{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.35)}
+.hero-sound i{width:18px;height:18px}
+@media(max-width:640px){.hero-sound{top:84px;right:18px;padding:8px 12px}.hero-sound-label{display:none}}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:1100px;padding:0 32px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:28px}
+.hero-eyebrow{font-size:0.74rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:8px 18px;background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.14);border-radius:999px;display:inline-block}
+.hero h1{font-size:clamp(2.4rem, 7vw, 6rem);font-weight:900;letter-spacing:-0.045em;line-height:0.96;color:white;margin:0;text-shadow:0 4px 30px rgba(0,0,0,0.45)}
+.hero-h1-strike{font-weight:900}
+.hero-h1-red{color:var(--red);font-style:italic;font-weight:900}
+.hero-sub{font-size:clamp(0.98rem, 1.4vw, 1.18rem);color:rgba(255,255,255,0.88);max-width:760px;line-height:1.55;margin:0 auto;text-shadow:0 2px 16px rgba(0,0,0,0.5);font-weight:400}
+.hero-sub strong{color:white;font-weight:700}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.btn-glass{background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.25);color:white}
+.btn-glass:hover{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.4);color:white}
+
+.nav{transition:all 0.3s}
+.nav.over-hero{background:transparent;border-bottom:1px solid rgba(255,255,255,0.1)}
+.nav.over-hero .nav-tabs a,.nav.over-hero .nav-logo+span{color:rgba(255,255,255,0.85)}
+.nav.over-hero img{filter:brightness(0) invert(1)}
+.hero-scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.55);font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px;animation:heroScroll 2.4s ease-in-out infinite}
+.hero-scroll-arrow{width:1px;height:32px;background:linear-gradient(180deg,rgba(255,255,255,0.6),transparent)}
+@keyframes heroScroll{0%,100%{transform:translateX(-50%) translateY(0);opacity:.6}50%{transform:translateX(-50%) translateY(6px);opacity:1}}
+@media(max-width:640px){.hero-content{padding:0 22px;gap:22px}.hero-scroll-hint{display:none}}
+
+/* ===== AI image watermark — applied to any .ai-watermarked container ===== */
+.ai-watermarked{position:relative}
+.ai-watermarked::after{content:'';position:absolute;bottom:14px;right:14px;width:46px;height:46px;background-image:url('assets/images/mtip-logo-white.png');background-size:contain;background-repeat:no-repeat;background-position:center;opacity:0.6;pointer-events:none;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5))}
+@media(max-width:640px){.ai-watermarked::after{width:32px;height:32px;bottom:10px;right:10px}}
+
+/* ===== Lightbox modal for tier-card carousel ===== */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:9999;display:none;align-items:center;justify-content:center;padding:32px;animation:lbFade 0.32s ease}
+.lightbox.open{display:flex}
+@keyframes lbFade{from{opacity:0}to{opacity:1}}
+.lb-stage{position:relative;width:100%;max-width:1400px;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center}
+.lb-img{max-width:100%;max-height:100%;width:auto;height:auto;border-radius:12px;box-shadow:0 30px 100px rgba(0,0,0,0.6);transition:opacity 0.25s}
+.lb-img.swapping{opacity:0}
+.lb-meta{position:absolute;left:0;bottom:-72px;color:rgba(255,255,255,0.85);font-size:0.95rem;font-weight:600;letter-spacing:-0.01em;display:flex;flex-direction:column;gap:4px}
+.lb-meta-eyebrow{font-size:0.72rem;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--red-light)}
+.lb-counter{position:absolute;right:0;bottom:-72px;color:rgba(255,255,255,0.6);font-size:0.95rem;font-weight:600;font-feature-settings:"tnum"}
+.lb-close{position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;line-height:1;transition:all 0.2s;z-index:2}
+.lb-close:hover{background:rgba(255,255,255,0.2);transform:rotate(90deg)}
+.lb-arrow{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:2}
+.lb-arrow:hover{background:var(--red);border-color:var(--red);transform:translateY(-50%) scale(1.05)}
+.lb-arrow i{width:24px;height:24px}
+.lb-prev{left:24px}
+.lb-next{right:24px}
+.lb-thumbs{position:absolute;left:50%;bottom:-150px;transform:translateX(-50%);display:flex;gap:8px}
+.lb-thumb{width:60px;height:38px;border-radius:6px;border:2px solid rgba(255,255,255,0.15);overflow:hidden;cursor:pointer;background:#0A0B0D;opacity:0.55;transition:all 0.2s;padding:0}
+.lb-thumb:hover{opacity:0.85;border-color:rgba(255,255,255,0.4)}
+.lb-thumb.active{opacity:1;border-color:var(--red);box-shadow:0 0 0 2px rgba(229,59,59,0.3)}
+.lb-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:640px){.lb-stage{aspect-ratio:auto;height:60vh}.lb-meta,.lb-counter{position:static;margin-top:14px;text-align:center}.lb-thumbs{position:static;transform:none;margin-top:18px;flex-wrap:wrap;justify-content:center;max-width:90vw}.lb-arrow{width:44px;height:44px}.lb-prev{left:8px}.lb-next{right:8px}}
+
+/* Tier card click-to-open hint */
+.tier-card{cursor:pointer;position:relative}
+.tier-card::before{content:'View 8 angles';position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.7);color:white;padding:6px 10px;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.04em;z-index:3;opacity:0;transition:opacity 0.2s;pointer-events:none}
+.tier-card:hover::before{opacity:1}
+.tier-card .tier-img{cursor:zoom-in}
+
 </style>
 </head>
 <body>
 <nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><div class="nav-tabs"><a href="#deploy">Deploy</a><a href="#wizard">Run the math</a><a href="#suite">The Suite</a><a href="#lineup">Lineup</a><a href="#explore3d">3D</a><a href="#step-inside">Step inside</a><a href="#hear-it">Hear it</a></div><a href="#deploy" class="btn btn-red">Get JV term sheet</a></div></nav>
 
-<section class="hero" id="top"><div class="container"><div class="hero-grid"><div><div class="eyebrow">Warehouses · retail plazas · ground-floor office · South Florida → national</div><h1>Stop building<br>$80K offices.<br><span class="red-em">Drop in pods.</span></h1><p class="hero-sub">A 49 sq ft TI build-out runs <strong>$10,000–$15,000</strong>, takes 6 months, and walks out the door when the tenant leaves. <strong>The Suite by MTIP Collective ships fully assembled in 90 days for $6,997.</strong> Or — let us fund <strong>100%</strong>, recover from rental revenue, and override-split with you in perpetuity.</p><div class="hero-ctas"><a href="#wizard" class="btn btn-red btn-lg">Run the math on your property <i data-lucide="arrow-right"></i></a><a href="#deploy" class="btn btn-outline btn-lg">See deal structures</a></div></div><div class="hero-video-wrap"><video id="heroVideo" autoplay muted loop playsinline poster="assets/images/hero-landscape.jpg"><source src="assets/video/walkthrough.mp4" type="video/mp4"></video><button class="video-toggle" id="videoToggle" aria-label="Toggle sound"><i data-lucide="volume-x" id="videoIcon"></i></button></div></div></div></section>
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <video id="heroVideo" autoplay muted loop playsinline poster="assets/images/ai-suite-int-wide.jpg">
+      <source src="assets/video/walkthrough.mp4" type="video/mp4">
+    </video>
+    <div class="hero-bg-tint"></div>
+  </div>
+  <button class="hero-sound" id="videoToggle" aria-label="Toggle sound">
+    <i data-lucide="volume-x" id="videoIcon"></i>
+    <span class="hero-sound-label">Sound off</span>
+  </button>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Warehouses · Retail plazas · Ground-floor office · South Florida → National</div>
+    <h1>Stop building <span class="hero-h1-strike">$80K offices.</span><br><span class="hero-h1-red">Drop in pods.</span></h1>
+    <p class="hero-sub">A 49 sq ft TI build-out runs <strong>$10,000–$15,000</strong>, takes 6 months, and walks out with the tenant. <strong>The Suite by MTIP Collective ships fully assembled in 90 days for $6,997.</strong> Or — let us fund 100%, recover from rental revenue, and override-split with you in perpetuity.</p>
+    <div class="hero-ctas">
+      <a href="#wizard" class="btn btn-red btn-lg">Run the math on your property <i data-lucide="arrow-right"></i></a>
+      <a href="#deploy" class="btn btn-glass btn-lg">See deal structures</a>
+    </div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="hero-scroll-arrow"></div>
+    </div>
+  </div>
+</section>
 
 <div class="trust-strip"><div class="container"><div class="trust-inner"><span><i data-lucide="volume-x"></i> ~30 dB sound insulation</span><span class="sep"></span><span><i data-lucide="truck"></i> 90-day delivery</span><span class="sep"></span><span><i data-lucide="package-check"></i> Fully assembled</span><span class="sep"></span><span><i data-lucide="shield-check"></i> 1-year warranty</span><span class="sep"></span><span><i data-lucide="credit-card"></i> $0 down · 12-mo plans</span><span class="sep"></span><span><i data-lucide="map-pin"></i> Showroom · 16137 Biscayne Blvd, North Miami Beach</span></div></div></div><div class="cert-strip"><div class="container"><div class="cert-inner"><div class="cert-item"><div class="cert-mark">ISO</div><div><strong>23351-1 Certified</strong><span>Acoustic performance to international standard</span></div></div><div class="cert-item"><div class="cert-mark">90<sub>day</sub></div><div><strong>Production lead time</strong><span>Deposit → fully assembled at your door</span></div></div><div class="cert-item"><div class="cert-mark">1<sub>yr</sub></div><div><strong>Manufacturer warranty</strong><span>Free replacement parts, full coverage</span></div></div><div class="cert-item"><div class="cert-mark">$0</div><div><strong>Down payment, financed</strong><span>12 monthly installments available</span></div></div></div></div></div>
 
@@ -1522,10 +1722,10 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="tier-toggle-wrap"><div class="tier-toggle" id="tierToggle"><button class="active" data-mode="cash">Pay Once</button><button data-mode="install">12-Month · $0 Down</button></div></div>
 
 <div class="tier-grid">
-<div class="tier-card"><div class="tier-img"><img src="assets/images/ai-studio-orbit.jpg" onerror="this.src='assets/images/tier-studio.jpg'" alt="The Studio — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Solo · Phone booth</div><h3>The Studio</h3><p class="tier-tagline">A private studio in 10 sq ft. For recording, AI command, focus, sales floor.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1 person</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~10 sq ft</strong> (0.96 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>28 ± 3 dB</strong></span></li><li><i data-lucide="zap"></i><span>24W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$2,997" data-install="$299">$2,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
-<div class="tier-card"><div class="tier-img"><img src="assets/images/ai-duo-orbit.jpg" onerror="this.src='assets/images/tier-duo.jpg'" alt="The Duo — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Private · 1-2 person office</div><h3>The Duo</h3><p class="tier-tagline">The smart 1-person office. Or take real 2-person calls. Either works.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–2 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~23 sq ft</strong> (2.1 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>30W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$4,497" data-install="$449">$4,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
-<div class="tier-card"><div class="tier-img"><img src="assets/images/ai-quad-orbit.jpg" onerror="this.src='assets/images/tier-quad.jpg'" alt="The Quad — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Best seller · Meeting room</div><h3>The Quad</h3><p class="tier-tagline">A real meeting room. Without the build-out. Workshops, sales rooms, pitches.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>4 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~31 sq ft</strong> (2.9 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>54W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$5,497" data-install="$549">$5,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
-<div class="tier-card featured"><div class="tier-img"><img src="assets/images/ai-suite-orbit.jpg" alt="The Suite — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Flagship · Highest revenue per pod</div><h3>The Suite</h3><p class="tier-tagline">Highest-margin 49 sq ft on your floor plate. Rents at $800–$1,000/mo. Pays back in 8 months.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–6 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> (4.5 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>90W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$6,997" data-install="$699">$6,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-red">Reserve The Suite</a></div></div>
+<div class="tier-card"><div class="tier-img ai-watermarked"><img src="assets/images/ai-studio-orbit.jpg" onerror="this.src='assets/images/tier-studio.jpg'" alt="The Studio — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Solo · Phone booth</div><h3>The Studio</h3><p class="tier-tagline">A private studio in 10 sq ft. For recording, AI command, focus, sales floor.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1 person</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~10 sq ft</strong> (0.96 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>28 ± 3 dB</strong></span></li><li><i data-lucide="zap"></i><span>24W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$2,997" data-install="$299">$2,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card"><div class="tier-img ai-watermarked"><img src="assets/images/ai-duo-orbit.jpg" onerror="this.src='assets/images/tier-duo.jpg'" alt="The Duo — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Private · 1-2 person office</div><h3>The Duo</h3><p class="tier-tagline">The smart 1-person office. Or take real 2-person calls. Either works.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–2 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~23 sq ft</strong> (2.1 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>30W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$4,497" data-install="$449">$4,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card"><div class="tier-img ai-watermarked"><img src="assets/images/ai-quad-orbit.jpg" onerror="this.src='assets/images/tier-quad.jpg'" alt="The Quad — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Best seller · Meeting room</div><h3>The Quad</h3><p class="tier-tagline">A real meeting room. Without the build-out. Workshops, sales rooms, pitches.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>4 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~31 sq ft</strong> (2.9 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>54W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$5,497" data-install="$549">$5,497</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
+<div class="tier-card featured"><div class="tier-img ai-watermarked"><img src="assets/images/ai-suite-orbit.jpg" alt="The Suite — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Flagship · Highest revenue per pod</div><h3>The Suite</h3><p class="tier-tagline">Highest-margin 49 sq ft on your floor plate. Rents at $800–$1,000/mo. Pays back in 8 months.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1–6 people</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~49 sq ft</strong> (4.5 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>30 ± 3 dB</strong> ISO certified</span></li><li><i data-lucide="zap"></i><span>90W · USB-C + Qi</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$6,997" data-install="$699">$6,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-red">Reserve The Suite</a></div></div>
 </div>
 
 <div style="text-align:center;margin-top:48px"><p style="color:var(--text-mid)">Need <strong style="color:var(--text)">accessibility configuration</strong>? The Accessible Pod is engineered for users with reduced mobility — wide entry, auto-opening door, multi-modal access. <strong style="color:var(--text)">Pricing on request.</strong></p><a href="mailto:mtip@hey.com?subject=Accessible%20Pod%20Inquiry" class="btn btn-ghost" style="margin-top:12px">Talk to us about accessibility <i data-lucide="arrow-right"></i></a></div>
@@ -1571,7 +1771,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
         <button type="button" class="stepin-pod" data-pod="duo">The Duo · 2P</button>
         <button type="button" class="stepin-pod" data-pod="studio">The Studio · 1P</button>
       </div>
-      <div class="stepin-stage" id="stepinStage">
+      <div class="stepin-stage ai-watermarked" id="stepinStage">
         <img id="stepinImage" src="assets/images/ai-suite-orbit.jpg" alt="The Suite — three-quarter exterior view" />
         <div class="stepin-fade"></div>
         <div class="stepin-caption" id="stepinCaption">
@@ -1769,26 +1969,26 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 
 
-<div class="carousel-slide"><img src="assets/images/lifestyle-modern-office.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Modern open office"><div class="carousel-caption"><strong>Modern open office</strong><span>Polished concrete · industrial track lighting · 5500K daylight</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-coworking.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Industrial coworking"><div class="carousel-caption"><strong>Industrial coworking</strong><span>Exposed brick · Edison-bulb pendants · 2700K warm</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-lobby.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Luxury hotel lobby"><div class="carousel-caption"><strong>Luxury hotel lobby</strong><span>Marble floor · 3000K ambient · oversized art</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-cafe.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Third-wave coffee shop"><div class="carousel-caption"><strong>Third-wave coffee shop</strong><span>Reclaimed wood · brass pendants · 2700K</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-airport.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Airport terminal lounge"><div class="carousel-caption"><strong>Airport terminal lounge</strong><span>Polished stone · floor-to-ceiling glass · 4500K</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-class-a-lobby.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Class A office lobby"><div class="carousel-caption"><strong>Class A office lobby</strong><span>Travertine · double-height ceiling · cove lighting</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-open-plan-startup.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Open-plan startup loft"><div class="carousel-caption"><strong>Open-plan startup loft</strong><span>Light wood · standing desks · 4000K skylights</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-industrial-flex.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Warehouse-converted flex"><div class="carousel-caption"><strong>Warehouse-converted flex</strong><span>Polished concrete · steel I-beams · factory windows</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-retail-plaza.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Multi-tenant retail plaza"><div class="carousel-caption"><strong>Multi-tenant retail plaza</strong><span>Terrazzo · perforated metal ceiling · 4000K LED</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-boutique-hotel.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Boutique hotel lounge"><div class="carousel-caption"><strong>Boutique hotel lounge</strong><span>Herringbone wood · emerald velvet · brass fixtures</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-healthcare-admin.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Healthcare admin floor"><div class="carousel-caption"><strong>Healthcare admin floor</strong><span>Light vinyl · soft white · 4000K clinical-modern</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-law-firm.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Corporate law corridor"><div class="carousel-caption"><strong>Corporate law corridor</strong><span>Walnut panels · dark wool carpet · 3000K downlight</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-university-library.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="University library quiet"><div class="carousel-caption"><strong>University library quiet</strong><span>Oak parquet · arched windows · reading lamps</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-real-estate-brokerage.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="CRE brokerage floor"><div class="carousel-caption"><strong>CRE brokerage floor</strong><span>Glass partitions · dual monitors · skyline photo</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-wework-style.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Members coworking"><div class="carousel-caption"><strong>Members coworking</strong><span>Globe pendants · live moss accent · jewel-tone lounge</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-investment-floor.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Investment trading floor"><div class="carousel-caption"><strong>Investment trading floor</strong><span>Dark hardwood · black-glass walls · multi-screen</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-golden-hour-coworking.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Golden hour coworking"><div class="carousel-caption"><strong>Golden hour coworking</strong><span>West-facing windows · 2200K orange light</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-corner-office.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Multi-tenant corner office"><div class="carousel-caption"><strong>Multi-tenant corner office</strong><span>Double-aspect glass · skyline · mid-century</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-conference-center.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Conference center foyer"><div class="carousel-caption"><strong>Conference center foyer</strong><span>Marble · double-height ceiling · cove lighting</span></div></div>
-<div class="carousel-slide"><img src="assets/images/lifestyle-flex-loft.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Creative agency loft"><div class="carousel-caption"><strong>Creative agency loft</strong><span>Whitewashed brick · Edison bulbs · colourful furniture</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-modern-office.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Modern open office"><div class="carousel-caption"><strong>Modern open office</strong><span>Polished concrete · industrial track lighting · 5500K daylight</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-coworking.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Industrial coworking"><div class="carousel-caption"><strong>Industrial coworking</strong><span>Exposed brick · Edison-bulb pendants · 2700K warm</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-lobby.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Luxury hotel lobby"><div class="carousel-caption"><strong>Luxury hotel lobby</strong><span>Marble floor · 3000K ambient · oversized art</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-cafe.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Third-wave coffee shop"><div class="carousel-caption"><strong>Third-wave coffee shop</strong><span>Reclaimed wood · brass pendants · 2700K</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-airport.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Airport terminal lounge"><div class="carousel-caption"><strong>Airport terminal lounge</strong><span>Polished stone · floor-to-ceiling glass · 4500K</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-class-a-lobby.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Class A office lobby"><div class="carousel-caption"><strong>Class A office lobby</strong><span>Travertine · double-height ceiling · cove lighting</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-open-plan-startup.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Open-plan startup loft"><div class="carousel-caption"><strong>Open-plan startup loft</strong><span>Light wood · standing desks · 4000K skylights</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-industrial-flex.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Warehouse-converted flex"><div class="carousel-caption"><strong>Warehouse-converted flex</strong><span>Polished concrete · steel I-beams · factory windows</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-retail-plaza.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Multi-tenant retail plaza"><div class="carousel-caption"><strong>Multi-tenant retail plaza</strong><span>Terrazzo · perforated metal ceiling · 4000K LED</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-boutique-hotel.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Boutique hotel lounge"><div class="carousel-caption"><strong>Boutique hotel lounge</strong><span>Herringbone wood · emerald velvet · brass fixtures</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-healthcare-admin.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Healthcare admin floor"><div class="carousel-caption"><strong>Healthcare admin floor</strong><span>Light vinyl · soft white · 4000K clinical-modern</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-law-firm.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Corporate law corridor"><div class="carousel-caption"><strong>Corporate law corridor</strong><span>Walnut panels · dark wool carpet · 3000K downlight</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-university-library.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="University library quiet"><div class="carousel-caption"><strong>University library quiet</strong><span>Oak parquet · arched windows · reading lamps</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-real-estate-brokerage.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="CRE brokerage floor"><div class="carousel-caption"><strong>CRE brokerage floor</strong><span>Glass partitions · dual monitors · skyline photo</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-wework-style.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Members coworking"><div class="carousel-caption"><strong>Members coworking</strong><span>Globe pendants · live moss accent · jewel-tone lounge</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-investment-floor.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Investment trading floor"><div class="carousel-caption"><strong>Investment trading floor</strong><span>Dark hardwood · black-glass walls · multi-screen</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-golden-hour-coworking.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Golden hour coworking"><div class="carousel-caption"><strong>Golden hour coworking</strong><span>West-facing windows · 2200K orange light</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-corner-office.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Multi-tenant corner office"><div class="carousel-caption"><strong>Multi-tenant corner office</strong><span>Double-aspect glass · skyline · mid-century</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-conference-center.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Conference center foyer"><div class="carousel-caption"><strong>Conference center foyer</strong><span>Marble · double-height ceiling · cove lighting</span></div></div>
+<div class="carousel-slide ai-watermarked"><img src="assets/images/lifestyle-flex-loft.jpg" loading="lazy" onerror="this.parentNode.style.display='none'" alt="Creative agency loft"><div class="carousel-caption"><strong>Creative agency loft</strong><span>Whitewashed brick · Edison bulbs · colourful furniture</span></div></div>
 </div>
 <div class="carousel-nav"><button id="carouselPrev" aria-label="Previous"><i data-lucide="arrow-left"></i></button><div class="carousel-counter" id="carouselCounter">1 / 19</div><button id="carouselNext" aria-label="Next"><i data-lucide="arrow-right"></i></button></div>
 </div>
@@ -1964,6 +2164,23 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 <!-- 360 panorama viewer (Three.js) -->
 
+
+
+<!-- Pod tier lightbox carousel -->
+<div class="lightbox" id="podLightbox" role="dialog" aria-modal="true" aria-label="Pod gallery">
+  <button class="lb-close" id="lbClose" aria-label="Close">×</button>
+  <div class="lb-stage">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <div class="lb-meta">
+      <span class="lb-meta-eyebrow" id="lbEyebrow">Pod</span>
+      <span id="lbTitle">View</span>
+    </div>
+    <div class="lb-counter" id="lbCounter">1 / 8</div>
+    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
+    <button class="lb-arrow lb-next" id="lbNext" aria-label="Next"><i data-lucide="chevron-right"></i></button>
+    <div class="lb-thumbs" id="lbThumbs"></div>
+  </div>
+</div>
 
 </body>
 </html>
