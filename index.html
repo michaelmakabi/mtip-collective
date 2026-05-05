@@ -890,10 +890,13 @@ p{color:var(--text-mid)}
 .trust-inner span{display:inline-flex;align-items:center;gap:8px}
 .trust-inner i{width:16px;height:16px;color:var(--red)}
 .trust-inner .sep{width:4px;height:4px;background:var(--silver-2);border-radius:50%}
-.suite-hero{background:linear-gradient(180deg,var(--white) 0%,var(--bg-soft) 100%);position:relative;overflow:hidden}
+.suite-hero{background:linear-gradient(180deg,var(--white) 0%,var(--bg-soft) 100%);position:relative;overflow:visible;padding:80px 0 80px}
 .suite-hero::before{content:'';position:absolute;top:0;right:-10%;width:60%;height:60%;background:radial-gradient(ellipse at center,var(--red-glow) 0%,transparent 70%);pointer-events:none}
-.suite-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;position:relative}
-@media(max-width:1024px){.suite-grid{grid-template-columns:1fr;gap:56px}}
+/* Suite hero — sticky image so it follows the long text column with no dead space */
+.suite-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:start;position:relative}
+.suite-image{position:sticky;top:120px;align-self:start;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.18);background:#0A0B0D;aspect-ratio:4/5;max-height:calc(100vh - 160px)}
+.suite-image img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:1024px){.suite-grid{grid-template-columns:1fr;gap:36px}.suite-image{position:relative;top:0;aspect-ratio:16/10;max-height:none}}
 .flagship-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:white;border:1px solid var(--border);color:var(--red);border-radius:999px;font-size:0.78rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;box-shadow:var(--shadow-sm)}
 .flagship-pill i{width:14px;height:14px}
 .suite-image{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;box-shadow:var(--shadow-lg)}
@@ -1459,7 +1462,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 @media(max-width:640px){.hero-content{padding:0 22px;gap:22px}.hero-scroll-hint{display:none}}
 
 /* Hero translucent card frame around the content */
-.hero-content{background:rgba(8,10,15,0.55);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border:1px solid rgba(255,255,255,0.12);border-radius:28px;padding:56px 64px;box-shadow:0 30px 80px rgba(0,0,0,0.45);max-width:900px}
+.hero-content{background:rgba(8,10,15,0.55);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border:1px solid rgba(255,255,255,0.12);border-radius:28px;padding:56px 64px;box-shadow:0 30px 80px rgba(0,0,0,0.45);max-width:900px;margin-bottom:60px}
 @media(max-width:760px){.hero-content{padding:36px 28px;border-radius:22px}}
 
 /* Watch video popup */
@@ -1534,10 +1537,10 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       <a href="#wizard" class="btn btn-red btn-lg">Run the math on your property <i data-lucide="arrow-right"></i></a>
       <button type="button" class="btn btn-glass btn-lg" id="heroWatchBtn"><i data-lucide="play-circle"></i> Watch the walkthrough</button>
     </div>
-    <div class="hero-scroll-hint" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="hero-scroll-arrow"></div>
-    </div>
+      </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="hero-scroll-arrow"></div>
   </div>
 </section>
 
@@ -1789,7 +1792,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 <div class="suite-price-card"><div class="suite-price-row"><span class="big">$6,997</span><span class="once">paid once · delivered turnkey</span></div><p class="install-note">Or <strong>$699/mo</strong> for 12 months · <strong>$0 down</strong> · 0 credit gymnastics</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a href="#order" class="btn btn-red">Reserve The Suite <i data-lucide="arrow-right"></i></a><a href="#showroom" class="btn btn-outline">See It In Person</a></div></div>
 </div>
-<div class="suite-image"><img src="assets/images/real-quad-showroom.jpg" alt="MTIP Collective Suite — flagship showroom" style="object-position:center 30%"><div class="suite-image-tag">The Suite · 6-person · <span>Flagship</span></div></div>
+<div class="suite-image ai-watermarked"><img src="assets/images/ai-suite-orbit.jpg" alt="MTIP Collective Suite — flagship exterior render" style="object-position:center center"><div class="suite-image-tag">The Suite · 6-person · <span>Flagship</span></div></div>
 </div></div></section>
 
 
@@ -1837,7 +1840,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       <p class="lead" style="margin-left:auto;margin-right:auto">Studio. Duo. Quad. Suite. Same aluminum frame, same ISO-certified acoustic walls, same 6mm tempered glass. Click through to see each one.</p>
     </div>
     <div class="podshow-wrap">
-      <div class="podshow-stage">
+      <div class="podshow-stage ai-watermarked">
         <img id="podshowImage" src="assets/images/ai-suite-orbit.jpg" alt="The Suite — 49 sq ft 6-person pod">
         <div class="podshow-meta">
           <div class="podshow-meta-name" id="podshowName">The Suite</div>
@@ -1845,9 +1848,9 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
         </div>
       </div>
       <div class="podshow-controls">
-        <button class="podshow-btn" data-pod="studio" data-img="assets/images/pod-studio.jpg" data-name="The Studio" data-spec="~10 sq ft · 1 person · 28 ± 3 dB · 24W USB + USB-C">Studio · 1P</button>
-        <button class="podshow-btn" data-pod="duo" data-img="assets/images/pod-duo.jpg" data-name="The Duo" data-spec="~23 sq ft · 1–2 people · 30 ± 3 dB ISO certified · 30W USB + USB-C">Duo · 2P</button>
-        <button class="podshow-btn" data-pod="quad" data-img="assets/images/pod-quad.jpg" data-name="The Quad" data-spec="~31 sq ft · 4 people · 30 ± 3 dB ISO certified · 54W USB-C + Qi">Quad · 4P</button>
+        <button class="podshow-btn" data-pod="studio" data-img="assets/images/ai-studio-orbit.jpg" data-name="The Studio" data-spec="~10 sq ft · 1 person · 28 ± 3 dB · 24W USB + USB-C">Studio · 1P</button>
+        <button class="podshow-btn" data-pod="duo" data-img="assets/images/ai-duo-orbit.jpg" data-name="The Duo" data-spec="~23 sq ft · 1–2 people · 30 ± 3 dB ISO certified · 30W USB + USB-C">Duo · 2P</button>
+        <button class="podshow-btn" data-pod="quad" data-img="assets/images/ai-quad-orbit.jpg" data-name="The Quad" data-spec="~31 sq ft · 4 people · 30 ± 3 dB ISO certified · 54W USB-C + Qi">Quad · 4P</button>
         <button class="podshow-btn active" data-pod="suite" data-img="assets/images/ai-suite-orbit.jpg" data-name="The Suite" data-spec="~49 sq ft · 1–6 people · 30 ± 3 dB ISO certified · 90W USB-C + Qi">Suite · 6P · Flagship</button>
       </div>
     </div>
