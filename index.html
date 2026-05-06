@@ -3956,55 +3956,63 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       modal.setAttribute('data-mode', selectedMode);
       modeLabel.textContent = (selectedMode === 'voice' ? 'Voice' : 'Text') + ' · ' + languageNames(selectedLang);
       statusEl.textContent = 'Connecting…';
+      msgsEl.innerHTML = '';
 
       try {
-        // Request mic for voice mode
         if (selectedMode === 'voice') {
           await navigator.mediaDevices.getUserMedia({ audio: true });
         }
 
+        // Build session config WITHOUT connectionType — SDK auto-picks websocket for text, webrtc for voice
         var sessionOpts = {
           agentId: AGENT_ID,
-          connectionType: 'webrtc',
+          textOnly: selectedMode === 'text',
           overrides: {
             agent: { language: selectedLang }
           },
-          textOnly: selectedMode === 'text',
-          onConnect: function() {
+          onConnect: function(payload) {
+            console.log('[Loren] connected:', payload);
             statusEl.textContent = selectedMode === 'voice' ? 'Loren is listening…' : 'Loren is ready';
           },
-          onDisconnect: function() {
-            statusEl.textContent = 'Call ended';
+          onDisconnect: function(details) {
+            console.log('[Loren] disconnected:', details);
             orbViz.classList.remove('speaking', 'listening');
+            var reason = (details && (details.reason || details.message)) || 'unknown';
+            statusEl.textContent = 'Call ended (' + reason + ')';
           },
           onError: function(err) {
-            console.error('Loren error:', err);
-            statusEl.textContent = 'Connection issue. Try again?';
+            console.error('[Loren] error:', err);
+            var emsg = (err && (err.message || err.reason)) || JSON.stringify(err) || 'unknown error';
+            statusEl.textContent = 'Error: ' + emsg.substring(0, 80);
           },
           onModeChange: function(modeChange) {
-            // mode = 'speaking' | 'listening'
             var mode = modeChange && modeChange.mode;
+            console.log('[Loren] mode:', mode);
             orbViz.classList.toggle('speaking', mode === 'speaking');
             orbViz.classList.toggle('listening', mode === 'listening');
             if (mode === 'speaking') statusEl.textContent = 'Loren is speaking…';
             else if (mode === 'listening') statusEl.textContent = 'Loren is listening…';
           },
           onMessage: function(msg) {
-            // msg: { source: 'ai' | 'user', message: '...' }
+            console.log('[Loren] message:', msg);
             if (!msg || !msg.message) return;
             var role = msg.source === 'user' ? 'user' : 'agent';
-            if (selectedMode === 'text' || msg.source === 'ai' || msg.source === 'user') {
-              appendMsg(role, msg.message);
-            }
+            appendMsg(role, msg.message);
           },
           onStatusChange: function(s) {
-            console.log('status:', s);
+            console.log('[Loren] status change:', s);
+          },
+          onDebug: function(info) {
+            console.log('[Loren] debug:', info);
           }
         };
 
+        console.log('[Loren] starting session with opts:', sessionOpts);
         conversation = await Conversation.startSession(sessionOpts);
+        console.log('[Loren] session created:', conversation);
+        window.__lorenConv = conversation; // expose for manual debugging
       } catch (err) {
-        console.error('Failed to start:', err);
+        console.error('[Loren] startSession threw:', err);
         statusEl.textContent = 'Could not start: ' + (err.message || err);
       }
     });
