@@ -1963,6 +1963,55 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   .wall-side{padding:28px 22px;text-align:center;align-items:center !important}
   .wall-side-in{align-items:center;text-align:center}
 }
+
+/* === Loren AI widget — custom branded styling === */
+elevenlabs-convai {
+  --el-color-primary: #dc2626;
+  --el-color-secondary: #0a0a0a;
+  --el-color-text: #f5f5f5;
+  --el-border-radius: 18px;
+}
+elevenlabs-convai::part(launcher),
+elevenlabs-convai::part(orb) {
+  filter: drop-shadow(0 0 22px rgba(220, 38, 38, 0.55)) drop-shadow(0 0 6px rgba(220, 38, 38, 0.85));
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+elevenlabs-convai:hover::part(launcher),
+elevenlabs-convai:hover::part(orb) {
+  filter: drop-shadow(0 0 32px rgba(220, 38, 38, 0.85)) drop-shadow(0 0 10px rgba(220, 38, 38, 1));
+  transform: scale(1.04);
+}
+@media (max-width: 768px) {
+  elevenlabs-convai {
+    margin-bottom: 64px;
+  }
+}
+
+/* === Loren orb halo wrapper === */
+.loren-orb-halo {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 99;
+  pointer-events: none;
+}
+.loren-orb-halo::before {
+  content: '';
+  position: absolute;
+  inset: -28px;
+  background: radial-gradient(circle at center, rgba(220,38,38,0.35) 0%, rgba(220,38,38,0.15) 40%, transparent 75%);
+  border-radius: 50%;
+  filter: blur(10px);
+  animation: loren-pulse 2.6s ease-in-out infinite;
+}
+@keyframes loren-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.92); }
+  50% { opacity: 0.95; transform: scale(1.12); }
+}
+@media (max-width: 768px) {
+  .loren-orb-halo { bottom: 78px; right: 18px; }
+}
+
 </style>
 </head>
 <body>
@@ -2779,6 +2828,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 
 <!-- Loren AI assistant (ElevenLabs Convai) -->
+<div class="loren-orb-halo" aria-hidden="true"></div>
 <elevenlabs-convai agent-id="agent_8201kqz1zth8evzvygs9xgn1pk3k"></elevenlabs-convai>
 <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
 
