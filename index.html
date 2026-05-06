@@ -2447,6 +2447,157 @@ body[data-pricing-mode="monthly"] .suite-price-row .big {
 }
 
 </style>
+
+<style id="loren-sheet-style">
+/* Loren chat sheet — MUST WORK */
+.loren-sheet-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1500;
+}
+.loren-sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+.loren-sheet {
+  position: fixed;
+  bottom: 96px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  width: calc(100% - 24px);
+  max-width: 460px;
+  background: linear-gradient(180deg, #16161a 0%, #0a0a0c 100%);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  border-radius: 22px;
+  z-index: 1600;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.7), 0 0 0 1px rgba(220,38,38,0.2), 0 0 60px rgba(220,38,38,0.18);
+  transition: transform 0.32s cubic-bezier(0.34, 1.2, 0.64, 1);
+  color: #fff;
+  overflow: hidden;
+  max-height: calc(100vh - 130px);
+  display: flex;
+  flex-direction: column;
+}
+.loren-sheet.open { transform: translateX(-50%) translateY(0); }
+@media (min-width: 1025px) { .loren-sheet { bottom: 28px; } }
+.loren-sheet-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.loren-sheet-orb {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 30%), conic-gradient(from 0deg, #dc2626, #ef4444, #7f1d1d, #0a0a0a, #1f1f22, #dc2626);
+  box-shadow: 0 0 0 2px rgba(220,38,38,0.5), 0 4px 14px rgba(220,38,38,0.4);
+  animation: orb-spin 7s linear infinite;
+  flex: 0 0 40px;
+}
+.loren-sheet-title { font-weight: 800; font-size: 1rem; }
+.loren-sheet-sub { font-size: 0.74rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.loren-sheet-close {
+  margin-left: auto; width: 34px; height: 34px;
+  border-radius: 50%; background: rgba(255,255,255,0.08);
+  border: 0; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.loren-sheet-close:hover { background: rgba(220,38,38,0.4); }
+.loren-sheet-body {
+  padding: 20px 18px 22px;
+  flex: 1; overflow-y: auto;
+}
+.loren-step-label {
+  font-size: 0.66rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #dc2626;
+  font-weight: 800; margin-bottom: 6px;
+}
+.loren-step-title {
+  font-size: 1.1rem; font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 14px;
+}
+.loren-mode-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 16px;
+}
+.loren-mode-card {
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 14px; padding: 18px 12px;
+  text-align: center; cursor: pointer;
+  color: #fff; font-family: inherit;
+  display: flex; flex-direction: column;
+  gap: 6px; align-items: center; justify-content: center;
+  min-height: 110px;
+  transition: all 0.2s;
+}
+.loren-mode-card:hover, .loren-mode-card.selected {
+  border-color: #dc2626; background: rgba(220,38,38,0.12);
+}
+.loren-mode-card .icon {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(220,38,38,0.18); color: #dc2626;
+  display: flex; align-items: center; justify-content: center;
+}
+.loren-mode-card .icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+.loren-mode-card .label { font-weight: 800; font-size: 0.92rem; }
+.loren-mode-card .desc { font-size: 0.72rem; color: rgba(255,255,255,0.65); }
+.loren-lang-select {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 12px 14px;
+  color: #fff; font-family: inherit; font-size: 0.92rem;
+  font-weight: 600; cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+  margin-bottom: 16px;
+}
+.loren-lang-select option { background: #16161a; color: #fff; }
+.loren-sheet-btn {
+  width: 100%; min-height: 50px; border-radius: 14px;
+  font-family: inherit; font-weight: 800; font-size: 0.95rem;
+  cursor: pointer; border: 0;
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(220,38,38,0.45);
+  transition: transform 0.15s ease;
+}
+.loren-sheet-btn:hover { transform: translateY(-1px); }
+.loren-sheet-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.loren-call-screen { display: none; text-align: center; padding: 14px 8px; }
+.loren-sheet[data-step="call"] .loren-call-screen { display: block; }
+.loren-sheet[data-step="call"] .loren-step-prepare { display: none; }
+.loren-call-orb {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(255,255,255,0) 30%), conic-gradient(from 0deg, #dc2626, #ef4444, #7f1d1d, #0a0a0a, #1f1f22, #dc2626);
+  box-shadow: 0 0 0 3px rgba(220,38,38,0.55), 0 0 30px rgba(220,38,38,0.5);
+  margin: 6px auto 14px;
+  animation: orb-spin 6s linear infinite;
+}
+.loren-call-status { font-size: 0.94rem; font-weight: 700; margin-bottom: 4px; }
+.loren-call-mode { font-size: 0.74rem; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 22px; }
+.loren-call-controls { display: flex; justify-content: center; gap: 16px; }
+.loren-control-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.loren-control-btn:hover { background: rgba(255,255,255,0.18); }
+.loren-control-btn.muted, .loren-control-btn.paused { background: rgba(220,38,38,0.4); border-color: #dc2626; }
+.loren-control-btn.end { background: #dc2626; border-color: #991b1b; }
+.loren-control-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.loren-control-label { font-size: 0.66rem; color: rgba(255,255,255,0.55); margin-top: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+@keyframes orb-spin { to { transform: rotate(360deg); } }
+</style>
+
 </head>
 <body>
 <a id="top" aria-hidden="true"></a>
@@ -3597,6 +3748,271 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
         item.classList.toggle('open', !isOpen);
       });
     });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
+
+<div class="loren-sheet-backdrop" id="lorenBackdrop" aria-hidden="true"></div>
+<div class="loren-sheet" id="lorenSheet" role="dialog" aria-modal="true">
+  <div class="loren-sheet-header">
+    <div class="loren-sheet-orb" aria-hidden="true"></div>
+    <div>
+      <div class="loren-sheet-title">Loren</div>
+      <div class="loren-sheet-sub">MTIP Collective Pods · AI assistant</div>
+    </div>
+    <button class="loren-sheet-close" id="lorenClose" type="button" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="loren-sheet-body">
+    <div class="loren-step-prepare">
+      <div class="loren-step-label">Step 1 of 2</div>
+      <div class="loren-step-title">How would you like to chat?</div>
+      <div class="loren-mode-grid">
+        <button type="button" class="loren-mode-card" data-mode="voice">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v4M8 23h8"/></svg></span>
+          <span class="label">Voice</span>
+          <span class="desc">Talk to Loren live</span>
+        </button>
+        <button type="button" class="loren-mode-card" data-mode="text">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          <span class="label">Text chat</span>
+          <span class="desc">Type your questions</span>
+        </button>
+      </div>
+      <div class="loren-step-label">Step 2 of 2</div>
+      <div class="loren-step-title">Pick your language</div>
+      <select class="loren-lang-select" id="lorenLang">
+        <option value="en" selected>English</option>
+        <option value="es">Español (Spanish)</option>
+        <option value="fr">Français (French)</option>
+        <option value="de">Deutsch (German)</option>
+        <option value="it">Italiano (Italian)</option>
+        <option value="pt">Português (Portuguese)</option>
+        <option value="zh">中文 (Chinese)</option>
+        <option value="ja">日本語 (Japanese)</option>
+        <option value="ko">한국어 (Korean)</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+        <option value="ar">العربية (Arabic)</option>
+        <option value="ru">Русский (Russian)</option>
+        <option value="tr">Türkçe (Turkish)</option>
+        <option value="nl">Nederlands (Dutch)</option>
+        <option value="pl">Polski (Polish)</option>
+        <option value="he">עברית (Hebrew)</option>
+        <option value="vi">Tiếng Việt (Vietnamese)</option>
+        <option value="th">ไทย (Thai)</option>
+        <option value="id">Bahasa Indonesia</option>
+        <option value="el">Ελληνικά (Greek)</option>
+        <option value="cs">Čeština (Czech)</option>
+        <option value="ro">Română (Romanian)</option>
+        <option value="hu">Magyar (Hungarian)</option>
+        <option value="uk">Українська (Ukrainian)</option>
+        <option value="da">Dansk (Danish)</option>
+        <option value="sv">Svenska (Swedish)</option>
+        <option value="fi">Suomi (Finnish)</option>
+        <option value="no">Norsk (Norwegian)</option>
+        <option value="ms">Bahasa Melayu</option>
+        <option value="fil">Filipino</option>
+      </select>
+      <button type="button" class="loren-sheet-btn" id="lorenStartBtn" disabled>Start conversation</button>
+    </div>
+    <div class="loren-call-screen">
+      <div class="loren-call-orb"></div>
+      <div class="loren-call-status" id="lorenCallStatus">Connecting…</div>
+      <div class="loren-call-mode" id="lorenCallMode">Voice · English</div>
+      <div class="loren-call-controls">
+        <div style="text-align:center">
+          <button type="button" class="loren-control-btn" id="lorenMute" aria-label="Mute">
+            <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v4M8 23h8"/></svg>
+          </button>
+          <div class="loren-control-label">Mute</div>
+        </div>
+        <div style="text-align:center">
+          <button type="button" class="loren-control-btn" id="lorenPause" aria-label="Pause">
+            <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+          </button>
+          <div class="loren-control-label">Pause</div>
+        </div>
+        <div style="text-align:center">
+          <button type="button" class="loren-control-btn end" id="lorenEnd" aria-label="End call">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" transform="rotate(135 12 12)"/></svg>
+          </button>
+          <div class="loren-control-label">End</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* Loren chat sheet — MUST WORK */
+(function() {
+  function $ (s) { return document.querySelector(s); }
+  function deepWalk(node, fn) {
+    if (!node) return;
+    if (node.querySelectorAll) {
+      var nodes = node.querySelectorAll('*');
+      for (var i = 0; i < nodes.length; i++) {
+        fn(nodes[i]);
+        if (nodes[i].shadowRoot) deepWalk(nodes[i].shadowRoot, fn);
+      }
+    }
+  }
+  function clickInShadow(text, root) {
+    var hit = null;
+    deepWalk(root, function(el) {
+      if (hit) return;
+      if (el.tagName === 'BUTTON' || (el.getAttribute && el.getAttribute('role') === 'button')) {
+        var t = (el.textContent || '').trim().toLowerCase();
+        if (t.indexOf(text.toLowerCase()) !== -1) hit = el;
+      }
+    });
+    if (hit) { try { hit.click(); return true; } catch(_){} }
+    return false;
+  }
+  function init() {
+    var sheet = $('#lorenSheet');
+    var backdrop = $('#lorenBackdrop');
+    var modeCards = document.querySelectorAll('.loren-mode-card');
+    var langSelect = $('#lorenLang');
+    var startBtn = $('#lorenStartBtn');
+    var closeBtn = $('#lorenClose');
+    var status = $('#lorenCallStatus');
+    var modeLabel = $('#lorenCallMode');
+    var muteBtn = $('#lorenMute');
+    var pauseBtn = $('#lorenPause');
+    var endBtn = $('#lorenEnd');
+    var convai = $('elevenlabs-convai');
+    if (!sheet) { console.error('Loren sheet not in DOM'); return; }
+
+    var selectedMode = null;
+    var selectedLang = 'en';
+
+    function open() {
+      backdrop.classList.add('open');
+      sheet.classList.add('open');
+      sheet.setAttribute('data-step', 'prepare');
+      sheet.removeAttribute('data-mode');
+      modeCards.forEach(function(c){c.classList.remove('selected');});
+      selectedMode = null;
+      startBtn.disabled = true;
+      muteBtn.classList.remove('muted');
+      pauseBtn.classList.remove('paused');
+    }
+    function close() {
+      backdrop.classList.remove('open');
+      sheet.classList.remove('open');
+      sheet.removeAttribute('data-step');
+      // End any active convai session
+      if (convai && convai.shadowRoot) {
+        clickInShadow('end', convai.shadowRoot);
+      }
+    }
+    function languageNames(c) {
+      var n = {en:'English',es:'Español',fr:'Français',de:'Deutsch',it:'Italiano',pt:'Português',zh:'中文',ja:'日本語',ko:'한국어',hi:'हिन्दी',ar:'العربية',ru:'Русский',tr:'Türkçe',nl:'Nederlands',pl:'Polski',he:'עברית',vi:'Tiếng Việt',th:'ไทย',id:'Bahasa Indonesia',el:'Ελληνικά',cs:'Čeština',ro:'Română',hu:'Magyar',uk:'Українська',da:'Dansk',sv:'Svenska',fi:'Suomi',no:'Norsk',ms:'Melayu',fil:'Filipino'};
+      return n[c] || c;
+    }
+
+    modeCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        modeCards.forEach(function(c){c.classList.remove('selected');});
+        card.classList.add('selected');
+        selectedMode = card.getAttribute('data-mode');
+        startBtn.disabled = false;
+      });
+    });
+    langSelect.addEventListener('change', function() {
+      selectedLang = langSelect.value;
+    });
+
+    startBtn.addEventListener('click', function() {
+      if (!selectedMode) return;
+      sheet.setAttribute('data-step', 'call');
+      sheet.setAttribute('data-mode', selectedMode);
+      modeLabel.textContent = (selectedMode === 'voice' ? 'Voice' : 'Text') + ' · ' + languageNames(selectedLang);
+      status.textContent = 'Starting…';
+
+      if (!convai) {
+        status.textContent = 'Chat unavailable — refresh the page.';
+        return;
+      }
+      // Position convai offscreen but functional so we can drive it
+      convai.style.cssText = 'position:fixed!important;left:-9999px!important;top:0!important;visibility:hidden!important;opacity:1!important;pointer-events:auto!important;display:block!important;width:400px!important;height:600px!important;';
+
+      // Drive widget
+      var attempts = 0;
+      var driver = setInterval(function() {
+        attempts++;
+        if (!convai.shadowRoot) { if (attempts > 50) { clearInterval(driver); status.textContent = 'Could not load chat. Try again.'; } return; }
+        // Set language if selector exists
+        deepWalk(convai.shadowRoot, function(el) {
+          if (el.tagName === 'SELECT' && el.options && el.options.length > 0) {
+            for (var i = 0; i < el.options.length; i++) {
+              if (el.options[i].value === selectedLang) {
+                el.value = el.options[i].value;
+                el.dispatchEvent(new Event('change', { bubbles: true }));
+                break;
+              }
+            }
+          }
+        });
+        // Click Agree if present (terms)
+        clickInShadow('agree', convai.shadowRoot);
+        // Click Start
+        if (clickInShadow('start the call', convai.shadowRoot) ||
+            clickInShadow('start chat', convai.shadowRoot) ||
+            clickInShadow('start conversation', convai.shadowRoot) ||
+            clickInShadow('start', convai.shadowRoot)) {
+          clearInterval(driver);
+          status.textContent = selectedMode === 'voice' ? 'Loren is listening…' : 'Loren is ready';
+          return;
+        }
+        if (attempts > 50) {
+          clearInterval(driver);
+          status.textContent = 'Tap "Start the call" in the widget to begin.';
+        }
+      }, 100);
+    });
+
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    endBtn.addEventListener('click', close);
+
+    muteBtn.addEventListener('click', function() {
+      muteBtn.classList.toggle('muted');
+      if (convai && convai.shadowRoot) {
+        clickInShadow('mute', convai.shadowRoot);
+      }
+      status.textContent = muteBtn.classList.contains('muted') ? "Muted — Loren can't hear you" : 'Loren is listening…';
+    });
+    pauseBtn.addEventListener('click', function() {
+      pauseBtn.classList.toggle('paused');
+      if (convai && convai.shadowRoot) {
+        clickInShadow(pauseBtn.classList.contains('paused') ? 'pause' : 'resume', convai.shadowRoot);
+      }
+      status.textContent = pauseBtn.classList.contains('paused') ? 'Paused' : (selectedMode === 'voice' ? 'Loren is listening…' : 'Loren is ready');
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && sheet.classList.contains('open')) close();
+    });
+
+    // === WIRE LAUNCHERS ===
+    function wire(el) {
+      if (!el) return;
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        open();
+      });
+    }
+    wire(document.querySelector('.loren-orb-btn'));
+    document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').forEach(wire);
+    console.log('Loren sheet ready. Orb wired:', !!document.querySelector('.loren-orb-btn'), 'Mobile chat icon wired:', document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').length);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
