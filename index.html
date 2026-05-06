@@ -469,12 +469,12 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
     toggle.dataset.mode = m;
     if (m === 'inside'){
       stateLabel.textContent = 'Inside the pod';
-      stateDesc.textContent = 'Same audio. Walls in between. Drops to ~38 dB.';
-      paintMeter(38, 'Inside the pod — conversation-private.', 'good');
+      stateDesc.textContent = 'Same audio. Walls in between. Drops to ~30 dB.';
+      paintMeter(30, 'Inside the pod — conversation-private.', 'good');
     } else {
       stateLabel.textContent = 'Outside the pod';
       stateDesc.textContent = 'Calls. Conversations. Keyboards. Phones ringing.';
-      paintMeter(68, 'Open office — too loud to focus.', 'bad');
+      paintMeter(60, 'Open office — too loud to focus.', 'bad');
     }
     if (playing) applyMode(m, true);
   }
@@ -1102,6 +1102,64 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
         if (window.lucide) window.lucide.createIcons();
       }
     }, 60);
+  });
+})();
+
+
+// MOBILE HAMBURGER NAV
+(function(){
+  const btn = document.getElementById('navBurger');
+  const tabs = document.getElementById('navTabs');
+  if (!btn || !tabs) return;
+  btn.addEventListener('click', () => {
+    const open = tabs.classList.toggle('mobile-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.querySelector('i')?.setAttribute('data-lucide', open ? 'x' : 'menu');
+    if (window.lucide) window.lucide.createIcons();
+  });
+  tabs.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      tabs.classList.remove('mobile-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.querySelector('i')?.setAttribute('data-lucide', 'menu');
+      if (window.lucide) window.lucide.createIcons();
+    });
+  });
+})();
+
+// UNIVERSAL IMAGE LIGHTBOX
+(function(){
+  const ilb = document.getElementById('imgLightbox');
+  const ilbImg = document.getElementById('ilbImg');
+  const ilbDownload = document.getElementById('ilbDownload');
+  const ilbEyebrow = document.getElementById('ilbEyebrow');
+  const ilbTitle = document.getElementById('ilbTitle');
+  if (!ilb) return;
+  function openImg(img) {
+    ilbImg.src = img.src;
+    ilbImg.alt = img.alt || 'MTIP Pods';
+    const fname = img.src.split('/').pop().split('?')[0];
+    ilbDownload.href = img.src;
+    ilbDownload.download = fname;
+    ilbEyebrow.textContent = (img.alt || 'MTIP Collective Pods').slice(0, 80);
+    ilbTitle.textContent = '';
+    ilb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  document.querySelectorAll('section img, footer img, .fullbleed img').forEach(img => {
+    if (img.closest('.lightbox')) return;
+    if (img.classList.contains('no-zoom')) return;
+    if (img.closest('.carousel-slide')) return;
+    if (img.closest('.podshow-stage')) return;
+    if (img.closest('.stepin-stage')) return;
+    if (img.closest('.nav')) return;
+    if (img.closest('.video-modal')) return;
+    if (img.id === 'heroVideo') return;
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', e => {
+      e.preventDefault();
+      openImg(img);
+    });
   });
 })();
 
@@ -1860,6 +1918,51 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   }
   body { padding-bottom: 70px }
 }
+
+.nav-burger { display: none }
+@media (max-width: 1024px) {
+  .nav-burger {
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer; color: var(--text); padding: 0; margin-right: 8px;
+  }
+  .nav.over-hero .nav-burger { color: white; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18) }
+  .nav-burger i { width: 22px; height: 22px }
+  .nav-tabs.mobile-open {
+    display: flex !important; flex-direction: column;
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: rgba(8,10,15,0.97); backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 22px 24px 28px; gap: 4px; z-index: 998;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    align-items: stretch;
+  }
+  .nav-tabs.mobile-open a {
+    color: white; font-size: 1.05rem; font-weight: 600;
+    padding: 14px 18px; border-radius: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    text-align: left;
+  }
+  .nav-tabs.mobile-open a:hover { background: rgba(229,59,59,0.12); color: var(--red-light) }
+  .nav-tabs.mobile-open a:last-child { border-bottom: none }
+}
+
+.section img:not(.no-zoom):not(.podshow-stage img):not(#stepinImage):not(.lb-img):not(#lbImg):not(#ilbImg) { cursor: zoom-in; transition: filter 0.2s }
+.section img:not(.no-zoom):not(.lb-img):not(#lbImg):not(#ilbImg):hover { filter: brightness(1.05) }
+
+.acoustic-diagram-wrap{margin:64px 0 32px;background:white;border:1px solid var(--border);border-radius:24px;padding:48px 32px 80px;box-shadow:var(--shadow-md);overflow:visible}
+.wall-viz{min-height:auto !important}
+.wall-stack-arrow{display:none}
+@media(max-width:900px){
+  .acoustic-diagram-wrap{padding:32px 18px 64px}
+  .wall-viz{grid-template-columns:1fr;gap:0}
+  .wall-stack{padding:24px 12px 40px;grid-template-columns:repeat(4,1fr);gap:0}
+  .wall-stack-drop{position:relative;left:auto;bottom:auto;transform:none;display:inline-block;margin:24px auto 0}
+  .wall-side{padding:28px 22px;text-align:center;align-items:center !important}
+  .wall-side-in{align-items:center;text-align:center}
+}
 </style>
 </head>
 <body>
@@ -1869,7 +1972,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   <a href="#wizard" class="msc-primary">Run the math</a>
 </div>
 
-<nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><div class="nav-tabs"><a href="#lineup">Lineup</a><a href="#step-inside">Step inside</a><a href="#hear-it">Hear it</a><a href="#deploy">Deal structures</a></div><a href="#deploy" class="btn btn-red">Get JV term sheet</a></div></nav>
+<nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><button type="button" class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false"><i data-lucide="menu"></i></button><div class="nav-tabs" id="navTabs"><a href="#lineup">Lineup</a><a href="#step-inside">Step inside</a><a href="#hear-it">Hear it</a><a href="#deploy">Deal structures</a></div><a href="#deploy" class="btn btn-red">Get JV term sheet</a></div></nav>
 
 <section class="hero" id="top">
   <div class="hero-bg">
@@ -1917,7 +2020,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
     <div class="deploy-grid">
       <div class="deploy-card">
-        <div class="deploy-tag">OPTION A</div>
+        <div class="deploy-tag">BUY OUTRIGHT</div>
         <h3 style="color:white">Buy outright</h3>
         <div class="deploy-headline" style="color:var(--text)">100% capex<br>100% revenue</div>
         <ul class="deploy-list">
@@ -1931,7 +2034,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       </div>
 
       <div class="deploy-card">
-        <div class="deploy-tag">OPTION B</div>
+        <div class="deploy-tag">50/50 PARTNERSHIP</div>
         <h3 style="color:white">50/50 Joint Venture</h3>
         <div class="deploy-headline" style="color:var(--text)">50% capex<br>50/50 revenue split</div>
         <ul class="deploy-list">
@@ -1945,7 +2048,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       </div>
 
       <div class="deploy-card deploy-card-hero">
-        <div class="deploy-tag deploy-tag-hero">★ OPTION C — FLAGSHIP</div>
+        <div class="deploy-tag deploy-tag-hero">★ ZERO-CAPEX · FLAGSHIP</div>
         <h3 style="color:white">Zero-Capex JV</h3>
         <div class="deploy-headline" style="color:var(--red-light)">$0 capex<br>You earn perpetually</div>
         <ul class="deploy-list">
@@ -1964,7 +2067,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       <div class="deploy-callout-icon"><i data-lucide="trending-up"></i></div>
       <div>
         <strong>The smartest CapEx your portfolio will see this year is the one you don't have to write.</strong>
-        <p>Option C: add 6 Quads &amp; Suites to a property. At <strong>$900/mo each</strong>, that's <strong>$64,800/yr</strong> in rental revenue. We fund the equipment (~$45K retail). Cost recovers in <strong>~8 months</strong>. After recoupment: <strong>$48,600/yr to you</strong> if you manage. Pure perpetual upside, zero capital outlay, on real estate you already own.</p>
+        <p>Pick the <strong>Zero-Capex JV</strong>. Put 6 pods on your floor plate — we fund all the equipment, you put in $0. They rent at <strong>$900/mo each</strong> ($64,800/yr). After we recover the equipment cost (~8 months), you keep <strong>$48,600/yr</strong> if you manage the bookings. Perpetual upside, on real estate you already own.</p>
       </div>
     </div>
   </div>
@@ -2189,7 +2292,12 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <section class="section section" id="lineup"><div class="container">
 <div class="section-header center"><div class="eyebrow">The Lineup</div><h2>Four sizes.<br>One standard of quality.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Same frame. Same acoustic walls. Same 6mm glass. Model 04 and Model 06 rent at <strong>$800–$1,000/mo</strong> on multi-tenant property.</p></div>
 
-<div class="tier-toggle-wrap"><div class="tier-toggle" id="tierToggle"><button class="active" data-mode="cash">Pay Once</button><button data-mode="install">12-Month · $0 Down</button></div><p style="font-size:0.78rem;color:var(--text-light);text-align:center;margin-top:14px;font-style:italic">Pricing is for the pod itself. Sales tax and white-glove freight billed separately based on final destination.</p></div>
+<div class="tier-toggle-wrap"><div class="tier-toggle" id="tierToggle"><button class="active" data-mode="cash">Pay Once</button><button data-mode="install">12-Month · $0 Down</button></div><div style="max-width:780px;margin:18px auto 0;padding:14px 20px;background:rgba(229,59,59,0.06);border:1px solid rgba(229,59,59,0.18);border-radius:10px;font-size:0.82rem;color:var(--text-mid);line-height:1.55">
+<strong style="color:var(--text);display:block;margin-bottom:6px">What's included vs. separate</strong>
+<strong style="color:var(--text)">Pod equipment only.</strong> Includes frame, acoustic walls, glass, lighting, ventilation, electrical. <strong style="color:var(--text)">Furniture (desks, chairs, seating) is not included</strong> — sourced separately to fit your use case.<br>
+<strong style="color:var(--text)">On-site assembly</strong>: included in <strong style="color:var(--text)">South Florida only</strong>. Outside FL we either refer a vetted technician (geo-dependent upcharge) or supply a self-build kit (6 modules, no contractor needed).<br>
+<strong style="color:var(--text)">Sales tax + white-glove freight</strong>: billed separately based on final destination.
+</div></div>
 
 <div class="tier-grid">
 <div class="tier-card"><div class="tier-img ai-watermarked"><img src="assets/images/ai-studio-orbit.jpg" onerror="this.src='assets/images/tier-studio.jpg'" alt="Model 01 — three-quarter exterior view"></div><div class="tier-body"><div class="tier-rank">Solo · Phone booth</div><h3>Model 01</h3><p class="tier-tagline">A private studio in 10 sq ft. For recording, AI command, focus, sales floor.</p><ul class="tier-specs"><li><i data-lucide="users"></i><span><strong>1 person</strong></span></li><li><i data-lucide="ruler"></i><span><strong>~10 sq ft</strong> (0.96 m²)</span></li><li><i data-lucide="volume-x"></i><span><strong>28 ± 3 dB</strong></span></li><li><i data-lucide="zap"></i><span>24W · USB + USB-C</span></li></ul><div class="tier-price-block"><div class="tier-price-amount" data-cash="$3,997" data-install="$397">$3,997</div><div class="tier-price-suffix" data-cash="paid once" data-install="/mo · 12 mo · $0 down">paid once</div></div><a href="#order" class="btn btn-outline">Reserve</a></div></div>
@@ -2378,7 +2486,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 
 
 <section class="noise-demo" id="hear-it"><div class="container">
-<div class="section-header center"><div class="eyebrow" style="color:var(--red-light)">Hear it for yourself</div><h2>30 dB.<br>That's the difference.</h2><p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">Hit play. You're in the boiler room — phones, conversations, keyboards. Slide the toggle. Same exact audio, walls between you and it.</p></div>
+<div class="section-header center"><div class="eyebrow" style="color:var(--red-light)">Hear it for yourself</div><h2>30 dB.<br>That's the difference.</h2><p class="lead" style="color:rgba(255,255,255,0.65);margin-left:auto;margin-right:auto">A typical open office sits at <strong style="color:white">60 dB</strong>. Inside an MTIP pod: <strong style="color:white">30 dB</strong> — whisper-level, ISO 23351-1 certified.</p></div>
 <div class="noise-grid">
 <div class="noise-controls">
 <div class="noise-state" id="noiseState"><div class="noise-state-icon"><i data-lucide="volume-2" id="noiseStateIcon"></i></div><div class="noise-state-text"><strong id="noiseStateLabel">Outside the pod</strong><span id="noiseStateDesc">Calls. Conversations. Keyboards. Phones ringing.</span></div></div>
@@ -2395,7 +2503,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </div>
 <div class="noise-meter-wrap">
 <div class="noise-meter-label">Sound level</div>
-<div class="noise-meter-display" id="noiseDb">68</div>
+<div class="noise-meter-display" id="noiseDb">60</div>
 <div class="noise-meter-unit">dB</div>
 <div class="noise-meter-bar"><div class="noise-meter-fill" id="noiseFill"></div></div>
 <div class="noise-meter-scale"><span>30 dB · whisper</span><span>60 dB · conversation</span><span>90 dB · loud</span></div>
@@ -2652,4 +2760,27 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       <span id="lbTitle">View</span>
     </div>
     <div class="lb-counter" id="lbCounter">1 / 8</div>
-    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous"><i da
+    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
+    <button class="lb-arrow lb-next" id="lbNext" aria-label="Next"><i data-lucide="chevron-right"></i></button>
+    <div class="lb-thumbs" id="lbThumbs"></div>
+  </div>
+</div>
+
+
+<!-- Hero walkthrough video popup -->
+<div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-label="Walkthrough video">
+  <button class="video-modal-close" id="videoModalClose" aria-label="Close">×</button>
+  <div class="video-modal-stage">
+    <video id="videoModalEl" controls preload="none">
+      <source src="assets/video/walkthrough.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+
+<!-- Loren AI assistant (ElevenLabs Convai) -->
+<elevenlabs-convai agent-id="agent_8201kqz1zth8evzvygs9xgn1pk3k"></elevenlabs-convai>
+<script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+
+</body>
+</html>
