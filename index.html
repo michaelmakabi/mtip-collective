@@ -2054,9 +2054,133 @@ elevenlabs-convai::part(branding) {
   .loren-credit { bottom: 64px; right: 18px; font-size: 9px; padding: 4px 8px; }
 }
 
+
+/* === HCP Standard v2 — Mobile Bottom Nav Bar === */
+.hcp-bottom-nav {
+  display: none;
+}
+@media (max-width: 1024px) {
+  body {
+    padding-bottom: 84px !important;
+  }
+  body.body-no-scroll-lock {
+    padding-bottom: 0 !important;
+  }
+  /* Suppress floating elevenlabs widget chrome on mobile — accessed via nav-bar icon instead */
+  elevenlabs-convai {
+    position: fixed !important;
+    bottom: 96px !important;
+    right: 16px !important;
+    z-index: 998;
+    transform: scale(0.92);
+    transform-origin: bottom right;
+  }
+  /* Hide the always-on launcher card on mobile — the orb-only launcher is enough */
+  .loren-orb-halo,
+  .loren-credit,
+  .mobile-sticky-cta {
+    display: none !important;
+  }
+  .hcp-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(10,10,10,0.94);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 8px 6px calc(8px + env(safe-area-inset-bottom)) 6px;
+    justify-content: space-around;
+    align-items: stretch;
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.45);
+  }
+  .hcp-bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 6px 4px;
+    color: rgba(255,255,255,0.62);
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.18s ease, transform 0.18s ease;
+    min-height: 56px;
+  }
+  .hcp-bottom-nav-item:hover,
+  .hcp-bottom-nav-item:focus-visible {
+    color: #fff;
+  }
+  .hcp-bottom-nav-item.active { color: #dc2626; }
+  .hcp-bottom-nav-item .hcp-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hcp-bottom-nav-item .hcp-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .hcp-bottom-nav-item.primary {
+    position: relative;
+  }
+  .hcp-bottom-nav-item.primary .hcp-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(220,38,38,0.55), 0 2px 6px rgba(0,0,0,0.4);
+    margin-top: -22px;
+    border: 3px solid rgba(10,10,10,0.94);
+  }
+  .hcp-bottom-nav-item.primary .hcp-icon svg { width: 26px; height: 26px; }
+  .hcp-bottom-nav-item.primary .hcp-label { color: #fff; font-weight: 700; }
+  .hcp-bottom-nav-item.loren { position: relative; }
+  .hcp-bottom-nav-item.loren .hcp-icon::before {
+    content: '';
+    position: absolute;
+    width: 36px; height: 36px;
+    background: radial-gradient(circle at center, rgba(220,38,38,0.45) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(6px);
+    animation: loren-pulse-mobile 2.6s ease-in-out infinite;
+    z-index: -1;
+  }
+  @keyframes loren-pulse-mobile {
+    0%, 100% { opacity: 0.55; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  /* When Loren convai is open, dim other nav items */
+  body.loren-call-active .hcp-bottom-nav-item:not(.loren) { opacity: 0.45; }
+}
+@media (min-width: 1025px) {
+  /* Desktop: hide bottom nav, keep floating orb */
+  .hcp-bottom-nav { display: none; }
+}
+
 </style>
 </head>
 <body>
+<a id="top" aria-hidden="true"></a>
 
 <div class="mobile-sticky-cta">
   <a href="brochure/" target="_blank" rel="noopener" class="msc-secondary">Brochure</a>
@@ -2874,6 +2998,78 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 <a class="loren-credit" href="https://loren.ai" target="_blank" rel="noopener">Powered by <strong>LOREN AI</strong></a>
 <elevenlabs-convai agent-id="agent_8201kqz1zth8evzvygs9xgn1pk3k"></elevenlabs-convai>
 <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+
+
+<!-- HCP Standard v2 — Mobile Bottom Nav Bar -->
+<nav class="hcp-bottom-nav" aria-label="Mobile navigation">
+  <a class="hcp-bottom-nav-item" href="#top" data-nav="home" aria-label="Home">
+    <span class="hcp-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg></span>
+    <span class="hcp-label">Home</span>
+  </a>
+  <a class="hcp-bottom-nav-item" href="#lineup" data-nav="lineup" aria-label="Lineup">
+    <span class="hcp-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+    <span class="hcp-label">Lineup</span>
+  </a>
+  <a class="hcp-bottom-nav-item primary" href="#wizard" data-nav="math" aria-label="Run the math">
+    <span class="hcp-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h2M14 8h2M8 12h2M14 12h2M8 16h2M14 16h2"/></svg></span>
+    <span class="hcp-label">Math</span>
+  </a>
+  <a class="hcp-bottom-nav-item" href="/brochure/" target="_blank" rel="noopener" data-nav="brochure" aria-label="Brochure">
+    <span class="hcp-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+    <span class="hcp-label">Brochure</span>
+  </a>
+  <button class="hcp-bottom-nav-item loren" type="button" data-nav="loren" aria-label="Talk to Loren — AI Assistant">
+    <span class="hcp-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg></span>
+    <span class="hcp-label">Loren</span>
+  </button>
+</nav>
+
+<script>
+  (function() {
+    // HCP Standard v2 — Bottom Nav Bar wiring
+    var nav = document.querySelector('.hcp-bottom-nav');
+    if (!nav) return;
+    var items = nav.querySelectorAll('.hcp-bottom-nav-item');
+    items.forEach(function(item) {
+      item.addEventListener('click', function(e) {
+        var navTo = item.getAttribute('data-nav');
+        if (navTo === 'loren') {
+          e.preventDefault();
+          // Programmatically open the Convai widget
+          var convai = document.querySelector('elevenlabs-convai');
+          if (convai) {
+            // Make widget visible/expanded on mobile
+            convai.style.display = 'block';
+            convai.style.opacity = '1';
+            convai.style.pointerEvents = 'auto';
+            // Try to expand or focus it
+            try {
+              if (typeof convai.expand === 'function') convai.expand();
+              else if (typeof convai.start === 'function') convai.start();
+              else {
+                // Click the underlying launcher inside shadow DOM
+                var sr = convai.shadowRoot;
+                if (sr) {
+                  var launcher = sr.querySelector('button, [role=button], [data-action=expand]');
+                  if (launcher) launcher.click();
+                }
+              }
+            } catch(_) {}
+            document.body.classList.add('loren-call-active');
+            items.forEach(function(i){ i.classList.remove('active'); });
+            item.classList.add('active');
+          }
+          return;
+        }
+        // For nav links, mark active
+        items.forEach(function(i){ i.classList.remove('active'); });
+        item.classList.add('active');
+      });
+    });
+    // Active state on scroll (basic)
+    var sectionMap = { home: '#top', lineup: '#lineup', math: '#wizard', brochure: null };
+  })();
+</script>
 
 </body>
 </html>
