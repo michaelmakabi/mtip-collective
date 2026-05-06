@@ -2449,152 +2449,181 @@ body[data-pricing-mode="monthly"] .suite-price-row .big {
 </style>
 
 <style id="loren-sheet-style">
-/* Loren chat sheet — MUST WORK */
+/* Loren chat sheet — centered + larger */
 .loren-sheet-backdrop {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0; pointer-events: none;
   transition: opacity 0.25s ease;
   z-index: 1500;
 }
 .loren-sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+
 .loren-sheet {
   position: fixed;
-  bottom: 96px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(120%);
-  width: calc(100% - 24px);
-  max-width: 460px;
+  transform: translate(-50%, -45%) scale(0.94);
+  opacity: 0;
+  pointer-events: none;
+  width: calc(100% - 32px);
+  max-width: 600px;
   background: linear-gradient(180deg, #16161a 0%, #0a0a0c 100%);
-  border: 1px solid rgba(220, 38, 38, 0.4);
-  border-radius: 22px;
+  border: 1px solid rgba(220, 38, 38, 0.45);
+  border-radius: 24px;
   z-index: 1600;
-  box-shadow: 0 24px 70px rgba(0,0,0,0.7), 0 0 0 1px rgba(220,38,38,0.2), 0 0 60px rgba(220,38,38,0.18);
-  transition: transform 0.32s cubic-bezier(0.34, 1.2, 0.64, 1);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.8), 0 0 0 1px rgba(220,38,38,0.25), 0 0 80px rgba(220,38,38,0.22);
+  transition: transform 0.32s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.25s ease;
   color: #fff;
   overflow: hidden;
-  max-height: calc(100vh - 130px);
+  max-height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
 }
-.loren-sheet.open { transform: translateX(-50%) translateY(0); }
-@media (min-width: 1025px) { .loren-sheet { bottom: 28px; } }
+.loren-sheet.open {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .loren-sheet {
+    width: calc(100% - 24px);
+    max-width: 480px;
+    max-height: calc(100vh - 120px);
+  }
+}
+
 .loren-sheet-header {
-  display: flex; align-items: center; gap: 12px;
-  padding: 16px 18px 14px;
+  display: flex; align-items: center; gap: 14px;
+  padding: 22px 26px 18px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .loren-sheet-orb {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 30%), conic-gradient(from 0deg, #dc2626, #ef4444, #7f1d1d, #0a0a0a, #1f1f22, #dc2626);
-  box-shadow: 0 0 0 2px rgba(220,38,38,0.5), 0 4px 14px rgba(220,38,38,0.4);
+  width: 48px; height: 48px; border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0) 30%),
+    conic-gradient(from 0deg, #dc2626, #ef4444, #7f1d1d, #0a0a0a, #1f1f22, #dc2626);
+  box-shadow: 0 0 0 2px rgba(220,38,38,0.55), 0 4px 16px rgba(220,38,38,0.45);
   animation: orb-spin 7s linear infinite;
-  flex: 0 0 40px;
+  flex: 0 0 48px;
 }
-.loren-sheet-title { font-weight: 800; font-size: 1rem; }
-.loren-sheet-sub { font-size: 0.74rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.loren-sheet-title { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; }
+.loren-sheet-sub { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
 .loren-sheet-close {
-  margin-left: auto; width: 34px; height: 34px;
+  margin-left: auto; width: 38px; height: 38px;
   border-radius: 50%; background: rgba(255,255,255,0.08);
   border: 0; color: #fff; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.2s;
 }
 .loren-sheet-close:hover { background: rgba(220,38,38,0.4); }
+
 .loren-sheet-body {
-  padding: 20px 18px 22px;
+  padding: 26px 26px 28px;
   flex: 1; overflow-y: auto;
 }
+
 .loren-step-label {
-  font-size: 0.66rem; letter-spacing: 0.14em;
+  font-size: 0.72rem; letter-spacing: 0.14em;
   text-transform: uppercase; color: #dc2626;
-  font-weight: 800; margin-bottom: 6px;
+  font-weight: 800; margin-bottom: 8px;
 }
 .loren-step-title {
-  font-size: 1.1rem; font-weight: 800;
-  letter-spacing: -0.02em; margin-bottom: 14px;
+  font-size: 1.35rem; font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 18px;
+  line-height: 1.2;
 }
+
 .loren-mode-grid {
   display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 16px;
+  gap: 14px; margin-bottom: 22px;
 }
 .loren-mode-card {
   background: rgba(255,255,255,0.04);
   border: 2px solid rgba(255,255,255,0.08);
-  border-radius: 14px; padding: 18px 12px;
+  border-radius: 18px; padding: 24px 16px;
   text-align: center; cursor: pointer;
   color: #fff; font-family: inherit;
   display: flex; flex-direction: column;
-  gap: 6px; align-items: center; justify-content: center;
-  min-height: 110px;
+  gap: 10px; align-items: center; justify-content: center;
+  min-height: 140px;
   transition: all 0.2s;
 }
 .loren-mode-card:hover, .loren-mode-card.selected {
-  border-color: #dc2626; background: rgba(220,38,38,0.12);
+  border-color: #dc2626; background: rgba(220,38,38,0.14);
+  transform: translateY(-2px);
 }
 .loren-mode-card .icon {
-  width: 34px; height: 34px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;
   background: rgba(220,38,38,0.18); color: #dc2626;
   display: flex; align-items: center; justify-content: center;
 }
-.loren-mode-card .icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
-.loren-mode-card .label { font-weight: 800; font-size: 0.92rem; }
-.loren-mode-card .desc { font-size: 0.72rem; color: rgba(255,255,255,0.65); }
+.loren-mode-card .icon svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2; }
+.loren-mode-card .label { font-weight: 800; font-size: 1.05rem; }
+.loren-mode-card .desc { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+
 .loren-lang-select {
   width: 100%;
   background: rgba(255,255,255,0.06);
   border: 2px solid rgba(255,255,255,0.1);
-  border-radius: 12px; padding: 12px 14px;
-  color: #fff; font-family: inherit; font-size: 0.92rem;
+  border-radius: 14px; padding: 16px 18px;
+  color: #fff; font-family: inherit; font-size: 1rem;
   font-weight: 600; cursor: pointer;
   appearance: none; -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 40px;
-  margin-bottom: 16px;
+  background-position: right 16px center;
+  padding-right: 44px;
+  margin-bottom: 22px;
 }
-.loren-lang-select option { background: #16161a; color: #fff; }
+.loren-lang-select option { background: #16161a; color: #fff; padding: 8px; }
+.loren-lang-select:focus { outline: none; border-color: #dc2626; }
+
 .loren-sheet-btn {
-  width: 100%; min-height: 50px; border-radius: 14px;
-  font-family: inherit; font-weight: 800; font-size: 0.95rem;
+  width: 100%; min-height: 56px; border-radius: 16px;
+  font-family: inherit; font-weight: 800; font-size: 1.02rem;
   cursor: pointer; border: 0;
   background: linear-gradient(135deg, #dc2626, #991b1b);
   color: #fff;
-  box-shadow: 0 6px 18px rgba(220,38,38,0.45);
-  transition: transform 0.15s ease;
+  box-shadow: 0 8px 22px rgba(220,38,38,0.5);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
-.loren-sheet-btn:hover { transform: translateY(-1px); }
-.loren-sheet-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.loren-sheet-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(220,38,38,0.6); }
+.loren-sheet-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
 
-.loren-call-screen { display: none; text-align: center; padding: 14px 8px; }
+.loren-call-screen { display: none; text-align: center; padding: 20px 12px 8px; }
 .loren-sheet[data-step="call"] .loren-call-screen { display: block; }
 .loren-sheet[data-step="call"] .loren-step-prepare { display: none; }
 .loren-call-orb {
-  width: 76px; height: 76px; border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(255,255,255,0) 30%), conic-gradient(from 0deg, #dc2626, #ef4444, #7f1d1d, #0a0a0a, #1f1f22, #dc2626);
-  box-shadow: 0 0 0 3px rgba(220,38,38,0.55), 0 0 30px rgba(220,38,38,0.5);
-  margin: 6px auto 14px;
+  width: 96px; height: 96px; border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0) 30%),
+    conic-gradient(from 0deg, #dc2626, #ef4444, #7f1d1d, #0a0a0a, #1f1f22, #dc2626);
+  box-shadow: 0 0 0 3px rgba(220,38,38,0.55), 0 0 36px rgba(220,38,38,0.5), 0 0 80px rgba(220,38,38,0.35);
+  margin: 8px auto 18px;
   animation: orb-spin 6s linear infinite;
 }
-.loren-call-status { font-size: 0.94rem; font-weight: 700; margin-bottom: 4px; }
-.loren-call-mode { font-size: 0.74rem; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 22px; }
-.loren-call-controls { display: flex; justify-content: center; gap: 16px; }
+.loren-call-status { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+.loren-call-mode { font-size: 0.82rem; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 28px; }
+.loren-call-controls { display: flex; justify-content: center; gap: 22px; }
+.loren-call-controls > div { text-align: center; }
 .loren-control-btn {
-  width: 52px; height: 52px; border-radius: 50%;
+  width: 60px; height: 60px; border-radius: 50%;
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.12);
   color: #fff; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
 }
-.loren-control-btn:hover { background: rgba(255,255,255,0.18); }
+.loren-control-btn:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); }
 .loren-control-btn.muted, .loren-control-btn.paused { background: rgba(220,38,38,0.4); border-color: #dc2626; }
 .loren-control-btn.end { background: #dc2626; border-color: #991b1b; }
-.loren-control-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.loren-control-label { font-size: 0.66rem; color: rgba(255,255,255,0.55); margin-top: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+.loren-control-btn.end:hover { background: #ef4444; }
+.loren-control-btn svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.loren-control-label { font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-top: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
 @keyframes orb-spin { to { transform: rotate(360deg); } }
 </style>
 
@@ -3849,7 +3878,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 
 <script>
-/* Loren chat sheet — MUST WORK */
+/* Loren chat sheet — centered + language-aware */
 (function() {
   function $ (s) { return document.querySelector(s); }
   function deepWalk(node, fn) {
@@ -3906,10 +3935,17 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
     function close() {
       backdrop.classList.remove('open');
       sheet.classList.remove('open');
-      sheet.removeAttribute('data-step');
+      setTimeout(function(){
+        sheet.removeAttribute('data-step');
+      }, 300);
       // End any active convai session
       if (convai && convai.shadowRoot) {
+        clickInShadow('end call', convai.shadowRoot);
         clickInShadow('end', convai.shadowRoot);
+      }
+      // Reset convai position
+      if (convai) {
+        convai.style.cssText = '';
       }
     }
     function languageNames(c) {
@@ -3934,12 +3970,18 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       sheet.setAttribute('data-step', 'call');
       sheet.setAttribute('data-mode', selectedMode);
       modeLabel.textContent = (selectedMode === 'voice' ? 'Voice' : 'Text') + ' · ' + languageNames(selectedLang);
-      status.textContent = 'Starting…';
+      status.textContent = 'Connecting…';
 
       if (!convai) {
         status.textContent = 'Chat unavailable — refresh the page.';
         return;
       }
+
+      // CRITICAL: set the language on the convai host BEFORE it loads
+      convai.setAttribute('language', selectedLang);
+      convai.setAttribute('lang', selectedLang);
+      convai.setAttribute('default-language', selectedLang);
+
       // Position convai offscreen but functional so we can drive it
       convai.style.cssText = 'position:fixed!important;left:-9999px!important;top:0!important;visibility:hidden!important;opacity:1!important;pointer-events:auto!important;display:block!important;width:400px!important;height:600px!important;';
 
@@ -3947,20 +3989,31 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       var attempts = 0;
       var driver = setInterval(function() {
         attempts++;
-        if (!convai.shadowRoot) { if (attempts > 50) { clearInterval(driver); status.textContent = 'Could not load chat. Try again.'; } return; }
-        // Set language if selector exists
+        if (!convai.shadowRoot) {
+          if (attempts > 60) { clearInterval(driver); status.textContent = 'Could not load chat. Try again.'; }
+          return;
+        }
+        // Try to set language inside the widget's own UI too
         deepWalk(convai.shadowRoot, function(el) {
+          // Native select dropdown
           if (el.tagName === 'SELECT' && el.options && el.options.length > 0) {
             for (var i = 0; i < el.options.length; i++) {
               if (el.options[i].value === selectedLang) {
-                el.value = el.options[i].value;
-                el.dispatchEvent(new Event('change', { bubbles: true }));
+                if (el.value !== selectedLang) {
+                  el.value = el.options[i].value;
+                  el.dispatchEvent(new Event('change', { bubbles: true }));
+                  el.dispatchEvent(new Event('input', { bubbles: true }));
+                }
                 break;
               }
             }
           }
+          // Custom dropdown buttons (data-language)
+          if (el.getAttribute && (el.getAttribute('data-language') === selectedLang || el.getAttribute('data-lang') === selectedLang)) {
+            try { el.click(); } catch(_) {}
+          }
         });
-        // Click Agree if present (terms)
+        // Click Agree (ToS)
         clickInShadow('agree', convai.shadowRoot);
         // Click Start
         if (clickInShadow('start the call', convai.shadowRoot) ||
@@ -3968,12 +4021,12 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
             clickInShadow('start conversation', convai.shadowRoot) ||
             clickInShadow('start', convai.shadowRoot)) {
           clearInterval(driver);
-          status.textContent = selectedMode === 'voice' ? 'Loren is listening…' : 'Loren is ready';
+          status.textContent = selectedMode === 'voice' ? 'Loren is listening… (in ' + languageNames(selectedLang) + ')' : 'Loren is ready';
           return;
         }
-        if (attempts > 50) {
+        if (attempts > 60) {
           clearInterval(driver);
-          status.textContent = 'Tap "Start the call" in the widget to begin.';
+          status.textContent = 'Tap "Start" inside the widget below.';
         }
       }, 100);
     });
@@ -3985,7 +4038,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
     muteBtn.addEventListener('click', function() {
       muteBtn.classList.toggle('muted');
       if (convai && convai.shadowRoot) {
-        clickInShadow('mute', convai.shadowRoot);
+        clickInShadow(muteBtn.classList.contains('muted') ? 'mute' : 'unmute', convai.shadowRoot);
       }
       status.textContent = muteBtn.classList.contains('muted') ? "Muted — Loren can't hear you" : 'Loren is listening…';
     });
@@ -3994,25 +4047,24 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       if (convai && convai.shadowRoot) {
         clickInShadow(pauseBtn.classList.contains('paused') ? 'pause' : 'resume', convai.shadowRoot);
       }
-      status.textContent = pauseBtn.classList.contains('paused') ? 'Paused' : (selectedMode === 'voice' ? 'Loren is listening…' : 'Loren is ready');
+      status.textContent = pauseBtn.classList.contains('paused') ? 'Paused' : 'Loren is listening…';
     });
 
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && sheet.classList.contains('open')) close();
     });
 
-    // === WIRE LAUNCHERS ===
+    // Wire launchers
     function wire(el) {
       if (!el) return;
       el.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); e.stopPropagation();
         open();
       });
     }
     wire(document.querySelector('.loren-orb-btn'));
     document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').forEach(wire);
-    console.log('Loren sheet ready. Orb wired:', !!document.querySelector('.loren-orb-btn'), 'Mobile chat icon wired:', document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').length);
+    console.log('Loren v6 ready — centered modal, language-aware. Orb:', !!document.querySelector('.loren-orb-btn'), 'Mobile chat:', document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').length);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
