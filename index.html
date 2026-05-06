@@ -1114,7 +1114,6 @@ if (document.readyState === 'loading') {
 </script>
 <style>
 
-/* === Hard prevent horizontal scroll on all viewports === */
 html, body { overflow-x: clip; max-width: 100vw }
 .section, .nav, .hero, footer, .final-cta, .fullbleed, .carousel-section, .noise-demo, .wizard-section { overflow-x: clip }
 img, video, iframe, canvas, svg { max-width: 100% }
@@ -1835,53 +1834,29 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 .carousel-slide::after{content:'\2715';position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.6);color:white;display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:0;transition:opacity 0.2s;backdrop-filter:blur(6px);transform:rotate(45deg)}
 .carousel-slide:hover::after{opacity:1}
 
-/* === Sticky mobile bottom CTA — only on small viewports === */
 .mobile-sticky-cta { display: none }
 @media (max-width: 760px) {
   .mobile-sticky-cta {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    background: rgba(8,10,15,0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
+    background: rgba(8,10,15,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-    gap: 10px;
-    align-items: center;
+    gap: 10px; align-items: center;
     border-top: 1px solid rgba(255,255,255,0.1);
     box-shadow: 0 -8px 24px rgba(0,0,0,0.25);
   }
   .mobile-sticky-cta .msc-primary {
-    flex: 1;
-    background: var(--red);
-    color: white;
-    border: none;
-    padding: 14px 18px;
-    border-radius: 999px;
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-decoration: none;
-    text-align: center;
-    letter-spacing: -0.01em;
+    flex: 1; background: var(--red); color: white; border: none;
+    padding: 14px 18px; border-radius: 999px;
+    font-family: inherit; font-size: 0.95rem; font-weight: 700;
+    text-decoration: none; text-align: center; letter-spacing: -0.01em;
     box-shadow: 0 6px 20px rgba(229,59,59,0.35);
   }
-  .mobile-sticky-cta .msc-primary i { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px }
   .mobile-sticky-cta .msc-secondary {
-    background: rgba(255,255,255,0.08);
-    color: white;
+    background: rgba(255,255,255,0.08); color: white;
     border: 1px solid rgba(255,255,255,0.15);
-    padding: 12px 14px;
-    border-radius: 999px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-decoration: none;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
+    padding: 12px 14px; border-radius: 999px;
+    font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    text-decoration: none; letter-spacing: -0.01em; white-space: nowrap;
   }
   body { padding-bottom: 70px }
 }
@@ -1889,9 +1864,9 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 </head>
 <body>
 
-<div class="mobile-sticky-cta" aria-hidden="false">
-  <a href="brochure/" target="_blank" rel="noopener" class="msc-secondary"><i data-lucide="file-text" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> Brochure</a>
-  <a href="#wizard" class="msc-primary"><i data-lucide="trending-up"></i> Run the math</a>
+<div class="mobile-sticky-cta">
+  <a href="brochure/" target="_blank" rel="noopener" class="msc-secondary">Brochure</a>
+  <a href="#wizard" class="msc-primary">Run the math</a>
 </div>
 
 <nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><div class="nav-tabs"><a href="#lineup">Lineup</a><a href="#step-inside">Step inside</a><a href="#hear-it">Hear it</a><a href="#deploy">Deal structures</a></div><a href="#deploy" class="btn btn-red">Get JV term sheet</a></div></nav>
@@ -1910,7 +1885,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   <div class="hero-content">
     <div class="hero-eyebrow">Acoustic office pods · 4 sizes · 90 days · MTIP Collective</div>
     <h1>Stop building <span class="hero-h1-strike">$80K offices.</span><br><span class="hero-h1-red">Drop in pods.</span></h1>
-    <p class="hero-sub">A 49 sq ft TI build-out: <strong>$10K–$15K, six months, walls stay with the building.</strong><br>An MTIP pod: <strong>fully assembled in 90 days, asset moves with your portfolio.</strong></p>
+    <p class="hero-sub">A TI build-out: <strong>$10K–$15K, six months, walls stay with the building.</strong><br>An MTIP pod: <strong>fully assembled in 90 days, asset moves with your portfolio.</strong></p>
     <div class="hero-ctas">
       <a href="#wizard" class="btn btn-red btn-lg">Run the math on your property <i data-lucide="arrow-right"></i></a>
       <a href="brochure/" target="_blank" rel="noopener" class="btn btn-glass btn-lg"><i data-lucide="file-text"></i> View the brochure</a>
@@ -2177,7 +2152,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
   </div>
 </section>
 
-<section class="suite-hero section" id="suite"><div class="container"><div class="suite-grid"><div><div class="flagship-pill"><i data-lucide="star"></i> The Flagship</div><h2>Model 06.<br>The highest-margin<br><span class="text-red">49 sq ft on your floor plate.</span></h2><p class="lead" style="margin-top:24px">49 square feet, fully assembled, lands on your floor plate in 90 days. Becomes a private office, a meeting room, a podcast studio, or a member-billable amenity.</p>
+<section class="suite-hero section" id="suite"><div class="container"><div class="suite-grid"><div><div class="flagship-pill"><i data-lucide="star"></i> The Flagship</div><h2>Model 06.<br>The highest-margin<br><span class="text-red">49 sq ft on your floor plate.</span></h2><p class="lead" style="margin-top:24px">49 sq ft. Fully assembled. Lands on your floor plate in 90 days. Becomes a private office, meeting room, or member-billable amenity.</p>
 
 <div class="roi-table"><table><thead><tr><th>Comparison frame</th><th>Cost &amp; time</th><th>What MTIP changes</th></tr></thead><tbody><tr><td>TI build-out (49 sq ft acoustic)</td><td>$10K–$15K · 4–6 mo</td><td class="payback">$9,497 · 90 days</td></tr><tr><td>Permits + contractor delays</td><td>6–12 weeks risk</td><td class="payback">Zero permits</td></tr><tr><td>Asset on tenant turnover</td><td>Walls stay, capital lost</td><td class="payback">Pod moves with portfolio</td></tr></tbody></table></div>
 
@@ -2199,7 +2174,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
       </div>
       <div class="founder-content">
         <div class="eyebrow">From the operator</div>
-        <p class="founder-quote">"I run real estate. I've written six-figure TI checks for build-outs that walk out the door with the tenant. Framery quoted me $26,400 and wanted me to assemble it on-site. So I called the factory direct. MTIP Collective is what I built next — same ISO acoustic spec, fully assembled, half the price. And if you don't want to write the capex check, we fund the equipment, you collect override. Operator to operator."</p>
+        <p class="founder-quote">"I run real estate. I've written six-figure TI checks that walk out the door with the tenant. Framery quoted me $26,400 and wanted me to assemble it on-site. So I called the factory direct. MTIP Collective is what I built next — same ISO acoustic spec, fully assembled, half the price. And if you don't want to write the capex check at all, we fund the equipment, you collect override. Operator to operator."</p>
         <div class="founder-attr">
           <strong>Master Makabi</strong>
           <span>Founder · MTIP Collective · Florida</span>
@@ -2212,7 +2187,7 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="press-strip"><div class="container"><div class="press-inner"><span class="press-label">Built for:</span><span class="press-item">Warehouses with parking</span><span class="press-item">Retail shopping plazas</span><span class="press-item">Ground-floor office</span><span class="press-item">Multi-tenant 2-story</span><span class="press-item">Coworking + flex</span></div></div></div>
 
 <section class="section section" id="lineup"><div class="container">
-<div class="section-header center"><div class="eyebrow">The Lineup</div><h2>Four sizes.<br>One standard of quality.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Same aluminum frame. Same ISO-certified acoustic walls. Model 04 and Model 06 rent at $800–$1,000/mo on multi-tenant property.</p></div>
+<div class="section-header center"><div class="eyebrow">The Lineup</div><h2>Four sizes.<br>One standard of quality.</h2><p class="lead" style="margin-left:auto;margin-right:auto">Same frame. Same acoustic walls. Same 6mm glass. Model 04 and Model 06 rent at <strong>$800–$1,000/mo</strong> on multi-tenant property.</p></div>
 
 <div class="tier-toggle-wrap"><div class="tier-toggle" id="tierToggle"><button class="active" data-mode="cash">Pay Once</button><button data-mode="install">12-Month · $0 Down</button></div><p style="font-size:0.78rem;color:var(--text-light);text-align:center;margin-top:14px;font-style:italic">Pricing is for the pod itself. Sales tax and white-glove freight billed separately based on final destination.</p></div>
 
@@ -2591,4 +2566,90 @@ footer{padding:64px 0 40px;background:var(--black);color:rgba(255,255,255,0.6);t
 <div class="faq-item"><button class="faq-q">What revenue can I expect per pod? <i data-lucide="plus"></i></button><div class="faq-a"><p><strong>We rent Model 04 and Model 06 only — not Model 01 or Model 02 (those are sold for solo/dedicated use).</strong> Real rental revenue from a Model 04 or a Model 06 runs <strong>$800–$1,000 per month</strong> on a typical subscription/hourly mix in South Florida. That revenue is what offsets the equipment cost first (Option C), then becomes the override-split with you.</p></div></div>
 <div class="faq-item"><button class="faq-q">Who handles maintenance, warranty, and insurance? <i data-lucide="plus"></i></button><div class="faq-a"><p>Maintenance and warranty: <strong>MTIP, regardless of structure.</strong> 1-year manufacturer warranty on all parts. Insurance: MTIP carries product liability on the equipment; landlord covers the premises (standard CGL). Tenant damage: handled by your standard wear-and-tear / damage policy, plus our 1-year manufacturer coverage.</p></div></div>
 <div class="faq-item"><button class="faq-q">Is this depreciable? How does it sit on my books? <i data-lucide="plus"></i></button><div class="faq-a"><p><strong>Option A (buy outright):</strong> commercial furniture, 7-year MACRS depreciation. Real estate TI is typically 39-year — pods depreciate <strong>5x faster</strong>. <strong>Options B/C (JV structures):</strong> the asset sits with the JV entity / MTIP; you book your share of revenue. Talk to your tax counsel for specifics.</p></div></div>
-<div class="faq-item"><button class="faq-q">What real estate qualifies for the JV structures? <i data-lucide="plus"></i></button><div class="faq-a"><p>Our sweet spot: <strong>warehouses with ample parking, retail shopping plazas with available square footage, ground-floor office, and 2-story multi-tenant buildings.</strong> High ceilings are a plus. We can also work with Class A/B office above ground floor, coworking, hospitality, healthcare, and education — but ground-level access with parking is what we underwrite fastest. <strong>South Florida is our primary market (HQ in North Miami Beach), national rollout is live.</strong></p></div>
+<div class="faq-item"><button class="faq-q">What real estate qualifies for the JV structures? <i data-lucide="plus"></i></button><div class="faq-a"><p>Our sweet spot: <strong>warehouses with ample parking, retail shopping plazas with available square footage, ground-floor office, and 2-story multi-tenant buildings.</strong> High ceilings are a plus. We can also work with Class A/B office above ground floor, coworking, hospitality, healthcare, and education — but ground-level access with parking is what we underwrite fastest. <strong>South Florida is our primary market (HQ in North Miami Beach), national rollout is live.</strong></p></div></div>
+<div class="faq-item"><button class="faq-q">Can I exit the JV later? Buy MTIP out? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes. The term sheet includes a buyout schedule based on remaining recoupment + a defined override multiple. Alternative exit: MTIP can re-deploy the pods to another property in the network if economics no longer fit.</p></div></div>
+<div class="faq-item"><button class="faq-q">Do you offer exclusives or portfolio deals? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes. Portfolio commitments of <strong>10+ pods</strong> across multiple properties qualify for exclusivity in defined geographies, custom SLAs, and accelerated production slots. Drop us a note with your portfolio summary.</p></div></div>
+<div class="faq-item"><button class="faq-q">How long is delivery? <i data-lucide="plus"></i></button><div class="faq-a"><p>90 days from deposit to your door. Pods ship fully assembled with white-glove freight.</p></div></div>
+<div class="faq-item"><button class="faq-q">Do I need permits? <i data-lucide="plus"></i></button><div class="faq-a"><p>No. MTIP Collective Pods are commercial furniture, not construction. They sit on your existing floor.</p></div></div>
+<div class="faq-item"><button class="faq-q">Will it fit through a doorway? <i data-lucide="plus"></i></button><div class="faq-a"><p>Pods ship in 6 modular components and assemble on-site. Single pod: 40 minutes. Model 06: 90 minutes. Standard freight elevators and 36-inch doors clear the panels.</p></div></div>
+<div class="faq-item"><button class="faq-q">What's the warranty? <i data-lucide="plus"></i></button><div class="faq-a"><p><strong>1-year manufacturer warranty</strong> on all parts. Free replacement of damaged parts within the warranty period.</p></div></div>
+<div class="faq-item"><button class="faq-q">Custom colors and finishes? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes. Custom paint, edge styles, glass tints, interior finishes. <strong>Minimum order quantity: 1.</strong></p></div></div>
+<div class="faq-item"><button class="faq-q">Can it be moved later? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes — add silent casters at order time and the pod becomes mobile.</p></div></div>
+<div class="faq-item"><button class="faq-q">Does it need ventilation hookup? <i data-lucide="plus"></i></button><div class="faq-a"><p>No. Each pod has a self-contained fresh-air system. Top-in, top-out airflow with full air change every 1.5–2 minutes.</p></div></div>
+<div class="faq-item"><button class="faq-q">What about power? <i data-lucide="plus"></i></button><div class="faq-a"><p>One 110–220V outlet. Total draw ranges from 24W (Studio) to 90W (Suite).</p></div></div>
+<div class="faq-item"><button class="faq-q">Do you offer financing? <i data-lucide="plus"></i></button><div class="faq-a"><p>Yes. <strong>12-month installment plan, $0 down, 20% financing fee divided into 12 equal payments.</strong> Bigger orders (2+ pods): contact sales for extended terms.</p></div></div>
+<div class="faq-item"><button class="faq-q">How does Model 06 work as a 1-person office? <i data-lucide="plus"></i></button><div class="faq-a"><p>Most of our buyers use Model 06 as their executive workspace. <strong>49 square feet inside is significantly more than a typical commercial private office</strong>, and you get full sound isolation, your own ventilation, and lighting tuned to your work. When you need to host 4–6 people, the same room becomes a meeting room. <strong>One pod. Two jobs.</strong></p></div></div>
+<div class="faq-item"><button class="faq-q">Bulk orders for offices, coworking, or distributors? <i data-lucide="plus"></i></button><div class="faq-a"><p>That's exactly what we built this for. <strong>Contact us for bulk and distributor pricing.</strong></p></div></div>
+</div>
+</div></section>
+
+<section class="final-cta"><div class="container"><h2>The smartest CapEx<br>your portfolio sees this year<br>is the one you don't write.</h2><p>Three deal structures. One product. Pick the path that lines up with how you run your portfolio.</p><div class="final-cta-buttons"><a href="https://api.leadconnectorhq.com/widget/booking/uVBQ1oSButgwYoxrKGzU" target="_blank" rel="noopener" class="btn btn-red btn-lg">Get the JV term sheet <i data-lucide="arrow-right"></i></a><a href="#deploy" class="btn btn-outline btn-lg">See the deal structures</a></div></div></section>
+
+<footer><div class="container"><div class="footer-logo"><img src="assets/images/mtip-logo-white.png" alt="MTIP Collective"></div><div class="footer-tagline">Private. Professional. Plug-and-Play Workspaces.</div><div class="footer-meta"><span><i data-lucide="map-pin" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> 16137 Biscayne Blvd · North Miami Beach, FL</span><span style="margin:0 12px">·</span><span><i data-lucide="mail" style="width:14px;height:14px;display:inline;vertical-align:-2px"></i> <a href="mailto:mtip@hey.com" style="color:rgba(255,255,255,0.85)">mtip@hey.com</a></span></div><div class="footer-links"><a href="https://collective.mtip.ai/">MTIP Collective Coworking</a><a href="#suite">Model 06</a><a href="#lineup">Lineup</a><a href="#order">Order</a><a href="mailto:mtip@hey.com">Contact</a></div><div class="footer-divider"></div><div class="footer-credit">© 2026 MTIP Collective. All rights reserved. · Powered by <a href="https://ai-loren.com">LOREN AI</a></div></div></footer>
+
+<script>
+lucide.createIcons();
+const video=document.getElementById('heroVideo');
+const videoToggle=document.getElementById('videoToggle');
+const videoIcon=document.getElementById('videoIcon');
+videoToggle&&videoToggle.addEventListener('click',()=>{video.muted=!video.muted;videoIcon.setAttribute('data-lucide',video.muted?'volume-x':'volume-2');lucide.createIcons();});
+const tierToggleBtns=document.querySelectorAll('#tierToggle button');
+tierToggleBtns.forEach(btn=>{btn.addEventListener('click',()=>{tierToggleBtns.forEach(b=>b.classList.remove('active'));btn.classList.add('active');const m=btn.dataset.mode;document.querySelectorAll('.tier-price-amount').forEach(el=>{el.textContent=el.dataset[m];});document.querySelectorAll('.tier-price-suffix').forEach(el=>{el.textContent=el.dataset[m];});});});
+const roiInput=document.getElementById('roiInput');
+const roiAnnual=document.getElementById('roiAnnual');
+const roiPayback=document.getElementById('roiPayback');
+const roiSavings=document.getElementById('roiSavings');
+const SUITE_PRICE=6997;
+function fmt(n){return '$'+Math.round(n).toLocaleString();}
+function calcROI(){
+  const m=Math.max(0,parseFloat(roiInput.value)||0);
+  const annual=m*12;
+  // Zero-Capex JV math: 100% of revenue to MTIP until $9,497 recovered, then 75% to landlord
+  const recoupMonths = m>0 ? SUITE_PRICE/m : 0;
+  const fiveYrRevenue = annual*5;
+  const landlordNet = m>0 ? Math.max(0, (fiveYrRevenue - SUITE_PRICE) * 0.75) : 0;
+  roiAnnual.textContent=fmt(annual);
+  roiPayback.textContent=m>0?recoupMonths.toFixed(1)+' mo':'—';
+  roiSavings.textContent=fmt(landlordNet);
+}
+roiInput&&roiInput.addEventListener('input',calcROI);
+roiInput&&calcROI();
+document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>btn.parentElement.classList.toggle('open'));});
+const navLinks=document.querySelectorAll('.nav-tabs a');
+const sections=['#suite','#lineup','#compare','#features','#order'].map(s=>document.querySelector(s)).filter(Boolean);
+window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)current='#'+s.id;});navLinks.forEach(a=>a.classList.toggle('current',a.getAttribute('href')===current));});
+</script>
+
+<!-- 3D library removed; replaced with image showcase -->
+<!-- 3D viewer code removed -->
+
+
+<!-- 360 panorama viewer (Three.js) -->
+
+
+
+
+<!-- Generic image lightbox for carousel -->
+<div class="lightbox" id="imgLightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button class="lb-close" id="ilbClose" aria-label="Close">×</button>
+  <div class="lb-stage">
+    <img class="lb-img" id="ilbImg" src="" alt="">
+    <div class="lb-meta">
+      <span class="lb-meta-eyebrow" id="ilbEyebrow">Scene</span>
+      <span id="ilbTitle"></span>
+    </div>
+    <a id="ilbDownload" href="" download class="g-btn" style="position:absolute;right:0;bottom:-72px;background:#E53B3B;color:white;padding:8px 16px;border-radius:999px;font-size:0.82rem;font-weight:700;text-decoration:none">Download</a>
+  </div>
+</div>
+
+<!-- Pod tier lightbox carousel -->
+<div class="lightbox" id="podLightbox" role="dialog" aria-modal="true" aria-label="Pod gallery">
+  <button class="lb-close" id="lbClose" aria-label="Close">×</button>
+  <div class="lb-stage">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <div class="lb-meta">
+      <span class="lb-meta-eyebrow" id="lbEyebrow">Pod</span>
+      <span id="lbTitle">View</span>
+    </div>
+    <div class="lb-counter" id="lbCounter">1 / 8</div>
+    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous"><i da
