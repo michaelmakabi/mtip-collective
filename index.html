@@ -2313,43 +2313,7 @@ body[data-pricing-mode="monthly"] .suite-price-row .big {
 <style>.loren-sheet, .loren-sheet-backdrop, .loren-orb-btn, .loren-orb-credit { display: none !important; }</style>
 
 
-<style id="loren-final-override">
-/* Final cascade override — wins over all earlier rules */
-elevenlabs-convai {
-  position: fixed !important;
-  bottom: 24px !important;
-  right: 24px !important;
-  left: auto !important;
-  top: auto !important;
-  width: auto !important;
-  height: auto !important;
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  overflow: visible !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  transform: none !important;
-  z-index: 1000 !important;
-  cursor: auto !important;
-}
-@media (max-width: 768px) {
-  elevenlabs-convai {
-    bottom: 100px !important; /* above mobile nav */
-    right: 16px !important;
-  }
-}
-.loren-orb-btn,
-.loren-orb-credit,
-.loren-sheet,
-.loren-sheet-backdrop,
-.loren-orb-halo {
-  display: none !important;
-  visibility: hidden !important;
-}
-</style>
+
 
 </head>
 <body>
@@ -3167,11 +3131,11 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 
 <!-- Loren AI assistant (ElevenLabs Convai) -->
-<div class="loren-orb-halo" aria-hidden="true"></div>
-<button class="loren-orb-btn" type="button" aria-label="Talk to Loren — AI assistant"><span class="orb-pulse" aria-hidden="true"></span><span class="orb-core" aria-hidden="true"></span></button>
-<a class="loren-orb-credit" href="https://loren.ai" target="_blank" rel="noopener" aria-label="Powered by Loren AI">Powered by <strong>LOREN AI</strong></a>
-<elevenlabs-convai agent-id="agent_8201kqz1zth8evzvygs9xgn1pk3k"></elevenlabs-convai>
-<script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+
+
+
+
+
 
 
 <!-- HCP Standard v2 — Mobile Bottom Nav Bar -->
@@ -3249,242 +3213,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 
 
-<script>
-/* HCP v2 — Aggressive ElevenLabs banner annihilator */
-(function() {
-  function deepWalk(node, callback) {
-    if (!node) return;
-    callback(node);
-    if (node.shadowRoot) {
-      var kids = node.shadowRoot.querySelectorAll('*');
-      for (var i = 0; i < kids.length; i++) deepWalk(kids[i], callback);
-    }
-    if (node.children) {
-      for (var i = 0; i < node.children.length; i++) deepWalk(node.children[i], callback);
-    }
-  }
-  function isBanner(el) {
-    if (!el || el.nodeType !== 1) return false;
-    // Element-level test: look for a SHORT element whose textContent matches the banner pattern
-    var t = (el.textContent || '').trim();
-    if (t.length === 0 || t.length > 100) return false;
-    if (!/powered\s*by/i.test(t)) return false;
-    if (!/elevenlabs/i.test(t)) return false;
-    // Don't hide huge containers — only the leaf-ish element
-    return true;
-  }
-  function findSmallestBannerEl(root) {
-    // Find the SMALLEST element matching — to avoid hiding the whole widget
-    var candidates = [];
-    deepWalk(root, function(el) {
-      if (isBanner(el)) candidates.push(el);
-    });
-    if (!candidates.length) return null;
-    // Prefer the one with fewest children (most leaf-like)
-    candidates.sort(function(a, b) {
-      var ac = a.querySelectorAll ? a.querySelectorAll('*').length : 0;
-      var bc = b.querySelectorAll ? b.querySelectorAll('*').length : 0;
-      return ac - bc;
-    });
-    return candidates[0];
-  }
-  function killOnce() {
-    var convai = document.querySelector('elevenlabs-convai');
-    if (!convai) return false;
-    // Try the host first, then the shadow root, then walk
-    var hit = false;
-    deepWalk(convai, function(el) {
-      if (isBanner(el)) {
-        // Hide the smallest banner-text container we can find
-        // by finding the closest ancestor that's reasonable size
-        var target = el;
-        // Walk up to find a container that ONLY holds banner text
-        while (target.parentElement && target.parentElement.children.length === 1
-               && (target.parentElement.textContent || '').trim().length < 100) {
-          target = target.parentElement;
-        }
-        if (!target.hasAttribute('data-banner-killed')) {
-          target.setAttribute('data-banner-killed', '1');
-          target.style.display = 'none !important';
-          target.style.cssText += '; display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; max-height: 0 !important; overflow: hidden !important; pointer-events: none !important; position: absolute !important; left: -9999px !important;';
-          hit = true;
-        }
-      }
-    });
-    return hit;
-  }
-  // Run frequently until stable
-  var tickCount = 0;
-  var fastTick = setInterval(function() {
-    killOnce();
-    if (++tickCount > 60) {
-      clearInterval(fastTick);
-      // Slow tick keeps it dead
-      setInterval(killOnce, 1500);
-    }
-  }, 250);
-  // Also use MutationObserver to catch re-renders
-  var convaiObserver = new MutationObserver(function() { killOnce(); });
-  function attachObserver() {
-    var convai = document.querySelector('elevenlabs-convai');
-    if (convai && convai.shadowRoot) {
-      convaiObserver.observe(convai.shadowRoot, { childList: true, subtree: true, attributes: true });
-      // Also observe each nested shadow
-      deepWalk(convai, function(el) {
-        if (el.shadowRoot) {
-          try { convaiObserver.observe(el.shadowRoot, { childList: true, subtree: true, attributes: true }); } catch(_) {}
-        }
-      });
-    } else {
-      setTimeout(attachObserver, 500);
-    }
-  }
-  attachObserver();
-  // Click triggers re-render — kill on click too
-  document.addEventListener('click', function() {
-    [50, 200, 500, 1000].forEach(function(d) { setTimeout(killOnce, d); });
-  }, true);
-})();
-</script>
 
-
-
-
-
-
-
-
-
-<script>
-/* HCP v3 — Pricing mode toggle (one-time vs monthly) */
-(function() {
-  function init() {
-    var bar = document.querySelector('.pricing-toggle');
-    if (!bar) return;
-    var btns = bar.querySelectorAll('button');
-    var amounts = document.querySelectorAll('.tier-price-amount, .suite-price-row .big');
-    var suffixes = document.querySelectorAll('.tier-price-suffix');
-    // Snapshot original suite price text so monthly shows installment
-    var suiteBig = document.querySelector('.suite-price-row .big');
-    var suiteOnce = document.querySelector('.suite-price-row .once');
-    var origSuiteBig = suiteBig ? suiteBig.textContent : '';
-    var origSuiteOnce = suiteOnce ? suiteOnce.textContent : '';
-    function apply(mode) {
-      btns.forEach(function(b) {
-        var active = b.getAttribute('data-mode') === mode;
-        b.classList.toggle('active', active);
-        b.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-      document.body.setAttribute('data-pricing-mode', mode);
-      amounts.forEach(function(a) {
-        var cash = a.getAttribute('data-cash');
-        var inst = a.getAttribute('data-install');
-        if (mode === 'monthly' && inst) a.textContent = inst;
-        else if (cash) a.textContent = cash;
-      });
-      suffixes.forEach(function(s) {
-        var cash = s.getAttribute('data-cash');
-        var inst = s.getAttribute('data-install');
-        if (mode === 'monthly' && inst) s.textContent = inst;
-        else if (cash) s.textContent = cash;
-      });
-      // Suite price (Model 06 hero block)
-      if (suiteBig) {
-        if (mode === 'monthly') {
-          suiteBig.textContent = '$999';
-          if (suiteOnce) suiteOnce.textContent = '/month · 12 months · $0 down';
-        } else {
-          suiteBig.textContent = origSuiteBig;
-          if (suiteOnce) suiteOnce.textContent = origSuiteOnce;
-        }
-      }
-    }
-    btns.forEach(function(b) {
-      b.addEventListener('click', function() { apply(b.getAttribute('data-mode')); });
-    });
-    // Default: one-time
-    apply('once');
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
-})();
-</script>
-
-<script>
-/* HCP v3 — Custom Loren orb — slide-in only (user picks language/voice/text/mute) */
-(function() {
-  function init() {
-    var orb = document.querySelector('.loren-orb-btn');
-    var convai = document.querySelector('elevenlabs-convai');
-    var credit = document.querySelector('.loren-orb-credit');
-    if (!orb || !convai) { setTimeout(init, 250); return; }
-
-    // ---- DRAG ----
-    var dragging = false, didDrag = false, sx = 0, sy = 0, sR = 28, sB = 50;
-    orb.addEventListener('pointerdown', function(e) {
-      if (window.innerWidth <= 1024) return;
-      dragging = true; didDrag = false; sx = e.clientX; sy = e.clientY;
-      var s = getComputedStyle(orb);
-      sR = parseInt(s.right, 10) || 28; sB = parseInt(s.bottom, 10) || 50;
-      orb.classList.add('dragging'); document.body.classList.add('loren-dragging');
-      try { orb.setPointerCapture(e.pointerId); } catch(_){}
-    });
-    orb.addEventListener('pointermove', function(e) {
-      if (!dragging) return;
-      var dx = e.clientX - sx, dy = e.clientY - sy;
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) didDrag = true;
-      var nr = Math.max(8, Math.min(window.innerWidth - 88, sR - dx));
-      var nb = Math.max(8, Math.min(window.innerHeight - 88, sB - dy));
-      orb.style.right = nr + 'px'; orb.style.bottom = nb + 'px';
-      if (credit) { credit.style.right = nr + 'px'; credit.style.bottom = (nb - 28) + 'px'; }
-      convai.style.right = nr + 'px';
-    });
-    function endDrag(e) {
-      if (!dragging) return;
-      dragging = false;
-      orb.classList.remove('dragging'); document.body.classList.remove('loren-dragging');
-      try { orb.releasePointerCapture(e.pointerId); } catch(_){}
-    }
-    orb.addEventListener('pointerup', endDrag);
-    orb.addEventListener('pointercancel', endDrag);
-
-    // ---- ACTIVATE: just slide widget in. User picks language / voice / text / mute / start themselves ----
-    function activate() {
-      convai.classList.add('loren-active');
-      document.body.classList.add('loren-active');
-      // Ensure widget is properly visible — DON'T auto-click anything
-      // The user sees: language dropdown, voice/text toggle, mute control, Start button
-    }
-    function deactivate() {
-      convai.classList.remove('loren-active');
-      document.body.classList.remove('loren-active');
-    }
-    orb.addEventListener('click', function(e) {
-      if (didDrag) { e.preventDefault(); e.stopPropagation(); return; }
-      activate();
-    });
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && document.body.classList.contains('loren-active')) deactivate();
-    });
-
-    // Click outside the widget collapses it
-    document.addEventListener('pointerdown', function(e) {
-      if (!document.body.classList.contains('loren-active')) return;
-      if (convai.contains(e.target) || orb.contains(e.target)) return;
-      // Don't auto-collapse during an active call
-      var sr = convai.shadowRoot;
-      if (sr) {
-        var t = (sr.textContent || '').toLowerCase();
-        var inCall = /(loren is listening|loren is speaking|talk to interrupt|end call|end\s)/i.test(t);
-        if (inCall) return;
-      }
-      deactivate();
-    });
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
-})();
-</script>
 
 
 <script>
@@ -3508,37 +3237,334 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 </script>
 
 
-<div class="loren-sheet-backdrop" id="lorenBackdrop" aria-hidden="true"></div>
-<div class="loren-sheet" id="lorenSheet" role="dialog" aria-modal="true">
-  <div class="loren-sheet-header">
-    <div class="loren-sheet-orb" aria-hidden="true"></div>
+
+<!-- ===== LOREN v9 — SDK-driven custom chat ===== -->
+<script src="https://unpkg.com/@elevenlabs/client@1.5.0/dist/lib.iife.js"></script>
+
+<style id="loren-v9-style">
+/* Floating orb launcher (desktop) */
+.loren-launcher {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  z-index: 999;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.25s ease;
+}
+.loren-launcher:hover { transform: scale(1.06); }
+.loren-launcher .lo-orb {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 28%),
+    conic-gradient(from 0deg, #dc2626 0deg, #ef4444 60deg, #7f1d1d 130deg, #0a0a0a 200deg, #1f1f22 270deg, #dc2626 360deg);
+  box-shadow: 0 12px 36px rgba(220,38,38,0.55), 0 0 0 2px rgba(220,38,38,0.55), 0 0 28px rgba(220,38,38,0.45);
+  animation: lo-spin 7s linear infinite;
+}
+.loren-launcher .lo-pulse {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(220,38,38,0.45) 0%, transparent 70%);
+  animation: lo-pulse 2.4s ease-in-out infinite;
+  z-index: -1;
+  filter: blur(4px);
+}
+.loren-credit {
+  position: fixed;
+  bottom: 6px;
+  right: 28px;
+  width: 80px;
+  z-index: 998;
+  font: 700 8px/1.2 'Inter', sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.78);
+  text-decoration: none;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+.loren-credit strong { color: #dc2626; font-weight: 800; }
+@keyframes lo-spin { to { transform: rotate(360deg); } }
+@keyframes lo-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.9); }
+  50% { opacity: 0.95; transform: scale(1.18); }
+}
+
+/* Hide on mobile (Chat icon in nav-bar handles it) */
+@media (max-width: 1024px) {
+  .loren-launcher, .loren-credit { display: none; }
+}
+
+/* Backdrop */
+.lo-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1500;
+}
+.lo-backdrop.open { opacity: 1; pointer-events: auto; }
+
+/* Modal — centered, large */
+.lo-modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -45%) scale(0.94);
+  opacity: 0; pointer-events: none;
+  width: calc(100% - 32px);
+  max-width: 600px;
+  background: linear-gradient(180deg, #16161a 0%, #0a0a0c 100%);
+  border: 1px solid rgba(220, 38, 38, 0.45);
+  border-radius: 26px;
+  z-index: 1600;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.85), 0 0 0 1px rgba(220,38,38,0.25), 0 0 80px rgba(220,38,38,0.22);
+  transition: transform 0.34s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.25s ease;
+  color: #fff;
+  overflow: hidden;
+  max-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+}
+.lo-modal.open { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+@media (max-width: 768px) {
+  .lo-modal { max-width: 100%; width: calc(100% - 20px); border-radius: 20px; }
+}
+
+/* Header */
+.lo-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 22px 26px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.lo-head-orb {
+  width: 50px; height: 50px; border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0) 30%),
+    conic-gradient(from 0deg, #dc2626, #ef4444, #7f1d1d, #0a0a0a, #1f1f22, #dc2626);
+  box-shadow: 0 0 0 2px rgba(220,38,38,0.55), 0 4px 16px rgba(220,38,38,0.45);
+  animation: lo-spin 7s linear infinite;
+  flex: 0 0 50px;
+}
+.lo-title { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.01em; }
+.lo-sub { font-size: 0.84rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.lo-close {
+  margin-left: auto; width: 38px; height: 38px;
+  border-radius: 50%; background: rgba(255,255,255,0.08);
+  border: 0; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.lo-close:hover { background: rgba(220,38,38,0.4); }
+
+/* Body */
+.lo-body {
+  padding: 26px 26px 30px;
+  flex: 1; overflow-y: auto;
+}
+
+.lo-step-label {
+  font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #dc2626;
+  font-weight: 800; margin-bottom: 8px;
+}
+.lo-step-title {
+  font-size: 1.4rem; font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.lo-mode-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; margin-bottom: 24px;
+}
+.lo-mode-card {
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 18px; padding: 26px 18px;
+  text-align: center; cursor: pointer;
+  color: #fff; font-family: inherit;
+  display: flex; flex-direction: column;
+  gap: 10px; align-items: center; justify-content: center;
+  min-height: 150px;
+  transition: all 0.2s;
+}
+.lo-mode-card:hover, .lo-mode-card.selected {
+  border-color: #dc2626; background: rgba(220,38,38,0.14);
+  transform: translateY(-2px);
+}
+.lo-mode-card .icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(220,38,38,0.18); color: #dc2626;
+  display: flex; align-items: center; justify-content: center;
+}
+.lo-mode-card .icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lo-mode-card .label { font-weight: 800; font-size: 1.1rem; }
+.lo-mode-card .desc { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+
+.lo-lang {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 16px 18px;
+  color: #fff; font-family: inherit; font-size: 1rem;
+  font-weight: 600; cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+  margin-bottom: 24px;
+}
+.lo-lang option { background: #16161a; color: #fff; padding: 8px; }
+.lo-lang:focus { outline: none; border-color: #dc2626; }
+
+.lo-start-btn {
+  width: 100%; min-height: 58px; border-radius: 16px;
+  font-family: inherit; font-weight: 800; font-size: 1.06rem;
+  cursor: pointer; border: 0;
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(220,38,38,0.5);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.01em;
+}
+.lo-start-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(220,38,38,0.6); }
+.lo-start-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* In-call screen */
+.lo-call-screen { display: none; padding: 24px 12px 12px; text-align: center; }
+.lo-modal[data-stage="call"] .lo-prepare { display: none; }
+.lo-modal[data-stage="call"] .lo-call-screen { display: block; }
+
+.lo-call-orb {
+  width: 110px; height: 110px; border-radius: 50%;
+  margin: 8px auto 16px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 30%),
+    conic-gradient(from 0deg, #dc2626, #ef4444, #7f1d1d, #0a0a0a, #1f1f22, #dc2626);
+  box-shadow: 0 0 0 3px rgba(220,38,38,0.55), 0 0 36px rgba(220,38,38,0.5), 0 0 80px rgba(220,38,38,0.35);
+  animation: lo-spin 6s linear infinite;
+  position: relative;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.lo-call-orb.speaking { box-shadow: 0 0 0 4px rgba(220,38,38,0.85), 0 0 60px rgba(220,38,38,0.85), 0 0 120px rgba(220,38,38,0.55); transform: scale(1.06); }
+.lo-call-orb.listening { box-shadow: 0 0 0 3px rgba(34,197,94,0.55), 0 0 36px rgba(34,197,94,0.5); }
+.lo-call-status { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+.lo-call-mode { font-size: 0.82rem; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 24px; }
+
+.lo-controls { display: flex; justify-content: center; gap: 22px; margin-top: 4px; }
+.lo-controls > div { text-align: center; }
+.lo-ctrl {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.lo-ctrl:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); }
+.lo-ctrl.active { background: rgba(220,38,38,0.4); border-color: #dc2626; }
+.lo-ctrl.end { background: #dc2626; border-color: #991b1b; }
+.lo-ctrl.end:hover { background: #ef4444; }
+.lo-ctrl svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lo-ctrl-label { font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-top: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* Text chat panel */
+.lo-text-chat { display: none; }
+.lo-modal[data-stage="call"][data-mode="text"] .lo-text-chat { display: flex; flex-direction: column; height: 280px; margin-top: 8px; }
+.lo-modal[data-stage="call"][data-mode="text"] .lo-call-orb { width: 60px; height: 60px; margin: 0 auto 8px; }
+.lo-modal[data-stage="call"][data-mode="text"] .lo-controls .lo-ctrl[data-act="mute"],
+.lo-modal[data-stage="call"][data-mode="text"] .lo-controls .lo-ctrl[data-act="pause"] { display: none; }
+.lo-modal[data-stage="call"][data-mode="text"] .lo-controls > div:first-child,
+.lo-modal[data-stage="call"][data-mode="text"] .lo-controls > div:nth-child(2) { display: none; }
+
+.lo-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+  text-align: left;
+}
+.lo-msg {
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 85%;
+  word-wrap: break-word;
+}
+.lo-msg.agent { background: rgba(220,38,38,0.14); border: 1px solid rgba(220,38,38,0.25); align-self: flex-start; }
+.lo-msg.user { background: rgba(255,255,255,0.08); align-self: flex-end; }
+.lo-text-row { display: flex; gap: 8px; }
+.lo-text-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #fff;
+  font-family: inherit; font-size: 0.95rem;
+}
+.lo-text-input:focus { outline: none; border-color: #dc2626; }
+.lo-text-send {
+  width: 50px; border: 0; border-radius: 12px;
+  background: #dc2626; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.lo-text-send svg { width: 20px; height: 20px; }
+</style>
+
+<a class="loren-credit" href="https://loren.ai" target="_blank" rel="noopener" aria-label="Powered by Loren AI">Powered by <strong>LOREN AI</strong></a>
+<button type="button" class="loren-launcher" id="lorenLauncher" aria-label="Talk to Loren">
+  <span class="lo-pulse" aria-hidden="true"></span>
+  <span class="lo-orb" aria-hidden="true"></span>
+</button>
+
+<div class="lo-backdrop" id="loBackdrop" aria-hidden="true"></div>
+<div class="lo-modal" id="loModal" role="dialog" aria-modal="true">
+  <div class="lo-head">
+    <div class="lo-head-orb" aria-hidden="true"></div>
     <div>
-      <div class="loren-sheet-title">Loren</div>
-      <div class="loren-sheet-sub">MTIP Collective Pods · AI assistant</div>
+      <div class="lo-title">Loren</div>
+      <div class="lo-sub">MTIP Collective Pods · AI assistant</div>
     </div>
-    <button class="loren-sheet-close" id="lorenClose" type="button" aria-label="Close">
+    <button class="lo-close" id="loClose" type="button" aria-label="Close">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <div class="loren-sheet-body">
-    <div class="loren-step-prepare">
-      <div class="loren-step-label">Step 1 of 2</div>
-      <div class="loren-step-title">How would you like to chat?</div>
-      <div class="loren-mode-grid">
-        <button type="button" class="loren-mode-card" data-mode="voice">
+  <div class="lo-body">
+    <div class="lo-prepare">
+      <div class="lo-step-label">Step 1 of 2</div>
+      <div class="lo-step-title">How would you like to chat?</div>
+      <div class="lo-mode-grid">
+        <button type="button" class="lo-mode-card" data-mode="voice">
           <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v4M8 23h8"/></svg></span>
           <span class="label">Voice</span>
           <span class="desc">Talk to Loren live</span>
         </button>
-        <button type="button" class="loren-mode-card" data-mode="text">
+        <button type="button" class="lo-mode-card" data-mode="text">
           <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
           <span class="label">Text chat</span>
           <span class="desc">Type your questions</span>
         </button>
       </div>
-      <div class="loren-step-label">Step 2 of 2</div>
-      <div class="loren-step-title">Pick your language</div>
-      <select class="loren-lang-select" id="lorenLang">
+      <div class="lo-step-label">Step 2 of 2</div>
+      <div class="lo-step-title">Pick your language</div>
+      <select class="lo-lang" id="loLang">
         <option value="en" selected>English</option>
         <option value="es">Español (Spanish)</option>
         <option value="fr">Français (French)</option>
@@ -3570,66 +3596,228 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
         <option value="ms">Bahasa Melayu</option>
         <option value="fil">Filipino</option>
       </select>
-      <button type="button" class="loren-sheet-btn" id="lorenStartBtn" disabled>Start conversation</button>
+      <button type="button" class="lo-start-btn" id="loStart" disabled>Start conversation</button>
     </div>
-    <div class="loren-call-screen">
-      <div class="loren-call-orb"></div>
-      <div class="loren-call-status" id="lorenCallStatus">Connecting…</div>
-      <div class="loren-call-mode" id="lorenCallMode">Voice · English</div>
-      <div class="loren-call-controls">
-        <div style="text-align:center">
-          <button type="button" class="loren-control-btn" id="lorenMute" aria-label="Mute">
+    <div class="lo-call-screen">
+      <div class="lo-call-orb" id="loCallOrb"></div>
+      <div class="lo-call-status" id="loStatus">Connecting…</div>
+      <div class="lo-call-mode" id="loModeLabel">Voice · English</div>
+      <div class="lo-text-chat">
+        <div class="lo-msgs" id="loMsgs"></div>
+        <div class="lo-text-row">
+          <input type="text" class="lo-text-input" id="loInput" placeholder="Type your message…">
+          <button type="button" class="lo-text-send" id="loSend" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+        </div>
+      </div>
+      <div class="lo-controls">
+        <div>
+          <button type="button" class="lo-ctrl" id="loMute" data-act="mute" aria-label="Mute mic">
             <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v4M8 23h8"/></svg>
           </button>
-          <div class="loren-control-label">Mute</div>
+          <div class="lo-ctrl-label">Mute</div>
         </div>
-        <div style="text-align:center">
-          <button type="button" class="loren-control-btn" id="lorenPause" aria-label="Pause">
+        <div>
+          <button type="button" class="lo-ctrl" id="loPause" data-act="pause" aria-label="Pause">
             <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
           </button>
-          <div class="loren-control-label">Pause</div>
+          <div class="lo-ctrl-label">Pause</div>
         </div>
-        <div style="text-align:center">
-          <button type="button" class="loren-control-btn end" id="lorenEnd" aria-label="End call">
+        <div>
+          <button type="button" class="lo-ctrl end" id="loEnd" data-act="end" aria-label="End call">
             <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" transform="rotate(135 12 12)"/></svg>
           </button>
-          <div class="loren-control-label">End</div>
+          <div class="lo-ctrl-label">End</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-
-
-
-
 <script>
-/* Loren v8 — minimal: launchers open native convai widget */
+/* Loren v9 — SDK-driven custom chat */
 (function() {
+  var AGENT_ID = 'agent_8201kqz1zth8evzvygs9xgn1pk3k';
+  function $ (s) { return document.querySelector(s); }
+
   function init() {
-    var convai = document.querySelector('elevenlabs-convai');
-    if (!convai) { setTimeout(init, 300); return; }
+    if (!window.ElevenLabsClient) { setTimeout(init, 200); return; }
+    var Conversation = window.ElevenLabsClient.Conversation;
 
-    // Reset convai to native default styling
-    convai.removeAttribute('style');
+    var modal = $('#loModal');
+    var backdrop = $('#loBackdrop');
+    var launcher = $('#lorenLauncher');
+    var modeCards = document.querySelectorAll('.lo-mode-card');
+    var langSel = $('#loLang');
+    var startBtn = $('#loStart');
+    var closeBtn = $('#loClose');
+    var statusEl = $('#loStatus');
+    var modeLabel = $('#loModeLabel');
+    var orbViz = $('#loCallOrb');
+    var muteBtn = $('#loMute');
+    var pauseBtn = $('#loPause');
+    var endBtn = $('#loEnd');
+    var msgsEl = $('#loMsgs');
+    var inputEl = $('#loInput');
+    var sendBtn = $('#loSend');
 
-    // Wire mobile bottom-nav Chat icon to expand the convai widget
-    document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault(); e.stopPropagation();
-        // Click the convai launcher inside its shadow DOM
-        try {
-          var sr = convai.shadowRoot;
-          if (sr) {
-            var launcher = sr.querySelector('button');
-            if (launcher) launcher.click();
-          }
-        } catch(_) {}
+    var selectedMode = null;
+    var selectedLang = 'en';
+    var conversation = null;
+    var muted = false;
+    var paused = false;
+
+    function languageNames(c) {
+      var n = {en:'English',es:'Español',fr:'Français',de:'Deutsch',it:'Italiano',pt:'Português',zh:'中文',ja:'日本語',ko:'한국어',hi:'हिन्दी',ar:'العربية',ru:'Русский',tr:'Türkçe',nl:'Nederlands',pl:'Polski',he:'עברית',vi:'Tiếng Việt',th:'ไทย',id:'Bahasa Indonesia',el:'Ελληνικά',cs:'Čeština',ro:'Română',hu:'Magyar',uk:'Українська',da:'Dansk',sv:'Svenska',fi:'Suomi',no:'Norsk',ms:'Melayu',fil:'Filipino'};
+      return n[c] || c;
+    }
+
+    function open() {
+      backdrop.classList.add('open');
+      modal.classList.add('open');
+      modal.removeAttribute('data-stage');
+      modal.removeAttribute('data-mode');
+      modeCards.forEach(function(c){c.classList.remove('selected');});
+      selectedMode = null;
+      startBtn.disabled = true;
+      muteBtn.classList.remove('active');
+      pauseBtn.classList.remove('active');
+      muted = false; paused = false;
+      msgsEl.innerHTML = '';
+    }
+    function close() {
+      backdrop.classList.remove('open');
+      modal.classList.remove('open');
+      if (conversation) {
+        try { conversation.endSession(); } catch(_) {}
+        conversation = null;
+      }
+      setTimeout(function() {
+        modal.removeAttribute('data-stage');
+        modal.removeAttribute('data-mode');
+      }, 300);
+    }
+    function appendMsg(role, text) {
+      var d = document.createElement('div');
+      d.className = 'lo-msg ' + role;
+      d.textContent = text;
+      msgsEl.appendChild(d);
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+    }
+
+    modeCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        modeCards.forEach(function(c){c.classList.remove('selected');});
+        card.classList.add('selected');
+        selectedMode = card.getAttribute('data-mode');
+        startBtn.disabled = false;
       });
     });
-    console.log('Loren v8 ready — native widget at bottom-right');
+    langSel.addEventListener('change', function() { selectedLang = langSel.value; });
+
+    startBtn.addEventListener('click', async function() {
+      if (!selectedMode) return;
+      modal.setAttribute('data-stage', 'call');
+      modal.setAttribute('data-mode', selectedMode);
+      modeLabel.textContent = (selectedMode === 'voice' ? 'Voice' : 'Text') + ' · ' + languageNames(selectedLang);
+      statusEl.textContent = 'Connecting…';
+
+      try {
+        // Request mic for voice mode
+        if (selectedMode === 'voice') {
+          await navigator.mediaDevices.getUserMedia({ audio: true });
+        }
+
+        var sessionOpts = {
+          agentId: AGENT_ID,
+          connectionType: 'webrtc',
+          overrides: {
+            agent: { language: selectedLang }
+          },
+          textOnly: selectedMode === 'text',
+          onConnect: function() {
+            statusEl.textContent = selectedMode === 'voice' ? 'Loren is listening…' : 'Loren is ready';
+          },
+          onDisconnect: function() {
+            statusEl.textContent = 'Call ended';
+            orbViz.classList.remove('speaking', 'listening');
+          },
+          onError: function(err) {
+            console.error('Loren error:', err);
+            statusEl.textContent = 'Connection issue. Try again?';
+          },
+          onModeChange: function(modeChange) {
+            // mode = 'speaking' | 'listening'
+            var mode = modeChange && modeChange.mode;
+            orbViz.classList.toggle('speaking', mode === 'speaking');
+            orbViz.classList.toggle('listening', mode === 'listening');
+            if (mode === 'speaking') statusEl.textContent = 'Loren is speaking…';
+            else if (mode === 'listening') statusEl.textContent = 'Loren is listening…';
+          },
+          onMessage: function(msg) {
+            // msg: { source: 'ai' | 'user', message: '...' }
+            if (!msg || !msg.message) return;
+            var role = msg.source === 'user' ? 'user' : 'agent';
+            if (selectedMode === 'text' || msg.source === 'ai' || msg.source === 'user') {
+              appendMsg(role, msg.message);
+            }
+          },
+          onStatusChange: function(s) {
+            console.log('status:', s);
+          }
+        };
+
+        conversation = await Conversation.startSession(sessionOpts);
+      } catch (err) {
+        console.error('Failed to start:', err);
+        statusEl.textContent = 'Could not start: ' + (err.message || err);
+      }
+    });
+
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    endBtn.addEventListener('click', close);
+
+    muteBtn.addEventListener('click', function() {
+      muted = !muted;
+      muteBtn.classList.toggle('active', muted);
+      try { if (conversation) conversation.setMicMuted(muted); } catch(_) {}
+      statusEl.textContent = muted ? "Muted — Loren can't hear you" : 'Loren is listening…';
+    });
+    pauseBtn.addEventListener('click', function() {
+      paused = !paused;
+      pauseBtn.classList.toggle('active', paused);
+      // Pause = mute + suppress agent speech
+      try { if (conversation) conversation.setMicMuted(paused); } catch(_) {}
+      statusEl.textContent = paused ? 'Paused' : 'Loren is listening…';
+    });
+
+    sendBtn.addEventListener('click', function() {
+      var t = (inputEl.value || '').trim();
+      if (!t) return;
+      appendMsg('user', t);
+      try {
+        if (conversation && conversation.sendUserMessage) conversation.sendUserMessage(t);
+        else if (conversation && conversation.sendMessage) conversation.sendMessage(t);
+      } catch(e) { console.error(e); }
+      inputEl.value = '';
+    });
+    inputEl.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendBtn.click(); }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('open')) close();
+    });
+
+    // Wire launchers
+    launcher.addEventListener('click', open);
+    document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').forEach(function(b) {
+      b.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); open(); });
+    });
+
+    console.log('Loren v9 ready (SDK-driven)');
   }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
