@@ -2315,6 +2315,220 @@ body[data-pricing-mode="monthly"] .suite-price-row .big {
 
 
 
+
+<style id="nav-premium">
+/* === Premium top nav === */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow 0.25s, background 0.25s;
+}
+.nav-inner {
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  padding: 16px 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+}
+.nav-logo {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 0.85; }
+.nav-logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+@media (max-width: 640px) {
+  .nav-logo img { height: 34px; }
+  .nav-inner { padding: 12px 16px !important; gap: 12px !important; }
+}
+
+.nav-tabs {
+  display: flex !important;
+  align-items: center;
+  gap: 4px !important;
+  flex: 1;
+  justify-content: center;
+}
+.nav-tabs a {
+  position: relative;
+  padding: 8px 14px !important;
+  color: rgba(20,20,20,0.72);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.nav-tabs a:hover {
+  color: #0a0a0a;
+  background: rgba(220,38,38,0.08);
+}
+.nav-tabs a.active {
+  color: #dc2626;
+}
+.nav-tabs a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #dc2626;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  transition: width 0.25s ease;
+}
+.nav-tabs a:hover::after { width: 18px; }
+.nav-tabs a.active::after { width: 24px; }
+
+.nav-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn.btn-red.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px !important;
+  font-size: 0.92rem !important;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(220,38,38,0.4), 0 1px 3px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  white-space: nowrap;
+  min-height: 0 !important;
+}
+.btn.btn-red.nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(220,38,38,0.5), 0 2px 6px rgba(0,0,0,0.1);
+}
+.btn.btn-red.nav-cta .cta-arrow {
+  transition: transform 0.25s ease;
+  font-size: 1rem;
+  margin-top: -1px;
+}
+.btn.btn-red.nav-cta:hover .cta-arrow { transform: translateX(3px); }
+
+/* Hamburger */
+.nav-burger {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: rgba(0,0,0,0.04);
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  transition: background 0.2s;
+}
+.nav-burger:hover { background: rgba(220,38,38,0.1); }
+.nav-burger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #0a0a0a;
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.2s;
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; }
+.nav-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Tablet & mobile */
+@media (max-width: 1100px) {
+  .nav-tabs { display: none !important; }
+  .nav-burger { display: flex; }
+  .nav-tabs.mobile-open {
+    display: flex !important;
+    position: fixed;
+    top: 70px; left: 12px; right: 12px;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    gap: 4px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.05);
+    z-index: 99;
+  }
+  .nav-tabs.mobile-open a {
+    padding: 14px 18px !important;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+  .nav-tabs.mobile-open a:hover { background: rgba(220,38,38,0.06); }
+}
+@media (max-width: 640px) {
+  .btn.btn-red.nav-cta {
+    padding: 9px 14px !important;
+    font-size: 0.82rem !important;
+  }
+  .btn.btn-red.nav-cta .cta-arrow { display: none; }
+}
+
+/* Slight elevation when scrolled */
+.nav.scrolled {
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+}
+</style>
+
+<script>
+/* Nav scroll elevation + active section tracking */
+(function(){
+  var nav = document.querySelector('.nav');
+  if (!nav) return;
+  function onScroll(){ nav.classList.toggle('scrolled', window.scrollY > 8); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Active section highlight
+  var links = document.querySelectorAll('.nav-tabs a[href^="#"]');
+  if (!links.length) return;
+  var sections = Array.from(links).map(function(a){
+    var id = a.getAttribute('href').slice(1);
+    return { id: id, el: document.getElementById(id), link: a };
+  }).filter(function(x){ return x.el; });
+  function active(){
+    var y = window.scrollY + 120;
+    var current = null;
+    sections.forEach(function(s){
+      if (s.el.offsetTop <= y) current = s;
+    });
+    links.forEach(function(a){ a.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', active, { passive: true });
+  active();
+})();
+</script>
+
 </head>
 <body>
 <a id="top" aria-hidden="true"></a>
@@ -2324,17 +2538,29 @@ body[data-pricing-mode="monthly"] .suite-price-row .big {
   <a href="#wizard" class="msc-primary">Run the math</a>
 </div>
 
-<nav class="nav"><div class="nav-inner"><a href="#top" class="nav-logo"><img src="assets/images/mtip-logo.png" alt="MTIP Collective"></a><button type="button" class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false"><i data-lucide="menu"></i></button><div class="nav-tabs" id="navTabs">
-  <a href="#models">Models</a>
-  <a href="#deals">Pricing</a>
-  <a href="#plan">Plan</a>
-  <a href="#vs-office">Compare</a>
-  <a href="#demo">Demo</a>
-  <a href="#gallery">Gallery</a>
-  <a href="#stories">Stories</a>
-  <a href="#faq">FAQ</a>
-</div>
-</div><a href="#deploy" class="btn btn-red">Get JV term sheet</a></div></nav>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo" aria-label="MTIP Collective home">
+      <img src="assets/images/mtip-logo.png" alt="MTIP Collective">
+    </a>
+    <div class="nav-tabs" id="navTabs">
+      <a href="#models">Models</a>
+      <a href="#deals">Pricing</a>
+      <a href="#plan">Plan</a>
+      <a href="#vs-office">Compare</a>
+      <a href="#demo">Demo</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#stories">Stories</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#deals" class="btn btn-red nav-cta">Get JV term sheet <span class="cta-arrow">→</span></a>
+      <button type="button" class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
 
 <section id="top" class="hero" id="top">
   <div class="hero-bg">
