@@ -3947,7 +3947,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       // 2. Reveal convai natively at bottom-right (or center on small screens)
       if (convai) {
         // Force display + visibility, place where the user can SEE and TAP it
-        convai.style.cssText = 'position:fixed!important;bottom:24px!important;right:24px!important;left:auto!important;top:auto!important;z-index:1700!important;display:block!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;';
+        convai.style.cssText = 'position:fixed!important;bottom:24px!important;right:24px!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;overflow:visible!important;border-radius:18px!important;box-shadow:0 20px 60px rgba(0,0,0,0.7),0 0 0 1px rgba(220,38,38,0.4)!important;background:transparent!important;z-index:1700!important;display:block!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important;cursor:auto!important;';
         if (window.innerWidth <= 768) {
           // Center it on small screens
           convai.style.cssText += 'left:50%!important;right:auto!important;bottom:24px!important;transform:translateX(-50%)!important;';
