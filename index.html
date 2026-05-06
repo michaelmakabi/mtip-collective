@@ -488,7 +488,7 @@ cNextHover && cNextHover.addEventListener('click', () => cGo(cIdx+1));
       playIcon && playIcon.setAttribute('data-lucide', 'pause');
       playLabel && (playLabel.textContent = 'Pause');
       if (window.lucide) window.lucide.createIcons();
-      paintMeter(mode === 'inside' ? 38 : 68,
+      paintMeter(mode === 'inside' ? 30 : 60,
         mode === 'inside' ? 'Inside the pod — conversation-private.' : 'Open office — too loud to focus.',
         mode === 'inside' ? 'good' : 'bad');
     }).catch(()=>{});
