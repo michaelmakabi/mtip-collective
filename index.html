@@ -2146,6 +2146,65 @@ elevenlabs-convai::part(branding) {
   .hcp-bottom-nav { display: none; }
 }
 
+
+/* === Force orb-only mode (override 'Talk to Loren / Start the call' card) === */
+@media (min-width: 1025px) {
+  elevenlabs-convai {
+    position: fixed !important;
+    bottom: 50px !important;
+    right: 28px !important;
+    width: 80px !important;
+    height: 80px !important;
+    overflow: hidden !important;
+    border-radius: 50% !important;
+    box-shadow: 0 12px 36px rgba(220,38,38,0.55), 0 0 0 2px rgba(220,38,38,0.5), 0 0 24px rgba(220,38,38,0.3) !important;
+    z-index: 999 !important;
+    cursor: grab !important;
+    transition: box-shadow 0.25s ease, transform 0.25s ease !important;
+    background: #0a0a0a;
+  }
+  elevenlabs-convai:hover {
+    box-shadow: 0 16px 48px rgba(220,38,38,0.7), 0 0 0 2px rgba(220,38,38,0.7), 0 0 32px rgba(220,38,38,0.5) !important;
+    transform: scale(1.05);
+  }
+  elevenlabs-convai.dragging { cursor: grabbing !important; }
+  /* When in active call, expand fully */
+  elevenlabs-convai.loren-expanded {
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    border-radius: 18px !important;
+    cursor: auto !important;
+  }
+  /* The credit lives just below the orb */
+  .loren-orb-credit {
+    position: fixed;
+    bottom: 22px;
+    right: 28px;
+    width: 80px;
+    z-index: 998;
+    font: 700 8px/1.2 'Inter', sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+    pointer-events: auto;
+    transition: color 0.2s ease;
+  }
+  .loren-orb-credit strong { color: #dc2626; font-weight: 800; }
+  .loren-orb-credit:hover { color: #fff; }
+  .loren-orb-credit:hover strong { text-shadow: 0 0 8px rgba(220,38,38,0.7); }
+  /* When dragging, hide the credit text (it would lag behind) */
+  body.loren-dragging .loren-orb-credit { opacity: 0; pointer-events: none; }
+  body.loren-dragging .loren-orb-credit { transition: opacity 0.1s; }
+}
+@media (max-width: 1024px) {
+  /* Mobile: widget is hidden; chat icon in nav-bar launches it */
+  .loren-orb-credit { display: none; }
+}
+
 </style>
 </head>
 <body>
@@ -2964,6 +3023,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 <!-- Loren AI assistant (ElevenLabs Convai) -->
 <div class="loren-orb-halo" aria-hidden="true"></div>
+<a class="loren-orb-credit" href="https://loren.ai" target="_blank" rel="noopener" aria-label="Powered by Loren AI">Powered by <strong>LOREN AI</strong></a>
 <elevenlabs-convai agent-id="agent_8201kqz1zth8evzvygs9xgn1pk3k"></elevenlabs-convai>
 <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
 
@@ -2974,21 +3034,21 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
     <span class="hcp-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg></span>
     <span class="hcp-label">Home</span>
   </a>
-  <a class="hcp-bottom-nav-item" href="#lineup" data-nav="lineup" aria-label="Lineup">
+  <a class="hcp-bottom-nav-item" href="#lineup" data-nav="models" aria-label="Models">
     <span class="hcp-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
-    <span class="hcp-label">Lineup</span>
+    <span class="hcp-label">Models</span>
   </a>
-  <a class="hcp-bottom-nav-item primary" href="#wizard" data-nav="math" aria-label="Run the math">
+  <a class="hcp-bottom-nav-item primary" href="#wizard" data-nav="plan" aria-label="Plan your deployment">
     <span class="hcp-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h2M14 8h2M8 12h2M14 12h2M8 16h2M14 16h2"/></svg></span>
-    <span class="hcp-label">Math</span>
+    <span class="hcp-label">Plan</span>
   </a>
   <a class="hcp-bottom-nav-item" href="/brochure/" target="_blank" rel="noopener" data-nav="brochure" aria-label="Brochure">
     <span class="hcp-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
     <span class="hcp-label">Brochure</span>
   </a>
-  <button class="hcp-bottom-nav-item loren" type="button" data-nav="loren" aria-label="Talk to Loren — AI Assistant">
+  <button class="hcp-bottom-nav-item loren" type="button" data-nav="loren" aria-label="Chat with Loren">
     <span class="hcp-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg></span>
-    <span class="hcp-label">Loren</span>
+    <span class="hcp-label">Chat</span>
   </button>
 </nav>
 
@@ -3138,6 +3198,95 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
   document.addEventListener('click', function() {
     [50, 200, 500, 1000].forEach(function(d) { setTimeout(killOnce, d); });
   }, true);
+})();
+</script>
+
+
+<script>
+/* HCP v2 — Loren orb: drag + expand */
+(function() {
+  function init() {
+    var convai = document.querySelector('elevenlabs-convai');
+    var credit = document.querySelector('.loren-orb-credit');
+    if (!convai) { setTimeout(init, 300); return; }
+
+    // --- DRAG ---
+    var dragging = false, startX = 0, startY = 0, origRight = 0, origBottom = 0;
+    var didDrag = false;
+    convai.addEventListener('pointerdown', function(e) {
+      // Only on desktop
+      if (window.innerWidth <= 1024) return;
+      if (convai.classList.contains('loren-expanded')) return;
+      dragging = true;
+      didDrag = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      var s = getComputedStyle(convai);
+      origRight = parseInt(s.right, 10) || 28;
+      origBottom = parseInt(s.bottom, 10) || 50;
+      convai.classList.add('dragging');
+      document.body.classList.add('loren-dragging');
+      try { convai.setPointerCapture(e.pointerId); } catch(_) {}
+    });
+    convai.addEventListener('pointermove', function(e) {
+      if (!dragging) return;
+      var dx = e.clientX - startX;
+      var dy = e.clientY - startY;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true;
+      var newRight = Math.max(8, Math.min(window.innerWidth - 88, origRight - dx));
+      var newBottom = Math.max(8, Math.min(window.innerHeight - 88, origBottom - dy));
+      convai.style.right = newRight + 'px';
+      convai.style.bottom = newBottom + 'px';
+      if (credit) {
+        credit.style.right = newRight + 'px';
+        credit.style.bottom = (newBottom - 28) + 'px';
+      }
+    });
+    function dragEnd(e) {
+      if (!dragging) return;
+      dragging = false;
+      convai.classList.remove('dragging');
+      document.body.classList.remove('loren-dragging');
+      try { convai.releasePointerCapture(e.pointerId); } catch(_) {}
+    }
+    convai.addEventListener('pointerup', dragEnd);
+    convai.addEventListener('pointercancel', dragEnd);
+
+    // --- EXPAND on click (only if user didn't drag) ---
+    convai.addEventListener('click', function(e) {
+      if (didDrag) { e.stopPropagation(); e.preventDefault(); return; }
+      // Allow expansion: remove the clip
+      convai.classList.add('loren-expanded');
+      // Pass the click through to the widget's launcher inside shadow DOM
+      try {
+        var sr = convai.shadowRoot;
+        if (sr) {
+          var launcher = sr.querySelector('button, [role=button], [data-action]');
+          // The click already went to it via bubble; nothing more needed
+        }
+      } catch(_){}
+    });
+
+    // Listen for end-of-call: collapse back to orb
+    function watchForCollapse() {
+      var sr = convai.shadowRoot;
+      if (!sr) { setTimeout(watchForCollapse, 500); return; }
+      var observer = new MutationObserver(function() {
+        // If the conversation feedback panel disappears, collapse
+        var hasActiveCall = sr.querySelector('[class*=conversation], [data-state=active], [data-state=connected]');
+        if (!hasActiveCall) {
+          // Don't auto-collapse aggressively; only on explicit dismiss
+        }
+      });
+      try { observer.observe(sr, { childList: true, subtree: true, attributes: true }); } catch(_) {}
+    }
+    watchForCollapse();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 </script>
 
