@@ -3878,7 +3878,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 
 <script>
-/* Loren chat sheet — centered + language-aware */
+/* Loren v7 — modal sets prefs, then HANDS OFF to visible convai widget */
 (function() {
   function $ (s) { return document.querySelector(s); }
   function deepWalk(node, fn) {
@@ -3891,18 +3891,6 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       }
     }
   }
-  function clickInShadow(text, root) {
-    var hit = null;
-    deepWalk(root, function(el) {
-      if (hit) return;
-      if (el.tagName === 'BUTTON' || (el.getAttribute && el.getAttribute('role') === 'button')) {
-        var t = (el.textContent || '').trim().toLowerCase();
-        if (t.indexOf(text.toLowerCase()) !== -1) hit = el;
-      }
-    });
-    if (hit) { try { hit.click(); return true; } catch(_){} }
-    return false;
-  }
   function init() {
     var sheet = $('#lorenSheet');
     var backdrop = $('#lorenBackdrop');
@@ -3910,43 +3898,22 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
     var langSelect = $('#lorenLang');
     var startBtn = $('#lorenStartBtn');
     var closeBtn = $('#lorenClose');
-    var status = $('#lorenCallStatus');
-    var modeLabel = $('#lorenCallMode');
-    var muteBtn = $('#lorenMute');
-    var pauseBtn = $('#lorenPause');
-    var endBtn = $('#lorenEnd');
     var convai = $('elevenlabs-convai');
     if (!sheet) { console.error('Loren sheet not in DOM'); return; }
 
     var selectedMode = null;
     var selectedLang = 'en';
 
-    function open() {
+    function openModal() {
       backdrop.classList.add('open');
       sheet.classList.add('open');
-      sheet.setAttribute('data-step', 'prepare');
-      sheet.removeAttribute('data-mode');
       modeCards.forEach(function(c){c.classList.remove('selected');});
       selectedMode = null;
       startBtn.disabled = true;
-      muteBtn.classList.remove('muted');
-      pauseBtn.classList.remove('paused');
     }
-    function close() {
+    function closeModal() {
       backdrop.classList.remove('open');
       sheet.classList.remove('open');
-      setTimeout(function(){
-        sheet.removeAttribute('data-step');
-      }, 300);
-      // End any active convai session
-      if (convai && convai.shadowRoot) {
-        clickInShadow('end call', convai.shadowRoot);
-        clickInShadow('end', convai.shadowRoot);
-      }
-      // Reset convai position
-      if (convai) {
-        convai.style.cssText = '';
-      }
     }
     function languageNames(c) {
       var n = {en:'English',es:'Español',fr:'Français',de:'Deutsch',it:'Italiano',pt:'Português',zh:'中文',ja:'日本語',ko:'한국어',hi:'हिन्दी',ar:'العربية',ru:'Русский',tr:'Türkçe',nl:'Nederlands',pl:'Polski',he:'עברית',vi:'Tiếng Việt',th:'ไทย',id:'Bahasa Indonesia',el:'Ελληνικά',cs:'Čeština',ro:'Română',hu:'Magyar',uk:'Українська',da:'Dansk',sv:'Svenska',fi:'Suomi',no:'Norsk',ms:'Melayu',fil:'Filipino'};
@@ -3967,104 +3934,65 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
     startBtn.addEventListener('click', function() {
       if (!selectedMode) return;
-      sheet.setAttribute('data-step', 'call');
-      sheet.setAttribute('data-mode', selectedMode);
-      modeLabel.textContent = (selectedMode === 'voice' ? 'Voice' : 'Text') + ' · ' + languageNames(selectedLang);
-      status.textContent = 'Connecting…';
-
-      if (!convai) {
-        status.textContent = 'Chat unavailable — refresh the page.';
-        return;
-      }
-
-      // CRITICAL: set the language on the convai host BEFORE it loads
-      convai.setAttribute('language', selectedLang);
-      convai.setAttribute('lang', selectedLang);
-      convai.setAttribute('default-language', selectedLang);
-
-      // Position convai offscreen but functional so we can drive it
-      convai.style.cssText = 'position:fixed!important;left:-9999px!important;top:0!important;visibility:hidden!important;opacity:1!important;pointer-events:auto!important;display:block!important;width:400px!important;height:600px!important;';
-
-      // Drive widget
-      var attempts = 0;
-      var driver = setInterval(function() {
-        attempts++;
-        if (!convai.shadowRoot) {
-          if (attempts > 60) { clearInterval(driver); status.textContent = 'Could not load chat. Try again.'; }
-          return;
+      // 1. Set language attribute on convai BEFORE it appears
+      if (convai) {
+        convai.setAttribute('language', selectedLang);
+        convai.setAttribute('lang', selectedLang);
+        convai.setAttribute('default-language', selectedLang);
+        if (selectedMode === 'text') {
+          convai.setAttribute('text-only', 'true');
+          convai.setAttribute('default-mode', 'text');
         }
-        // Try to set language inside the widget's own UI too
+      }
+      // 2. Reveal convai natively at bottom-right (or center on small screens)
+      if (convai) {
+        // Force display + visibility, place where the user can SEE and TAP it
+        convai.style.cssText = 'position:fixed!important;bottom:24px!important;right:24px!important;left:auto!important;top:auto!important;z-index:1700!important;display:block!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;';
+        if (window.innerWidth <= 768) {
+          // Center it on small screens
+          convai.style.cssText += 'left:50%!important;right:auto!important;bottom:24px!important;transform:translateX(-50%)!important;';
+        }
+      }
+      // 3. Close my modal and let user interact with the real widget
+      closeModal();
+      // 4. Best-effort: try to auto-click 'Agree' (ToS) so user only sees Start button
+      setTimeout(function() {
+        if (!convai || !convai.shadowRoot) return;
         deepWalk(convai.shadowRoot, function(el) {
-          // Native select dropdown
-          if (el.tagName === 'SELECT' && el.options && el.options.length > 0) {
-            for (var i = 0; i < el.options.length; i++) {
-              if (el.options[i].value === selectedLang) {
-                if (el.value !== selectedLang) {
-                  el.value = el.options[i].value;
-                  el.dispatchEvent(new Event('change', { bubbles: true }));
-                  el.dispatchEvent(new Event('input', { bubbles: true }));
-                }
-                break;
-              }
-            }
-          }
-          // Custom dropdown buttons (data-language)
-          if (el.getAttribute && (el.getAttribute('data-language') === selectedLang || el.getAttribute('data-lang') === selectedLang)) {
+          if (el.tagName === 'BUTTON' && /agree/i.test(el.textContent || '')) {
             try { el.click(); } catch(_) {}
           }
         });
-        // Click Agree (ToS)
-        clickInShadow('agree', convai.shadowRoot);
-        // Click Start
-        if (clickInShadow('start the call', convai.shadowRoot) ||
-            clickInShadow('start chat', convai.shadowRoot) ||
-            clickInShadow('start conversation', convai.shadowRoot) ||
-            clickInShadow('start', convai.shadowRoot)) {
-          clearInterval(driver);
-          status.textContent = selectedMode === 'voice' ? 'Loren is listening… (in ' + languageNames(selectedLang) + ')' : 'Loren is ready';
-          return;
-        }
-        if (attempts > 60) {
-          clearInterval(driver);
-          status.textContent = 'Tap "Start" inside the widget below.';
-        }
-      }, 100);
+      }, 400);
     });
 
-    closeBtn.addEventListener('click', close);
-    backdrop.addEventListener('click', close);
-    endBtn.addEventListener('click', close);
-
-    muteBtn.addEventListener('click', function() {
-      muteBtn.classList.toggle('muted');
-      if (convai && convai.shadowRoot) {
-        clickInShadow(muteBtn.classList.contains('muted') ? 'mute' : 'unmute', convai.shadowRoot);
-      }
-      status.textContent = muteBtn.classList.contains('muted') ? "Muted — Loren can't hear you" : 'Loren is listening…';
-    });
-    pauseBtn.addEventListener('click', function() {
-      pauseBtn.classList.toggle('paused');
-      if (convai && convai.shadowRoot) {
-        clickInShadow(pauseBtn.classList.contains('paused') ? 'pause' : 'resume', convai.shadowRoot);
-      }
-      status.textContent = pauseBtn.classList.contains('paused') ? 'Paused' : 'Loren is listening…';
-    });
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && sheet.classList.contains('open')) close();
+      if (e.key === 'Escape' && sheet.classList.contains('open')) closeModal();
     });
 
-    // Wire launchers
+    // Wire launchers (orb + mobile Chat icon)
     function wire(el) {
       if (!el) return;
       el.addEventListener('click', function(e) {
         e.preventDefault(); e.stopPropagation();
-        open();
+        // Reset convai visibility/position before opening modal
+        if (convai) {
+          convai.style.cssText = 'position:fixed!important;bottom:-2000px!important;opacity:0!important;pointer-events:none!important;';
+        }
+        openModal();
       });
     }
     wire(document.querySelector('.loren-orb-btn'));
     document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').forEach(wire);
-    console.log('Loren v6 ready — centered modal, language-aware. Orb:', !!document.querySelector('.loren-orb-btn'), 'Mobile chat:', document.querySelectorAll('.hcp-bottom-nav-item[data-nav="loren"]').length);
+
+    // Hide convai by default until user explicitly opens modal + starts
+    if (convai) {
+      convai.style.cssText = 'position:fixed!important;bottom:-2000px!important;opacity:0!important;pointer-events:none!important;';
+    }
+    console.log('Loren v7 ready — modal hands off to native widget. Orb:', !!document.querySelector('.loren-orb-btn'));
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
