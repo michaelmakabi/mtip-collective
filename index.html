@@ -2264,6 +2264,187 @@ elevenlabs-convai::part(branding) {
   .loren-orb-credit { display: none; }
 }
 
+
+/* === HCP v3 — Mobile UX overhaul === */
+@media (max-width: 768px) {
+  /* 1. Compress vertical spacing */
+  .section { padding: 48px 0 !important; }
+  section[class*="cta"], section[class*="callout"], .deploy-cta, .final-cta { padding: 56px 0 !important; }
+  .container { padding-left: 16px; padding-right: 16px; }
+
+  /* 2. Hero card — tighter on mobile */
+  .hero-card, .hero-content { padding: 24px 18px !important; }
+  .hero h1 { font-size: clamp(2rem, 9vw, 3rem) !important; line-height: 1.05 !important; }
+
+  /* 3. Suite section — fix horizontal overflow */
+  .suite-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .suite-image { position: relative !important; aspect-ratio: 16/10 !important; max-height: none !important; top: 0 !important; }
+  .suite-price-card { padding: 22px !important; }
+  .suite-price-row .big { font-size: clamp(2.2rem, 9vw, 3rem) !important; }
+
+  /* 4. Founder testimonial — single column, proper width */
+  .founder-card { grid-template-columns: 1fr !important; gap: 16px !important; padding: 22px !important; text-align: center; }
+  .founder-card .founder-avatar { margin: 0 auto !important; }
+  .founder-card blockquote, .founder-card .quote { padding: 0 !important; font-size: 0.95rem !important; line-height: 1.55 !important; max-width: 100%; }
+
+  /* 5. Lineup — horizontal swipe carousel on mobile */
+  .lineup-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 14px;
+    padding: 4px 16px 20px;
+    margin: 0 -16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .lineup-grid::-webkit-scrollbar { display: none; }
+  .tier-card {
+    flex: 0 0 82%;
+    min-width: 82%;
+    max-width: 82%;
+    scroll-snap-align: start;
+    margin: 0;
+  }
+  .tier-card .tier-img { aspect-ratio: 1.1/1 !important; }
+  .lineup-grid::after {
+    content: '';
+    flex: 0 0 16px;
+  }
+  /* Carousel dots indicator */
+  .mobile-carousel-hint {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    color: rgba(255,255,255,0.5);
+    font: 600 10px/1 'Inter', sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .mobile-carousel-hint::before, .mobile-carousel-hint::after { content: '←'; opacity: 0.5; }
+  .mobile-carousel-hint::after { content: '→'; }
+
+  /* 6. Critique cards — horizontal swipe */
+  .critique-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 4px 16px 20px;
+    margin: 0 -16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .critique-grid::-webkit-scrollbar { display: none; }
+  .critique-card {
+    flex: 0 0 85%;
+    min-width: 85%;
+    scroll-snap-align: start;
+  }
+
+  /* 7. Compare tables — let them scroll horizontally with hint */
+  .compare-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -16px;
+    padding: 0 16px 8px;
+    scrollbar-width: none;
+  }
+  .compare-table-wrap::-webkit-scrollbar { display: none; }
+  .compare-table table { min-width: 540px; font-size: 0.82rem; }
+  .compare-table td, .compare-table th { padding: 10px 8px !important; }
+
+  /* 8. Feature grid → 2 columns on mobile */
+  .feature-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  .feature-card { padding: 16px !important; }
+  .feature-card h4 { font-size: 0.95rem !important; }
+  .feature-card p { font-size: 0.8rem !important; line-height: 1.45 !important; }
+
+  /* 9. Bigger touch targets on all CTAs */
+  .btn, button.btn, a.btn { min-height: 48px !important; padding: 12px 22px !important; font-size: 0.95rem !important; }
+
+  /* 10. Trust strip — stack into 2 rows of 3, smaller */
+  .trust-inner, .cert-inner { flex-wrap: wrap !important; gap: 8px 14px !important; justify-content: center !important; }
+  .trust-inner span { font-size: 0.78rem !important; }
+  .cert-item { flex-basis: 47% !important; }
+
+  /* 11. FAQ items — bigger tap area */
+  .faq-q { padding: 18px 16px !important; font-size: 0.95rem !important; min-height: 56px !important; }
+  .faq-a { padding: 0 16px 16px !important; font-size: 0.9rem !important; line-height: 1.55 !important; }
+
+  /* 12. Section headings */
+  h2, .section h2 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.1 !important; }
+  .section .lead, .section p.lead { font-size: 0.95rem !important; line-height: 1.5 !important; }
+
+  /* 13. Mobile bottom nav — slightly more padding to avoid Loren orb overlap */
+  body { padding-bottom: 96px !important; }
+}
+
+/* === Pricing toggle (one-time vs monthly) — visible on all viewports === */
+.pricing-toggle-bar {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 28px;
+  position: relative;
+  z-index: 5;
+}
+.pricing-toggle {
+  display: inline-flex;
+  background: rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 4px;
+  border-radius: 999px;
+  gap: 0;
+  position: relative;
+}
+.pricing-toggle button {
+  background: transparent;
+  border: 0;
+  padding: 8px 18px;
+  font: 700 12px/1 'Inter', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.55);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: all 0.25s ease;
+  min-height: 36px;
+  white-space: nowrap;
+}
+.pricing-toggle button.active {
+  background: var(--red, #dc2626);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(220,38,38,0.3);
+}
+.pricing-toggle button:hover:not(.active) { color: var(--red, #dc2626); }
+.pricing-toggle .saving-pill {
+  display: inline-block;
+  background: #16a34a;
+  color: #fff;
+  padding: 2px 6px;
+  margin-left: 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* When body has data-pricing-mode="monthly", apply override styles */
+body[data-pricing-mode="monthly"] .tier-price-amount {
+  color: var(--red, #dc2626);
+}
+body[data-pricing-mode="monthly"] .suite-price-row .big {
+  color: var(--red, #dc2626);
+}
+
+@media (max-width: 768px) {
+  .pricing-toggle button { padding: 8px 14px; font-size: 11px; }
+}
+
 </style>
 </head>
 <body>
@@ -3378,6 +3559,62 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
       try { obs.observe(sr, { childList: true, subtree: true, characterData: true }); } catch(_){}
     }
     watchEnd();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
+
+<script>
+/* HCP v3 — Pricing mode toggle (one-time vs monthly) */
+(function() {
+  function init() {
+    var bar = document.querySelector('.pricing-toggle');
+    if (!bar) return;
+    var btns = bar.querySelectorAll('button');
+    var amounts = document.querySelectorAll('.tier-price-amount, .suite-price-row .big');
+    var suffixes = document.querySelectorAll('.tier-price-suffix');
+    // Snapshot original suite price text so monthly shows installment
+    var suiteBig = document.querySelector('.suite-price-row .big');
+    var suiteOnce = document.querySelector('.suite-price-row .once');
+    var origSuiteBig = suiteBig ? suiteBig.textContent : '';
+    var origSuiteOnce = suiteOnce ? suiteOnce.textContent : '';
+    function apply(mode) {
+      btns.forEach(function(b) {
+        var active = b.getAttribute('data-mode') === mode;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      document.body.setAttribute('data-pricing-mode', mode);
+      amounts.forEach(function(a) {
+        var cash = a.getAttribute('data-cash');
+        var inst = a.getAttribute('data-install');
+        if (mode === 'monthly' && inst) a.textContent = inst;
+        else if (cash) a.textContent = cash;
+      });
+      suffixes.forEach(function(s) {
+        var cash = s.getAttribute('data-cash');
+        var inst = s.getAttribute('data-install');
+        if (mode === 'monthly' && inst) s.textContent = inst;
+        else if (cash) s.textContent = cash;
+      });
+      // Suite price (Model 06 hero block)
+      if (suiteBig) {
+        if (mode === 'monthly') {
+          suiteBig.textContent = '$999';
+          if (suiteOnce) suiteOnce.textContent = '/month · 12 months · $0 down';
+        } else {
+          suiteBig.textContent = origSuiteBig;
+          if (suiteOnce) suiteOnce.textContent = origSuiteOnce;
+        }
+      }
+    }
+    btns.forEach(function(b) {
+      b.addEventListener('click', function() { apply(b.getAttribute('data-mode')); });
+    });
+    // Default: one-time
+    apply('once');
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
