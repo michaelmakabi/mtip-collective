@@ -3447,123 +3447,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 
 
-<script>
-/* HCP v2 — Custom Loren orb — final */
-(function() {
-  function init() {
-    var orb = document.querySelector('.loren-orb-btn');
-    var convai = document.querySelector('elevenlabs-convai');
-    var credit = document.querySelector('.loren-orb-credit');
-    if (!orb || !convai) { setTimeout(init, 250); return; }
 
-    // ---- DRAG ----
-    var dragging = false, didDrag = false, sx = 0, sy = 0, sR = 28, sB = 50;
-    orb.addEventListener('pointerdown', function(e) {
-      if (window.innerWidth <= 1024) return;
-      dragging = true; didDrag = false; sx = e.clientX; sy = e.clientY;
-      var s = getComputedStyle(orb);
-      sR = parseInt(s.right, 10) || 28; sB = parseInt(s.bottom, 10) || 50;
-      orb.classList.add('dragging'); document.body.classList.add('loren-dragging');
-      try { orb.setPointerCapture(e.pointerId); } catch(_){}
-    });
-    orb.addEventListener('pointermove', function(e) {
-      if (!dragging) return;
-      var dx = e.clientX - sx, dy = e.clientY - sy;
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) didDrag = true;
-      var nr = Math.max(8, Math.min(window.innerWidth - 88, sR - dx));
-      var nb = Math.max(8, Math.min(window.innerHeight - 88, sB - dy));
-      orb.style.right = nr + 'px'; orb.style.bottom = nb + 'px';
-      if (credit) { credit.style.right = nr + 'px'; credit.style.bottom = (nb - 28) + 'px'; }
-      convai.style.right = nr + 'px';
-    });
-    function endDrag(e) {
-      if (!dragging) return;
-      dragging = false;
-      orb.classList.remove('dragging'); document.body.classList.remove('loren-dragging');
-      try { orb.releasePointerCapture(e.pointerId); } catch(_){}
-    }
-    orb.addEventListener('pointerup', endDrag);
-    orb.addEventListener('pointercancel', endDrag);
-
-    // ---- ACTIVATE ----
-    function deepWalk(root, fn) {
-      if (!root) return;
-      if (root.querySelectorAll) {
-        var nodes = root.querySelectorAll('*');
-        for (var i = 0; i < nodes.length; i++) {
-          fn(nodes[i]);
-          if (nodes[i].shadowRoot) deepWalk(nodes[i].shadowRoot, fn);
-        }
-      }
-    }
-    function clickBtnWithText(text, root) {
-      var hit = null;
-      deepWalk(root, function(el) {
-        if (hit) return;
-        if (el.tagName === 'BUTTON' || el.getAttribute && el.getAttribute('role') === 'button') {
-          var t = (el.textContent || '').trim().toLowerCase();
-          if (t.includes(text.toLowerCase())) hit = el;
-        }
-      });
-      if (hit) {
-        try { hit.click(); return true; } catch(_) {}
-      }
-      return false;
-    }
-    function activate() {
-      convai.classList.add('loren-active');
-      document.body.classList.add('loren-active');
-      // Fade-in completes in 250ms; then drive the inner buttons
-      var attempts = 0;
-      var driver = setInterval(function() {
-        attempts++;
-        var sr = convai.shadowRoot;
-        if (!sr) { if (attempts > 30) clearInterval(driver); return; }
-        // Try Agree (ToS) first, then Start
-        if (clickBtnWithText('agree', sr)) {
-          // Wait a beat then start
-          setTimeout(function() { clickBtnWithText('start the call', sr); }, 300);
-          clearInterval(driver);
-          return;
-        }
-        if (clickBtnWithText('start the call', sr)) { clearInterval(driver); return; }
-        if (clickBtnWithText('start', sr)) { clearInterval(driver); return; }
-        if (attempts > 30) clearInterval(driver);
-      }, 100);
-    }
-    function deactivate() {
-      convai.classList.remove('loren-active');
-      document.body.classList.remove('loren-active');
-    }
-    orb.addEventListener('click', function(e) {
-      if (didDrag) { e.preventDefault(); e.stopPropagation(); return; }
-      activate();
-    });
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && document.body.classList.contains('loren-active')) deactivate();
-    });
-
-    // Auto-deactivate after call ends
-    var idleClose = null;
-    function watchEnd() {
-      var sr = convai.shadowRoot;
-      if (!sr) { setTimeout(watchEnd, 500); return; }
-      var obs = new MutationObserver(function() {
-        var t = (sr.textContent || '').toLowerCase();
-        var inCall = /(loren is|listening|speaking|talk to interrupt|end call)/i.test(t);
-        if (!inCall && document.body.classList.contains('loren-active')) {
-          clearTimeout(idleClose);
-          idleClose = setTimeout(deactivate, 6000);
-        } else { clearTimeout(idleClose); }
-      });
-      try { obs.observe(sr, { childList: true, subtree: true, characterData: true }); } catch(_){}
-    }
-    watchEnd();
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
-})();
-</script>
 
 
 <script>
@@ -3615,6 +3499,82 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
     });
     // Default: one-time
     apply('once');
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
+<script>
+/* HCP v3 — Custom Loren orb — slide-in only (user picks language/voice/text/mute) */
+(function() {
+  function init() {
+    var orb = document.querySelector('.loren-orb-btn');
+    var convai = document.querySelector('elevenlabs-convai');
+    var credit = document.querySelector('.loren-orb-credit');
+    if (!orb || !convai) { setTimeout(init, 250); return; }
+
+    // ---- DRAG ----
+    var dragging = false, didDrag = false, sx = 0, sy = 0, sR = 28, sB = 50;
+    orb.addEventListener('pointerdown', function(e) {
+      if (window.innerWidth <= 1024) return;
+      dragging = true; didDrag = false; sx = e.clientX; sy = e.clientY;
+      var s = getComputedStyle(orb);
+      sR = parseInt(s.right, 10) || 28; sB = parseInt(s.bottom, 10) || 50;
+      orb.classList.add('dragging'); document.body.classList.add('loren-dragging');
+      try { orb.setPointerCapture(e.pointerId); } catch(_){}
+    });
+    orb.addEventListener('pointermove', function(e) {
+      if (!dragging) return;
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) didDrag = true;
+      var nr = Math.max(8, Math.min(window.innerWidth - 88, sR - dx));
+      var nb = Math.max(8, Math.min(window.innerHeight - 88, sB - dy));
+      orb.style.right = nr + 'px'; orb.style.bottom = nb + 'px';
+      if (credit) { credit.style.right = nr + 'px'; credit.style.bottom = (nb - 28) + 'px'; }
+      convai.style.right = nr + 'px';
+    });
+    function endDrag(e) {
+      if (!dragging) return;
+      dragging = false;
+      orb.classList.remove('dragging'); document.body.classList.remove('loren-dragging');
+      try { orb.releasePointerCapture(e.pointerId); } catch(_){}
+    }
+    orb.addEventListener('pointerup', endDrag);
+    orb.addEventListener('pointercancel', endDrag);
+
+    // ---- ACTIVATE: just slide widget in. User picks language / voice / text / mute / start themselves ----
+    function activate() {
+      convai.classList.add('loren-active');
+      document.body.classList.add('loren-active');
+      // Ensure widget is properly visible — DON'T auto-click anything
+      // The user sees: language dropdown, voice/text toggle, mute control, Start button
+    }
+    function deactivate() {
+      convai.classList.remove('loren-active');
+      document.body.classList.remove('loren-active');
+    }
+    orb.addEventListener('click', function(e) {
+      if (didDrag) { e.preventDefault(); e.stopPropagation(); return; }
+      activate();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.body.classList.contains('loren-active')) deactivate();
+    });
+
+    // Click outside the widget collapses it
+    document.addEventListener('pointerdown', function(e) {
+      if (!document.body.classList.contains('loren-active')) return;
+      if (convai.contains(e.target) || orb.contains(e.target)) return;
+      // Don't auto-collapse during an active call
+      var sr = convai.shadowRoot;
+      if (sr) {
+        var t = (sr.textContent || '').toLowerCase();
+        var inCall = /(loren is listening|loren is speaking|talk to interrupt|end call|end\s)/i.test(t);
+        if (inCall) return;
+      }
+      deactivate();
+    });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
