@@ -3040,58 +3040,104 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 </script>
 
 
+
+
+
 <script>
-/* HCP Standard v2 — Kill ElevenLabs banner inside shadow DOM */
+/* HCP v2 — Aggressive ElevenLabs banner annihilator */
 (function() {
-  function isPoweredBy(el) {
-    if (!el || !el.textContent) return false;
-    var t = (el.textContent || '').trim();
-    return /powered by\s*elevenlabs/i.test(t) || /elevenlabs\s*agents/i.test(t);
+  function deepWalk(node, callback) {
+    if (!node) return;
+    callback(node);
+    if (node.shadowRoot) {
+      var kids = node.shadowRoot.querySelectorAll('*');
+      for (var i = 0; i < kids.length; i++) deepWalk(kids[i], callback);
+    }
+    if (node.children) {
+      for (var i = 0; i < node.children.length; i++) deepWalk(node.children[i], callback);
+    }
   }
-  function walkAndHide(root) {
-    if (!root) return false;
-    var found = false;
-    var nodes = root.querySelectorAll ? root.querySelectorAll('*') : [];
-    for (var i = 0; i < nodes.length; i++) {
-      var el = nodes[i];
-      // Hide any element whose text is just the banner — avoid hiding everything
-      var ownText = '';
-      try { ownText = (el.firstChild && el.firstChild.nodeType === 3) ? (el.firstChild.nodeValue || '').trim() : ''; } catch(e) {}
-      var fullText = (el.textContent || '').trim();
-      // Match banner element: short text, contains 'powered by' + 'elevenlabs', no children that are large
-      if (fullText.length < 80 && /powered\s*by/i.test(fullText) && /elevenlabs/i.test(fullText)) {
-        if (el.style.display !== 'none') {
-          el.style.display = 'none';
-          el.style.visibility = 'hidden';
-          el.style.opacity = '0';
-          el.style.height = '0';
-          el.style.overflow = 'hidden';
-          el.setAttribute('data-banner-killed', '1');
-          found = true;
+  function isBanner(el) {
+    if (!el || el.nodeType !== 1) return false;
+    // Element-level test: look for a SHORT element whose textContent matches the banner pattern
+    var t = (el.textContent || '').trim();
+    if (t.length === 0 || t.length > 100) return false;
+    if (!/powered\s*by/i.test(t)) return false;
+    if (!/elevenlabs/i.test(t)) return false;
+    // Don't hide huge containers — only the leaf-ish element
+    return true;
+  }
+  function findSmallestBannerEl(root) {
+    // Find the SMALLEST element matching — to avoid hiding the whole widget
+    var candidates = [];
+    deepWalk(root, function(el) {
+      if (isBanner(el)) candidates.push(el);
+    });
+    if (!candidates.length) return null;
+    // Prefer the one with fewest children (most leaf-like)
+    candidates.sort(function(a, b) {
+      var ac = a.querySelectorAll ? a.querySelectorAll('*').length : 0;
+      var bc = b.querySelectorAll ? b.querySelectorAll('*').length : 0;
+      return ac - bc;
+    });
+    return candidates[0];
+  }
+  function killOnce() {
+    var convai = document.querySelector('elevenlabs-convai');
+    if (!convai) return false;
+    // Try the host first, then the shadow root, then walk
+    var hit = false;
+    deepWalk(convai, function(el) {
+      if (isBanner(el)) {
+        // Hide the smallest banner-text container we can find
+        // by finding the closest ancestor that's reasonable size
+        var target = el;
+        // Walk up to find a container that ONLY holds banner text
+        while (target.parentElement && target.parentElement.children.length === 1
+               && (target.parentElement.textContent || '').trim().length < 100) {
+          target = target.parentElement;
+        }
+        if (!target.hasAttribute('data-banner-killed')) {
+          target.setAttribute('data-banner-killed', '1');
+          target.style.display = 'none !important';
+          target.style.cssText += '; display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; max-height: 0 !important; overflow: hidden !important; pointer-events: none !important; position: absolute !important; left: -9999px !important;';
+          hit = true;
         }
       }
-      // Recurse into nested shadow roots
-      if (el.shadowRoot) {
-        if (walkAndHide(el.shadowRoot)) found = true;
-      }
+    });
+    return hit;
+  }
+  // Run frequently until stable
+  var tickCount = 0;
+  var fastTick = setInterval(function() {
+    killOnce();
+    if (++tickCount > 60) {
+      clearInterval(fastTick);
+      // Slow tick keeps it dead
+      setInterval(killOnce, 1500);
     }
-    return found;
-  }
-  function killBanner() {
+  }, 250);
+  // Also use MutationObserver to catch re-renders
+  var convaiObserver = new MutationObserver(function() { killOnce(); });
+  function attachObserver() {
     var convai = document.querySelector('elevenlabs-convai');
-    if (!convai || !convai.shadowRoot) return false;
-    return walkAndHide(convai.shadowRoot);
+    if (convai && convai.shadowRoot) {
+      convaiObserver.observe(convai.shadowRoot, { childList: true, subtree: true, attributes: true });
+      // Also observe each nested shadow
+      deepWalk(convai, function(el) {
+        if (el.shadowRoot) {
+          try { convaiObserver.observe(el.shadowRoot, { childList: true, subtree: true, attributes: true }); } catch(_) {}
+        }
+      });
+    } else {
+      setTimeout(attachObserver, 500);
+    }
   }
-  // Run continuously — the banner re-renders on widget state changes
-  var interval = setInterval(killBanner, 500);
-  // Also run on widget interactions
-  document.addEventListener('click', function() { setTimeout(killBanner, 50); setTimeout(killBanner, 250); setTimeout(killBanner, 800); }, true);
-  // Stop checking after 30 seconds (the widget should be stable by then) but keep an observer
-  setTimeout(function() {
-    clearInterval(interval);
-    // Switch to a slower keep-alive
-    setInterval(killBanner, 2500);
-  }, 30000);
+  attachObserver();
+  // Click triggers re-render — kill on click too
+  document.addEventListener('click', function() {
+    [50, 200, 500, 1000].forEach(function(d) { setTimeout(killOnce, d); });
+  }, true);
 })();
 </script>
 
