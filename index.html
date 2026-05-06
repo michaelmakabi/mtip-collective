@@ -2024,35 +2024,8 @@ elevenlabs-convai::part(branding) {
   display: none !important;
 }
 /* Our own branded credit pinned next to the orb */
-.loren-credit {
-  position: fixed;
-  bottom: 6px;
-  right: 22px;
-  z-index: 100;
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-  background: rgba(10,10,10,0.78);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  padding: 5px 10px;
-  border-radius: 999px;
-  text-decoration: none;
-  border: 1px solid rgba(220,38,38,0.35);
-  pointer-events: auto;
-  transition: all 0.2s ease;
-}
-.loren-credit:hover {
-  color: #fff;
-  border-color: #dc2626;
-  background: rgba(220,38,38,0.15);
-}
-.loren-credit strong { color: #dc2626; font-weight: 700; }
 @media (max-width: 768px) {
-  .loren-credit { bottom: 64px; right: 18px; font-size: 9px; padding: 4px 8px; }
-}
+  }
 
 
 /* === HCP Standard v2 — Mobile Bottom Nav Bar === */
@@ -2077,10 +2050,6 @@ elevenlabs-convai::part(branding) {
   }
   /* Hide the always-on launcher card on mobile — the orb-only launcher is enough */
   .loren-orb-halo,
-  .loren-credit,
-  .mobile-sticky-cta {
-    display: none !important;
-  }
   .hcp-bottom-nav {
     display: flex;
     position: fixed;
@@ -2995,7 +2964,6 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 <!-- Loren AI assistant (ElevenLabs Convai) -->
 <div class="loren-orb-halo" aria-hidden="true"></div>
-<a class="loren-credit" href="https://loren.ai" target="_blank" rel="noopener">Powered by <strong>LOREN AI</strong></a>
 <elevenlabs-convai agent-id="agent_8201kqz1zth8evzvygs9xgn1pk3k"></elevenlabs-convai>
 <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
 
@@ -3069,6 +3037,62 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
     // Active state on scroll (basic)
     var sectionMap = { home: '#top', lineup: '#lineup', math: '#wizard', brochure: null };
   })();
+</script>
+
+
+<script>
+/* HCP Standard v2 — Kill ElevenLabs banner inside shadow DOM */
+(function() {
+  function isPoweredBy(el) {
+    if (!el || !el.textContent) return false;
+    var t = (el.textContent || '').trim();
+    return /powered by\s*elevenlabs/i.test(t) || /elevenlabs\s*agents/i.test(t);
+  }
+  function walkAndHide(root) {
+    if (!root) return false;
+    var found = false;
+    var nodes = root.querySelectorAll ? root.querySelectorAll('*') : [];
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      // Hide any element whose text is just the banner — avoid hiding everything
+      var ownText = '';
+      try { ownText = (el.firstChild && el.firstChild.nodeType === 3) ? (el.firstChild.nodeValue || '').trim() : ''; } catch(e) {}
+      var fullText = (el.textContent || '').trim();
+      // Match banner element: short text, contains 'powered by' + 'elevenlabs', no children that are large
+      if (fullText.length < 80 && /powered\s*by/i.test(fullText) && /elevenlabs/i.test(fullText)) {
+        if (el.style.display !== 'none') {
+          el.style.display = 'none';
+          el.style.visibility = 'hidden';
+          el.style.opacity = '0';
+          el.style.height = '0';
+          el.style.overflow = 'hidden';
+          el.setAttribute('data-banner-killed', '1');
+          found = true;
+        }
+      }
+      // Recurse into nested shadow roots
+      if (el.shadowRoot) {
+        if (walkAndHide(el.shadowRoot)) found = true;
+      }
+    }
+    return found;
+  }
+  function killBanner() {
+    var convai = document.querySelector('elevenlabs-convai');
+    if (!convai || !convai.shadowRoot) return false;
+    return walkAndHide(convai.shadowRoot);
+  }
+  // Run continuously — the banner re-renders on widget state changes
+  var interval = setInterval(killBanner, 500);
+  // Also run on widget interactions
+  document.addEventListener('click', function() { setTimeout(killBanner, 50); setTimeout(killBanner, 250); setTimeout(killBanner, 800); }, true);
+  // Stop checking after 30 seconds (the widget should be stable by then) but keep an observer
+  setTimeout(function() {
+    clearInterval(interval);
+    // Switch to a slower keep-alive
+    setInterval(killBanner, 2500);
+  }, 30000);
+})();
 </script>
 
 </body>
