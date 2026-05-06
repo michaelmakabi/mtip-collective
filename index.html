@@ -2012,6 +2012,48 @@ elevenlabs-convai:hover::part(orb) {
   .loren-orb-halo { bottom: 78px; right: 18px; }
 }
 
+
+/* === Loren orb (tiny variant) sizing + branded credit === */
+elevenlabs-convai {
+  --el-tiny-size: 72px;
+}
+/* Hide ElevenLabs free-tier banner where possible (paid plans only fully suppress) */
+elevenlabs-convai::part(banner),
+elevenlabs-convai::part(footer-branding),
+elevenlabs-convai::part(branding) {
+  display: none !important;
+}
+/* Our own branded credit pinned next to the orb */
+.loren-credit {
+  position: fixed;
+  bottom: 6px;
+  right: 22px;
+  z-index: 100;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  background: rgba(10,10,10,0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 5px 10px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 1px solid rgba(220,38,38,0.35);
+  pointer-events: auto;
+  transition: all 0.2s ease;
+}
+.loren-credit:hover {
+  color: #fff;
+  border-color: #dc2626;
+  background: rgba(220,38,38,0.15);
+}
+.loren-credit strong { color: #dc2626; font-weight: 700; }
+@media (max-width: 768px) {
+  .loren-credit { bottom: 64px; right: 18px; font-size: 9px; padding: 4px 8px; }
+}
+
 </style>
 </head>
 <body>
@@ -2829,6 +2871,7 @@ window.addEventListener('scroll',()=>{let current='';sections.forEach(s=>{if(win
 
 <!-- Loren AI assistant (ElevenLabs Convai) -->
 <div class="loren-orb-halo" aria-hidden="true"></div>
+<a class="loren-credit" href="https://loren.ai" target="_blank" rel="noopener">Powered by <strong>LOREN AI</strong></a>
 <elevenlabs-convai agent-id="agent_8201kqz1zth8evzvygs9xgn1pk3k"></elevenlabs-convai>
 <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
 
